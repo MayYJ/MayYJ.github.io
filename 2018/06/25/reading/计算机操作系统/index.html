@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="存储器管理存储器的层次结构多级存储器结构 操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制 主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）  程序的装入和链接程序的装入 绝对装入方式：程序员需要知道程序将驻留在什么位置 可重定位装入方式：程序指定程序驻留内存的相对位置 动态运行时装入方式：并不立即把装入模块中的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="May&#39;s Blog">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/06/25/reading/计算机操作系统/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="存储器管理存储器的层次结构多级存储器结构 操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制 主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）  程序的装入和链接程序的装入 绝对装入方式：程序员需要知道程序将驻留在什么位置 可重定位装入方式：程序指定程序驻留内存的相对位置 动态运行时装入方式：并不立即把装入模块中的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fsn820qo2fj20iu0dhdge.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fsosf465mgj20bt0e574h.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fsosnpfw52j20dm0dzgm1.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fsousynm8qj20d70dwdg0.jpg">
+<meta property="og:updated_time" content="2018-06-27T09:25:36.889Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="May&#39;s Blog">
+<meta name="twitter:description" content="存储器管理存储器的层次结构多级存储器结构 操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制 主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）  程序的装入和链接程序的装入 绝对装入方式：程序员需要知道程序将驻留在什么位置 可重定位装入方式：程序指定程序驻留内存的相对位置 动态运行时装入方式：并不立即把装入模块中的">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fsn820qo2fj20iu0dhdge.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/06/25/reading/计算机操作系统/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archieven</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/06/25/reading/计算机操作系统/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Geplaatst op</span>
+              
+
+              
+                
+              
+
+              <time title="Post aangemaakt: 2018-06-25 10:59:20" itemprop="dateCreated datePublished" datetime="2018-06-25T10:59:20+08:00">2018-06-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Post aangepast: 2018-06-27 17:25:36" itemprop="dateModified" datetime="2018-06-27T17:25:36+08:00">2018-06-27</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="存储器管理"><a href="#存储器管理" class="headerlink" title="存储器管理"></a>存储器管理</h3><h4 id="存储器的层次结构"><a href="#存储器的层次结构" class="headerlink" title="存储器的层次结构"></a>存储器的层次结构</h4><h5 id="多级存储器结构"><a href="#多级存储器结构" class="headerlink" title="多级存储器结构"></a>多级存储器结构</h5><ul>
+<li>操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制</li>
+<li>主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）</li>
+</ul>
+<h4 id="程序的装入和链接"><a href="#程序的装入和链接" class="headerlink" title="程序的装入和链接"></a>程序的装入和链接</h4><h5 id="程序的装入"><a href="#程序的装入" class="headerlink" title="程序的装入"></a>程序的装入</h5><ol>
+<li>绝对装入方式：程序员需要知道程序将驻留在什么位置</li>
+<li>可重定位装入方式：程序指定程序驻留内存的相对位置</li>
+<li>动态运行时装入方式：并不立即把装入模块中的相对无位置转换为绝对位置，而是把这种地址转换推迟到程序真正要执行时才运行</li>
+</ol>
+<h5 id="程序的链接"><a href="#程序的链接" class="headerlink" title="程序的链接"></a>程序的链接</h5><ol>
+<li>静态链接方式：在程序运行前，先将各目标模块及它们所需的库函数，链接成一个完整的装配模块，以后不再拆开</li>
+<li>装入时动态链接：装入一个模块时，若发生一个外部模块调用事件，将引起装入程序去找对应的外部目标模块，并将它装入内存。</li>
+<li>运行时动态链接：在程序运行时，将目标模块装入内存</li>
+</ol>
+<h4 id="连续分配方式"><a href="#连续分配方式" class="headerlink" title="连续分配方式"></a>连续分配方式</h4><h5 id="单一连续分配"><a href="#单一连续分配" class="headerlink" title="单一连续分配"></a>单一连续分配</h5><h5 id="固定分区分配"><a href="#固定分区分配" class="headerlink" title="固定分区分配"></a>固定分区分配</h5><ul>
+<li>划分分区方法：将内存的用户空间划分为若干个固定大小的分区（有分区大小相等和不相等两种方式）</li>
+<li>内存分配：使用一张分区使用表来进行分区的使用</li>
+</ul>
+<h5 id="动态分区分配"><a href="#动态分区分配" class="headerlink" title="动态分区分配"></a>动态分区分配</h5><ul>
+<li><p>分配方式：根据进程的需要，动态的为之分配内存空间</p>
+</li>
+<li><p>分区分配中的数据结构：</p>
+<ol>
+<li>空闲分区表</li>
+<li>空闲分区链</li>
+</ol>
+</li>
+<li><p>分区分配算法</p>
+<ol>
+<li><p>首次适应算法</p>
+<ul>
+<li><p>定义：空闲分区链以地址递增的次序链接，在分配内存时从链首开始顺序查找</p>
+</li>
+<li><p>缺点：倾向于分配低地址部分，会留下许多难以利用的、很小的空闲分区，且查找是从头开始，会消耗多余的时间</p>
+</li>
+</ul>
+</li>
+<li><p>循环首次适应算法</p>
+<ul>
+<li>定义：对首次适应算法的改进，下次查找是从上一次分配的空间开始</li>
+<li>缺点：缺乏大的空闲分区</li>
+</ul>
+</li>
+<li><p>最佳适应算法</p>
+<ul>
+<li>定义：在所有的空闲分区按其容量有小到大的顺序形成一空闲分区链，在其中找到能满足要求的最小的空间</li>
+<li>缺点：每次分配的是所切割下来的剩余部分总是最小的，在存储器中会留下许多难以利用的小空闲区</li>
+</ul>
+</li>
+<li><p>最坏适应算法</p>
+<ul>
+<li>定义：从顺序空闲分区链中，找最大的空间分配</li>
+<li>缺点：虽然可以减少碎片空间，但是缺少大的空闲分区</li>
+</ul>
+<p>以上都是顺序搜索法</p>
+<hr>
+</li>
+<li><p>快速适应算法（分类搜索算法）</p>
+<ul>
+<li>定义：将空闲分区根据其容量大小进行分类，对于没一类相同容量的所有空闲分区，单独设立一个空闲分区链表，寻找到能容纳它的最小空间区链表，取第一个</li>
+<li>缺点：分区归还主存时算法复杂，系统开销大</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>分区分配操作</p>
+<ol>
+<li>分配内存</li>
+<li>回收内存</li>
+</ol>
+</li>
+</ul>
+<h5 id="伙伴系统"><a href="#伙伴系统" class="headerlink" title="伙伴系统"></a>伙伴系统</h5><ul>
+<li>定义：在系统运行过程中，由于不断的划分，可能会形成若干个不连续的空闲分区，将这些空闲分区根据分区的大小进行分类，在此基础上进行分配</li>
+</ul>
+<h5 id="可重定位分区分配"><a href="#可重定位分区分配" class="headerlink" title="可重定位分区分配"></a>可重定位分区分配</h5><ul>
+<li><p>原因：在分区分配过程中会产生许多小空间，我们需要整合这些小空间，就需要移动原有程序</p>
+</li>
+<li><p>实现：动态运行时装入方式，利用硬件地址变换机构，即需在系统中增设一个重定位寄存器，用它来存放程序在内存中的起始地址</p>
+</li>
+<li><p>算法：</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fsn820qo2fj20iu0dhdge.jpg" alt=""></p>
+</li>
+</ul>
+<h5 id="对换"><a href="#对换" class="headerlink" title="对换"></a>对换</h5><ul>
+<li>定义：是指把内存中暂时不能运行的进程或者暂时不用的程序和数据调出到处到外存上，以便腾出足够的内存空间，再把已具备运行条件的进程或进程所需要的程序和数据调入到内存</li>
+<li>对换空间的管理：通常是把外存分为文件区和对换区，文件去使用离散分配方式，对换区使用连续分配方式便于查找</li>
+</ul>
+<h4 id="基本分页存储管理方式"><a href="#基本分页存储管理方式" class="headerlink" title="基本分页存储管理方式"></a>基本分页存储管理方式</h4><ul>
+<li>定义：前面都是连续分配方式，基于分页存储管理方式是离散分配方式</li>
+<li>基本概念：<ol>
+<li>页面<ul>
+<li>将一个进程的逻辑地址空间分成若干个大小相等的片，称为页面</li>
+<li>内存分为与页面相等大小的若干个存储块，称为物理块或者页框</li>
+</ul>
+</li>
+<li>页面大小</li>
+<li>地址结构：20位页号12位位移量 即每页大小2^12 = 4K </li>
+<li>页表：记录页面与物理块之间关系的表</li>
+</ol>
+</li>
+<li>地址变换机构</li>
+</ul>
+<h4 id="基本分段存储管理方式"><a href="#基本分段存储管理方式" class="headerlink" title="基本分段存储管理方式"></a>基本分段存储管理方式</h4><h4 id="虚拟存储器"><a href="#虚拟存储器" class="headerlink" title="虚拟存储器"></a>虚拟存储器</h4><ul>
+<li>定义：仅需将那些当前要运行的少数页面或段先装入内存便可运行，在程序运行时再将没有调入的页面进行调入</li>
+<li>特征：<ol>
+<li>多次性：一个程序被分成多次调用内存</li>
+<li>对换性：作业在运行过程中换入换出</li>
+<li>虚拟性：逻辑上对内存进行扩容</li>
+</ol>
+</li>
+</ul>
+<h4 id="请求分页存储管理方式"><a href="#请求分页存储管理方式" class="headerlink" title="请求分页存储管理方式"></a>请求分页存储管理方式</h4><ul>
+<li>硬件支持<ol>
+<li>页表机制</li>
+<li>缺页中断机构</li>
+<li>地址变换机构</li>
+</ol>
+</li>
+</ul>
+<h4 id="页面置换算法"><a href="#页面置换算法" class="headerlink" title="页面置换算法"></a>页面置换算法</h4><ol>
+<li>最佳置换算法：选择的被淘汰页面，将是以后永不使用的，这个是无法实现的</li>
+<li>先进先出页面算法</li>
+<li>LRU置换算法：硬件支持（寄存器或栈）</li>
+<li>Clock置换算法：根据访问位和修改位来判断置换的页面</li>
+</ol>
+<h4 id="请求分段存储管理方式"><a href="#请求分段存储管理方式" class="headerlink" title="请求分段存储管理方式"></a>请求分段存储管理方式</h4><h3 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h3><h4 id="进程的基本概念"><a href="#进程的基本概念" class="headerlink" title="进程的基本概念"></a>进程的基本概念</h4><ol>
+<li><p>进程顺序执行的基本特征：顺序性、封闭性、可再现性</p>
+</li>
+<li><p>进程并发执行的基本特征：间断性、失去封闭性、不可再现性</p>
+</li>
+<li><p>进程可能会有的所有状态：创建状态、就绪状态、执行状态、阻塞状态、挂起状态、终止状态</p>
+</li>
+<li><p>进程控制块（PCB）：一种数据结构，用于描述进程的当前情况以及控制进程运行的全部信息，PCB常驻内存。</p>
+<p>其中有主要一下信息：</p>
+<ol>
+<li>进程标识符</li>
+<li>处理机状态</li>
+<li>进程调度信息</li>
+<li>进程控制信息</li>
+</ol>
+</li>
+<li><p>进程控制块组织方式：</p>
+<ul>
+<li>链接方式</li>
+<li>索引方式</li>
+</ul>
+</li>
+</ol>
+<h4 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h4><ol>
+<li>进程的创建<ol>
+<li>申请空白PCB</li>
+<li>为新进程分配资源</li>
+<li>初始化PCB</li>
+<li>将PCB插入就绪队列</li>
+</ol>
+</li>
+<li>进程终止</li>
+<li>进程的阻塞<ol>
+<li>改变PCB中的进程调度信息</li>
+<li>插入阻塞队列</li>
+</ol>
+</li>
+<li>进程唤醒<ol>
+<li>改变PCB中的进程调度信息</li>
+<li>插入就绪队列</li>
+</ol>
+</li>
+<li>进程的挂起</li>
+<li>进程的激活</li>
+</ol>
+<h4 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h4><ul>
+<li>基本概念<ol>
+<li>两种形式的制约关系</li>
+<li>临界资源</li>
+<li>临界区</li>
+</ol>
+</li>
+<li>信号量机制<ol>
+<li>整型信号量</li>
+<li>记录型信息量</li>
+<li>AND型信号量</li>
+<li>信号量集</li>
+</ol>
+</li>
+<li>管程<ol>
+<li>定义：共享资源的数据结构，以及由对该数据结构实施操作的一组过程所组成的资源管理程序，共同构成了一个操作系统的资源管理模块</li>
+</ol>
+</li>
+<li>线程<ol>
+<li>线程与进程的比较<ul>
+<li>调度：同一进程的不同线程的切换不切换进程</li>
+<li>并发性</li>
+<li>拥有资源：访问隶属进程的资源，拥有很少量自己的自己的资源</li>
+<li>系统开销：系统开销小</li>
+</ul>
+</li>
+<li>线程属性：<ol>
+<li>轻型实体</li>
+<li>独立调度和分派的基本单位</li>
+<li>可并发执行</li>
+<li>共享进程资源</li>
+<li>线程状态</li>
+</ol>
+</li>
+<li>线程的实现方式<ol>
+<li>内核支持线程<ul>
+<li>缺点：对于用户线程切换而言，开销很大</li>
+</ul>
+</li>
+<li>用户级线程<ul>
+<li>缺点：系统调用阻塞问题；多线程不能利用多处理机进行多重处理</li>
+</ul>
+</li>
+<li>组合方式</li>
+</ol>
+</li>
+<li>线程的实现<ul>
+<li>内核支持线程的实现：就类似于进程了</li>
+<li>用户级线程的实现<ol>
+<li>运行时系统：用于管理和控制线程的函数集合</li>
+<li>内核控制线程：每个进程拥有多个LWP，一个LWP连接多个用户进程，克服了内核线程的切换线程系统 开销大的问题，也克服了用户线程系统调用阻塞所有其它线程问题</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="处理机调度和死锁"><a href="#处理机调度和死锁" class="headerlink" title="处理机调度和死锁"></a>处理机调度和死锁</h3><h4 id="处理机调度层次"><a href="#处理机调度层次" class="headerlink" title="处理机调度层次"></a>处理机调度层次</h4><ol>
+<li>高级调度：根据某种算法，把外存上处理后备队列中的那些作业调入内存，调度的对象是作业</li>
+<li>低级调度：调度的对象是进程<ul>
+<li>低级调度的功能：<ol>
+<li>保存处理机的现场信息，即进程运行时保存在各种寄存器里面的数据到PCB中</li>
+<li>按某种算法选取下一个运行的进程</li>
+<li>把处理器分配给下一个进程</li>
+</ol>
+</li>
+<li>低级调度的机制：<ol>
+<li>排队器：就绪进程队列</li>
+<li>分派器：分派器就是由进程调度程序选定的进程，切换的进程首先把处理机切换到分派进程，然后分派进程再指定下一个进程并切换到下一个进程</li>
+<li>上下文切换机制</li>
+</ol>
+</li>
+<li>进程调度方式<ol>
+<li>非抢占式调度：一个进程总是尝试运行完自己所有程序，除非遇到阻塞或异常而退出，再把处理机交给其它进程</li>
+<li>抢占式调度：基于一定的优先原则，当优先级大的进程进入系统，会将当前运行的进程切换到优先级高的进程</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>中级调度：使那些暂时不能运行的进程调至外存上</li>
+</ol>
+<h4 id="调度队列模型和准则"><a href="#调度队列模型和准则" class="headerlink" title="调度队列模型和准则"></a>调度队列模型和准则</h4><p>调度队列模型</p>
+<ul>
+<li>仅有低级调度</li>
+<li>低级调度和高级调度：从外存的后备队列上选择一个作业，然后封装为一个进程进行运行，进程运行有服从低级调度</li>
+<li>三级调度都有：前面就像低级和高级调度的形式，然后在进程需要创建子进程内存空间不够的时候，就会换出暂时不会运行的线程到外存，变成外存就绪状态</li>
+</ul>
+<h4 id="调度算法的准则"><a href="#调度算法的准则" class="headerlink" title="调度算法的准则"></a>调度算法的准则</h4><ol>
+<li>面向用户准则<ul>
+<li>周期时间短</li>
+<li>响应时间快</li>
+<li>截止时间保证</li>
+<li>优先权准则</li>
+</ul>
+</li>
+<li>面向系统准则<ul>
+<li>系统吞吐量：就是在一定的时间里能够完成的作业</li>
+<li>处理机利用率</li>
+<li>资源平衡利用</li>
+<li>资源利用平衡</li>
+</ul>
+</li>
+</ol>
+<h4 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h4><ol>
+<li>高级调度和低级调度都适用的：<ul>
+<li>先来先服务调度算法：缺点是有利于长作业，不利于短作业；有利于CPU繁忙型作业，因为可以长时间占用处理机，导致其带权周转时间小</li>
+<li>短作业调度优先：缺点是不利于长作业</li>
+<li>高优先权优先调度算法：抢占式，非抢占式；静态优先权，动态优先权</li>
+<li>高响应比优先调度算法：利用动态优先权，进程的优先权随着时间的改变而改变：响应时间/服务时间</li>
+</ul>
+</li>
+<li>低级调度适用的：<ul>
+<li>时间片轮转调度算法：在给定的时间片内，对按照先来先服务形成的就绪进程队列进程时间片周期轮转执行</li>
+<li>多级反馈队列调度算法：设置多个就绪进程就绪队列，队列优先级依次降低，会首先执行优先级高的队列里面的进程且每一个低优先级都是其上一个优先级队列的分配时间片大一倍；创建一个进程时，先放到第一优先级队列，如果第一个时间片没有执行完在放到下一个优先级队列，依次类推；也仅有上一优先级队列为空时下一优先级队列才有机会执行，所以当有第一优先级队列有进程时，在执行第二优先级队列里面的进程时会被抢占</li>
+</ul>
+</li>
+<li>实时调度算法：<ol>
+<li>最早截止时间调度算法：有较早截止时间的进程有较高的优先级去执行</li>
+<li>最低松弛度优先：在形成的松弛度有小到大的队列中选取第一个执行，松弛度=必须完成的时间-其本身时间-当前时间</li>
+</ol>
+</li>
+</ol>
+<h4 id="产生死锁的原因和条件"><a href="#产生死锁的原因和条件" class="headerlink" title="产生死锁的原因和条件"></a>产生死锁的原因和条件</h4><ul>
+<li>产生死锁的原因：<ol>
+<li>竞争资源<ul>
+<li>竞争非剥夺性资源</li>
+<li>竞争临时性资源</li>
+</ul>
+</li>
+<li>进程间推进顺序非法</li>
+</ol>
+</li>
+<li>产生死锁的必要条件<ol>
+<li>互斥条件</li>
+<li>请求和保持条件</li>
+<li>不剥夺条件</li>
+<li>环路等待条件</li>
+</ol>
+</li>
+</ul>
+<h3 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h3><h4 id="IO控制方式"><a href="#IO控制方式" class="headerlink" title="IO控制方式"></a>IO控制方式</h4><ol>
+<li><p>程序IO方式</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fsosf465mgj20bt0e574h.jpg" alt=""></p>
+</li>
+<li><p>中断驱动方式</p>
+<p>口述一下就是IO程序发出读命令，然后检测IO设备是否空闲，空闲的话读取一个字到数据寄存器，然后发出中断信号，CPU检查输入过程是否有错，没有错再将字写到内存</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fsosnpfw52j20dm0dzgm1.jpg" alt=""></p>
+</li>
+<li><p>直接存储器访问方式(DMA)控制方式</p>
+<ul>
+<li><p>产生的原因：虽然产生了中断驱动IO控制方式，但是我们从上面的流程图可以得知，我们只能节省等待IO设备可用的时间，还有大量的IO传输速度与cpu不匹配所产生的cpu等待IO设备的时间会浪费，DMA方式成百倍的减少了CPU对IO的干预</p>
+</li>
+<li><p>DMA的特点：</p>
+<ol>
+<li>每次传输一个数据块</li>
+<li>DMA存在一个缓存区，即内存中的一块地方，所以DMA通过这个缓冲区与CPU进行数据传递，当CPU发送读命令时，从IO设备读取数据到这个缓存区，写命令时CPU右将数据发送到这个缓冲区</li>
+<li>仅在一个数据块操作完成才需CPU干预，取下一个命令</li>
+</ol>
+</li>
+<li><p>关于设备控制器(DMA)</p>
+<ul>
+<li>组成：<ol>
+<li>DMA与CPU的接口：主要涉及数据线、地址线和控制线，这个三个线与命令/状态寄存器(CR)、内存地址寄存器(MDR)、数据寄存器(DR)、数据计数器(DR)进行数据传递；</li>
+<li>DMA与IO设备的接口</li>
+<li>IO逻辑：实现对设备控制，通过一组控制线与处理机交互，处理机利用该逻辑向控制器发送IO命令；IO逻辑对收到的命令进行译码</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>DMA工作过程</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fsousynm8qj20d70dwdg0.jpg" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>IO通道控制方式</p>
+<ul>
+<li>IO通道<ul>
+<li>定义：是一种特殊的处理机，但是它只能运行IO命令，且与处理机共享内存</li>
+<li>产生的原因：DMA只能一次读取一个数据块的数据，IO通道则是DMA方式的发展，可以一次实现多个数据块的传送</li>
+<li>执行过程：当CPU要完成一个读操作时，只需向IO通道发送一条IO指令，IO指令包括所要执行通道程序的首址和要访问的IO设备</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="中断处理程序"><a href="#中断处理程序" class="headerlink" title="中断处理程序"></a>中断处理程序</h4><ul>
+<li>主要有以下几个步骤<ol>
+<li>唤醒被阻塞的驱动进程(这里唤醒的原因是需要中断处理程序处理IO完成后的工作)</li>
+<li>保护被中断进程的CPU环境：我觉得这里需要注意的是与进程进行上下文切换机制不同，后者是将处理机现场信息保存到PCB中，但是这里是吧处理机状态字PSW和程序计数器保存在中断保留区，把被中断进程CPU现场信息压入中断栈中</li>
+<li>转入相应设备处理程序</li>
+<li>中断处理</li>
+<li>恢复被中断进程现场</li>
+</ol>
+</li>
+</ul>
+<h4 id="设备驱动程序"><a href="#设备驱动程序" class="headerlink" title="设备驱动程序"></a>设备驱动程序</h4><ul>
+<li>定义：他是IO进程与设备控制器之间的通信程序</li>
+<li>产生原因：由于对不同硬件设备进行IO操作需要不同的指令代码，也即不同的硬件需要不同的驱动程序，所以在我们看来IO程序简单发出一个read或者write命令，但是如果设备控制器直接发给IO设备它是不认识的因为不同的硬件的内部结构是不一样的，所以这个时候就需要设备驱动程序对这个read或者write命令基于不同硬件解析为硬件认识的程序代码然后让设备控制器直接发给IO设备</li>
+</ul>
+<h3 id="操作系统接口"><a href="#操作系统接口" class="headerlink" title="操作系统接口"></a>操作系统接口</h3><h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><ol>
+<li><p>系统态和用户态：在现在的我看来是对处理机两种状态的标志，当处理机是系统态时可以使用所有指令和数据；而用户态只能使用非特权指令，不能使用系统态的空间和数据；这两个状态的切换时通过改变处理机状态字PSW</p>
+</li>
+<li><p>系统调用实现</p>
+<p>主要是靠中断和陷入机制来完成的；当CPU执行到一条需要系统调用的指令时发生中断并将有关信号送给中断和陷入硬件机构，该机构收到信号后，启动相关的中断和陷入处理程序进行处理</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/20/java/Java 虚拟机参数/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/11/java/源码解析/ThreadLocal源码解析/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhoudsopgave
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overzicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">categorieën</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">labels</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#存储器管理"><span class="nav-number">1.</span> <span class="nav-text">存储器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储器的层次结构"><span class="nav-number">1.1.</span> <span class="nav-text">存储器的层次结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#多级存储器结构"><span class="nav-number">1.1.1.</span> <span class="nav-text">多级存储器结构</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#程序的装入和链接"><span class="nav-number">1.2.</span> <span class="nav-text">程序的装入和链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#程序的装入"><span class="nav-number">1.2.1.</span> <span class="nav-text">程序的装入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#程序的链接"><span class="nav-number">1.2.2.</span> <span class="nav-text">程序的链接</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连续分配方式"><span class="nav-number">1.3.</span> <span class="nav-text">连续分配方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单一连续分配"><span class="nav-number">1.3.1.</span> <span class="nav-text">单一连续分配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#固定分区分配"><span class="nav-number">1.3.2.</span> <span class="nav-text">固定分区分配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#动态分区分配"><span class="nav-number">1.3.3.</span> <span class="nav-text">动态分区分配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#伙伴系统"><span class="nav-number">1.3.4.</span> <span class="nav-text">伙伴系统</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可重定位分区分配"><span class="nav-number">1.3.5.</span> <span class="nav-text">可重定位分区分配</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对换"><span class="nav-number">1.3.6.</span> <span class="nav-text">对换</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本分页存储管理方式"><span class="nav-number">1.4.</span> <span class="nav-text">基本分页存储管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本分段存储管理方式"><span class="nav-number">1.5.</span> <span class="nav-text">基本分段存储管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟存储器"><span class="nav-number">1.6.</span> <span class="nav-text">虚拟存储器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求分页存储管理方式"><span class="nav-number">1.7.</span> <span class="nav-text">请求分页存储管理方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面置换算法"><span class="nav-number">1.8.</span> <span class="nav-text">页面置换算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求分段存储管理方式"><span class="nav-number">1.9.</span> <span class="nav-text">请求分段存储管理方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程管理"><span class="nav-number">2.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">进程的基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程控制"><span class="nav-number">2.2.</span> <span class="nav-text">进程控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程同步"><span class="nav-number">2.3.</span> <span class="nav-text">进程同步</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理机调度和死锁"><span class="nav-number">3.</span> <span class="nav-text">处理机调度和死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理机调度层次"><span class="nav-number">3.1.</span> <span class="nav-text">处理机调度层次</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调度队列模型和准则"><span class="nav-number">3.2.</span> <span class="nav-text">调度队列模型和准则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调度算法的准则"><span class="nav-number">3.3.</span> <span class="nav-text">调度算法的准则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调度算法"><span class="nav-number">3.4.</span> <span class="nav-text">调度算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#产生死锁的原因和条件"><span class="nav-number">3.5.</span> <span class="nav-text">产生死锁的原因和条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设备管理"><span class="nav-number">4.</span> <span class="nav-text">设备管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IO控制方式"><span class="nav-number">4.1.</span> <span class="nav-text">IO控制方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#中断处理程序"><span class="nav-number">4.2.</span> <span class="nav-text">中断处理程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设备驱动程序"><span class="nav-number">4.3.</span> <span class="nav-text">设备驱动程序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统接口"><span class="nav-number">5.</span> <span class="nav-text">操作系统接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统调用"><span class="nav-number">5.1.</span> <span class="nav-text">系统调用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Mede mogelijk gemaakt door <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thema – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

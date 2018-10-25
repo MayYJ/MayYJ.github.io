@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="May&#39;s Blog">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/08/27/javaweb/Cookie和Session/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-27T10:43:55.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="May&#39;s Blog">
+<meta name="twitter:description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/08/27/javaweb/Cookie和Session/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archieven</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/27/javaweb/Cookie和Session/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Geplaatst op</span>
+              
+
+              
+                
+              
+
+              <time title="Post aangemaakt: 2018-08-27 17:17:33 / Post aangepast: 18:43:55" itemprop="dateCreated datePublished" datetime="2018-08-27T17:17:33+08:00">2018-08-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Cookie机制"><a href="#Cookie机制" class="headerlink" title="Cookie机制"></a>Cookie机制</h4><ul>
+<li><p>定义</p>
+<p>Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器</p>
+</li>
+<li><p>产生流程</p>
+<p>正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，如果某个cookie所声明的作用范围大于等于将要请求的资源所在位置，则把该cookie附在请求资源的HTTP请求头上发送给浏览器。</p>
+</li>
+</ul>
+<h4 id="Session机制"><a href="#Session机制" class="headerlink" title="Session机制"></a>Session机制</h4><ul>
+<li><p>定义</p>
+<p>session机制是一种服务器端的机制，服务器使用一种类似于散列表的结构来保存信息</p>
+</li>
+<li><p>产生流程</p>
+<p>当程序需要为某个客户端的请求创建一个session时，服务器首先会检查这个客户端的请求里是否已经包含了一个sessionId，如果有就将该session检索出来放在Request中来使用，如果没有就创建一个新的seesion放在Request来使用，产生的sessionId将被在本次响应中返回给客户端保存，一般保存方式就是cookie</p>
+</li>
+</ul>
+<h4 id="两者的不同点"><a href="#两者的不同点" class="headerlink" title="两者的不同点"></a>两者的不同点</h4><ol>
+<li><p>存取方式的不同</p>
+<p>Cookie只能保存ASCII字符串，存储UNICODE字符需要先进行编码</p>
+<p>Session能保存任何类型的数据甚至java类</p>
+</li>
+<li><p>隐私策略不同</p>
+<p>Cookie对于客户端是可见的，Session是不可见的</p>
+</li>
+<li><p>有效期上的不同</p>
+<p>Cookie可以设置一个较长时间的过期时间，但是Session关闭了阅读器该Session就会失效，因而不能长期有效，如果Session长时间有效会导致服务器内存溢出</p>
+</li>
+<li><p>服务器压力不同 </p>
+<p>Cookie存储在本地，Session存储在服务器</p>
+</li>
+<li><p>跨域的支持上的不同</p>
+<p>Cookie支持跨域，但是Session不支持跨域，不同域名使用不同Session</p>
+</li>
+</ol>
+<h4 id="关于Cookie和Session的跨域共享"><a href="#关于Cookie和Session的跨域共享" class="headerlink" title="关于Cookie和Session的跨域共享"></a>关于Cookie和Session的跨域共享</h4><ul>
+<li><p><strong>正常情况下Cookie发送</strong></p>
+<p>现在我们有两个站点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">www.example.com/site1</span><br><span class="line">www.example.com/site2</span><br></pre></td></tr></table></figure>
+<p>这两个站点因为在同一个域名下，所以在访问这两个站点时，会发送相同的cookie，因为浏览器存储cookie域是<a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
+</li>
+<li><p><strong>我们想实现的是同一个域但是不同的子域如何进行单点登录</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sub1.onmpw.com</span><br><span class="line">sub2.onmpw.com</span><br></pre></td></tr></table></figure>
+<p>上面就是两个同一个域但是不同的子域的例子，我们可以采用以下的实现方式实现：</p>
+<ol>
+<li><p>登录sub1.onmpw.com系统 </p>
+</li>
+<li><p>登录成功以后，设置cookie信息。这里需要注意，我们可以将用户名和密码存到cookie中，但是在设置的时候必须将这cookie的所属域设置为顶级域 .onmpw.com。这里可以使用setcookie函数，该函数的第四个参数是用来设置cookie所述域的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cookie.setDomain(&quot;.onmpw.com&quot;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问sub2.onmpw.com系统，浏览器会将cookie中的信息username和password附带在请求中一块儿发送到sub2.onmpw.com系统。这时该系统会先检查session是否登录，如果没有登录则验证cookie中的username和password从而实现自动登录。</p>
+</li>
+<li><p>sub2.onmpw.com 登录成功以后再写session信息。以后的验证就用自己的session信息验证就可以了。 </p>
+</li>
+</ol>
+</li>
+<li><p><strong>但是现在出现了一个问题</strong></p>
+<p>问题：当我们进入一个子域，要退出时我们可以删除自身的session信息和所属域为.onmpw.com的cookie，但是由于session时不跨域的不能删除另一个子域的session信息，也就是不能同时退出</p>
+<p>解决方案：把第一登录生成的JSESSIONID，通过setDomain放到一个共享的自定义的cookie中。之后访问二级域名的时候，将自定义cookie中的值取出来，然后再放到JESSIONID的cookie值中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cookie c = new Cookie(&quot;JSESSIONID&quot;, session.getId());  </span><br><span class="line">c.setDomain(&quot;abc.com&quot;);  </span><br><span class="line">resp.addCookie(c);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/27/javaweb/跨域请求/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/03/network/计算机网络/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhoudsopgave
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overzicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">categorieën</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">labels</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie机制"><span class="nav-number">1.</span> <span class="nav-text">Cookie机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Session机制"><span class="nav-number">2.</span> <span class="nav-text">Session机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两者的不同点"><span class="nav-number">3.</span> <span class="nav-text">两者的不同点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于Cookie和Session的跨域共享"><span class="nav-number">4.</span> <span class="nav-text">关于Cookie和Session的跨域共享</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Mede mogelijk gemaakt door <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thema – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

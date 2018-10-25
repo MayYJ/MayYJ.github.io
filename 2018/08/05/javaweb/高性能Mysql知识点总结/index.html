@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="May&#39;s Blog">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/08/05/javaweb/高性能Mysql知识点总结/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15edzuarj20kd0b9t9t.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17m1cy9yj20ru09uq6f.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17roy983j20kv0fy7b1.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0b5mr61nj20wj026mx8.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0bhiq21cj20y503hglq.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0cdvfh6oj210102ft8w.jpg">
+<meta property="og:updated_time" content="2018-08-09T13:21:13.045Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="May&#39;s Blog">
+<meta name="twitter:description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/08/05/javaweb/高性能Mysql知识点总结/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archieven</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/05/javaweb/高性能Mysql知识点总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Geplaatst op</span>
+              
+
+              
+                
+              
+
+              <time title="Post aangemaakt: 2018-08-05 16:46:35" itemprop="dateCreated datePublished" datetime="2018-08-05T16:46:35+08:00">2018-08-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Post aangepast: 2018-08-09 21:21:13" itemprop="dateModified" datetime="2018-08-09T21:21:13+08:00">2018-08-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Schema与数据类型优化"><a href="#Schema与数据类型优化" class="headerlink" title="Schema与数据类型优化"></a>Schema与数据类型优化</h4><ol>
+<li><p>选择优化得数据类型原则：</p>
+<ul>
+<li>更小的通常更好</li>
+<li>简单就好</li>
+<li>尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂</li>
+</ul>
+</li>
+<li><p>尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据</p>
+</li>
+<li><p>关于VARCHAR和CHAR</p>
+<p><strong>VARCHAR</strong></p>
+<p>它比定长更节省空间，因为它仅使用必要的空间；所以在一下情况下最好使用该类型：</p>
+<ul>
+<li>字符串列的长度比平均长度大很多</li>
+<li>列的更新很少，所以碎片不是问题(因为VARCHAR的更新可能会导致原来的页剩余的空间不够而需要采取其它的技术手段)</li>
+<li>使用了UTF-8这样复杂的字符集，每个字符使用不同的字节数进行存储</li>
+</ul>
+<p><strong>CHAR</strong></p>
+<p>Mysql总是会根据定义的字符串长度分配足够的空间，它会删除末尾的空格</p>
+<p>使用情况：</p>
+<ul>
+<li>很短的字符串且定长</li>
+<li>经常变更的数据</li>
+</ul>
+</li>
+<li><p>关于DATETIME和TIMESTAMP</p>
+<p>TIMESTAMP会比DATETIME是更好的选择，因为前者会使用比后者一半对的存储空间但是它前者能够存储的时间范围比后者小</p>
+</li>
+</ol>
+<h4 id="创建高性能的索引"><a href="#创建高性能的索引" class="headerlink" title="创建高性能的索引"></a>创建高性能的索引</h4><h5 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h5><ul>
+<li><p>可以使用B-tree索引的查询类型</p>
+<ol>
+<li>全值匹配：指的是和索引中的所有列进行匹配</li>
+<li>匹配最左前缀</li>
+<li>匹配列前缀</li>
+<li>匹配范围值</li>
+<li>精确匹配某一列并范围匹配另外一列</li>
+<li>只访问索引的查询</li>
+</ol>
+</li>
+<li><p>B-TREE索引的限制</p>
+<ol>
+<li>如果不是按照索引的最左列开始查找，则无法使用索引</li>
+<li>不能跳过索引中的列</li>
+<li>如果查询中有某个列的范围查询，则右边所有列都无法使用索引优化查找</li>
+</ol>
+</li>
+</ul>
+<h5 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h5><ol>
+<li><p>索引大大减少了服务器需要扫描的数据量</p>
+<p>快速定位，所以不需要导入全部数据进行顺序查找</p>
+</li>
+<li><p>索引可以帮助服务器避免排序和临时表</p>
+<p>顺序存储，便于ORDER BY、GROUP BY ；当需要排序时，不是顺序存储的如果数据表小的话就把数据导入内存不然就用磁盘然后建立一个临时表进行排序这是一个非常耗时间的过程</p>
+</li>
+<li><p>索引可以将随机IO变为顺序IO</p>
+<p>因为数据在索引中顺序存放的</p>
+</li>
+</ol>
+<h4 id="Innodb-页结构"><a href="#Innodb-页结构" class="headerlink" title="Innodb 页结构"></a>Innodb 页结构</h4><p>InnoDB数据页由以下七个部分组成，如图所示： </p>
+<ol>
+<li><p>File Header（文件头）。</p>
+</li>
+<li><p>Page Header（页头）。</p>
+</li>
+<li><p>Infimun+Supremum Records。</p>
+</li>
+<li><p>User Records（用户记录，即行记录）。</p>
+</li>
+<li><p>Free Space（空闲空间）。</p>
+</li>
+<li><p>Page Directory（页目录）。</p>
+</li>
+<li><p>File Trailer（文件结尾信息）。</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg" alt=""></p>
+</li>
+</ol>
+<p>我这里主要想说三四点：</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15edzuarj20kd0b9t9t.jpg" alt=""></p>
+<p>非聚餐索引就是这种形式存储所有记录的；也就是说每个B+-Tree叶子结点都是一个页，存储了具体的记录；B+树索引本身并不能找到具体的一条记录，B+树索引能找到只是该记录所在的页。数据库把页载入内存，然后通过Page Directory再进行二叉查找。只不过二叉查找的时间复杂度很低，同时内存中的查找很快，因此通常我们忽略了这部分查找所用的时间。 </p>
+<h4 id="高性能的索引策略"><a href="#高性能的索引策略" class="headerlink" title="高性能的索引策略"></a>高性能的索引策略</h4><h5 id="独立的列"><a href="#独立的列" class="headerlink" title="独立的列"></a>独立的列</h5><p>如果查询中的列不是独立的，则Mysql就不会使用索引；”独立的列”是指索引列不能是表达式的一部分，也不能是函数的一部分</p>
+<p>ex：select actor_id from actor where actor_id + 1 = 5</p>
+<h5 id="前缀索引和索引选择性"><a href="#前缀索引和索引选择性" class="headerlink" title="前缀索引和索引选择性"></a>前缀索引和索引选择性</h5><p>前缀索引：索引开始的部分字符，这样可以大大节约索引空间，从而提高索引效率。但是这样也会降低索引的选择性</p>
+<p>索引的选择性：不重复的索引值和数据表的记录总数(#T)的比值</p>
+<p>怎样确定索引前多少个字符?</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">3</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel3,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">4</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel4,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">5</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel5,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">6</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel6,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">7</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel7</span><br></pre></td></tr></table></figure>
+<p>选择选择性增加幅度很小的情况，但是也要注意数据分布不均匀的情况，即最常出现的前缀次数比最常出现的城市次数大很多的情况</p>
+<p>前缀索引的缺点：无法使用前缀索引做ORDER BY 和 GROUP BY</p>
+<h5 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h5><p>举个例子：select film_id,actor_id from actor where actor_id=’1’ and film_id=’1’；但是只有两个独立的分别是film_id的和actor_id的索引，那么mysql在查询时会使用”索引联合”策略，但是这个会有性能的问题，需要耗费大量CPU和内存资源在算法的缓存、排序和合并操作上；索引在EXPLAIN中有索引合并应该好好检查一下查询和表结构</p>
+<h5 id="选择合适的索引列顺序"><a href="#选择合适的索引列顺序" class="headerlink" title="选择合适的索引列顺序"></a>选择合适的索引列顺序</h5><ol>
+<li>将选择性最高的列索引放到最前列</li>
+<li>根据那些运行频率最高的插叙来调整索引列的顺序</li>
+</ol>
+<h5 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h5><p>聚簇：表示数据行和相邻的键值紧凑地存储在一起</p>
+<p>聚簇索引包含了一张表的全部数据，一张表只能一个聚簇索引</p>
+<p>优点：</p>
+<ol>
+<li>可以把相关数据保存在一起(通过索引我们只需读取少量有我们想要数据的数据页，而如果是MYISAM，就是通过索引得到想要数据的物理地址，读取一行就是一次磁盘IO)</li>
+<li>数据访问很快</li>
+<li>使用覆盖索引扫描的查询可以直接使用页结点中的主键值</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>最大限度提高了IO密集型应用的性能，但如果数据在内存中就没有用了</li>
+<li>插入速度严重依赖于插入顺序</li>
+<li>更新聚簇索引代价很高</li>
+<li>插入行可能有页分裂的问题</li>
+<li>聚簇索引可能导致全表扫描变慢</li>
+<li>二级索引可能比想象的要更大，因为二级索引的叶子结点包含了引用行的主键</li>
+<li>二级索引访问需要二次索引查找，而不是一次(如果你select 的字段比二级索引多，然后过滤条件能使用此二级索引，第一次先用二级索引进行查找找到对应的主键，然后通过主键在聚簇索引中找到想要的数据)</li>
+</ol>
+<h5 id="Innodb和MyISAM数据分布差异"><a href="#Innodb和MyISAM数据分布差异" class="headerlink" title="Innodb和MyISAM数据分布差异"></a>Innodb和MyISAM数据分布差异</h5><ul>
+<li>MyISAM数据分布</li>
+</ul>
+<ol>
+<li><p>主键索引和普通索引没有区别；</p>
+</li>
+<li><p>按照数据插入的顺序插入的顺序存储在磁盘上，在索引数据行的旁边显示行号，从0开始递增，索引形式如图：</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17m1cy9yj20ru09uq6f.jpg" alt=""></p>
+<p>即叶子结</p>
+</li>
+</ol>
+<ul>
+<li><p>Innodb数据分布</p>
+<p>就用下面的图来标识吧，很清晰了</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17roy983j20kv0fy7b1.jpg" alt=""></p>
+</li>
+</ul>
+<h5 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h5><ul>
+<li>定义：如果一个索引包含所有需要查询的字段值，我们就称之为”覆盖索引”</li>
+</ul>
+<h5 id="全表扫描和全索引扫描"><a href="#全表扫描和全索引扫描" class="headerlink" title="全表扫描和全索引扫描"></a>全表扫描和全索引扫描</h5><p>全表扫描：是指通过物理表获取数据，顺序读磁盘上的数据</p>
+<p>全索引扫描：查询时，遍历索引树来获取数据行</p>
+<h5 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h5><p>Mysql有两种方式生成有序结果：通过排序操作或者按索引顺序扫描；所以如果直接通过排序操作，就可能用到中间表用来存储获取的数据然后通过算法排序，这样效率比较低</p>
+<p>使用索引排序的要求：</p>
+<ol>
+<li>索引的列顺序和ORDER BY字句的顺序完全一致，并且所有列的排序方向都一样时。如果查询需要关联多张表，则只有当ORDER BY字句引用的字段全部为第一个表时，才能使用索引做排序</li>
+<li>索引的第一列被只能为一个常数，也能使用索引排序</li>
+</ol>
+<h5 id="冗余和重复索引"><a href="#冗余和重复索引" class="headerlink" title="冗余和重复索引"></a>冗余和重复索引</h5><p>Mysql 需要单独维护重复的索引，并且优化器在优化查询的时候也需要逐个的进行考虑，这会影响性能</p>
+<h5 id="未使用的索引"><a href="#未使用的索引" class="headerlink" title="未使用的索引"></a>未使用的索引</h5><h5 id="索引和锁"><a href="#索引和锁" class="headerlink" title="索引和锁"></a>索引和锁</h5><p>Innodb只有在访问行的时候才会对其加锁，而索引能够减少Innodb访问的行数，从而减少锁的数量</p>
+<h4 id="查询性能优化"><a href="#查询性能优化" class="headerlink" title="查询性能优化"></a>查询性能优化</h4><h5 id="为什么查询速度慢"><a href="#为什么查询速度慢" class="headerlink" title="为什么查询速度慢"></a>为什么查询速度慢</h5><p>在每一个消耗大量时间的查询案例中，我们都能看到一些不必要的额外操作，某些操作被额外的重复了很多次、某些操作执行得太慢等。优化查询的目的就是减少和消除这些操作所花费的时间</p>
+<h5 id="慢查询基础：优化数据访问"><a href="#慢查询基础：优化数据访问" class="headerlink" title="慢查询基础：优化数据访问"></a>慢查询基础：优化数据访问</h5><p>查询性能低下的最基本原因是访问的数据太多</p>
+<ul>
+<li>确认应用程序是否在检索大量超过需要的数据</li>
+<li>确认Mysql服务器层是否在分析大量超过需要的行</li>
+</ul>
+<ol>
+<li><p>是否向数据库请求了不需要的数据</p>
+<ul>
+<li>查询不需要的记录</li>
+<li>多表关联时返回全部列</li>
+<li>总是取出全部列</li>
+<li>重复查询相同的数据</li>
+</ul>
+</li>
+<li><p>Mysql是否在扫描额外的记录</p>
+<p>衡量查询开销的三个指标如下：</p>
+<ol>
+<li><p>响应时间</p>
+</li>
+<li><p>扫描的行数</p>
+</li>
+<li><p>返回的行数</p>
+</li>
+</ol>
+</li>
+</ol>
+<ul>
+<li><p>响应时间：等待时间和响应时间的总和</p>
+</li>
+<li><p>扫描的行数和返回的行数：理想情况下扫描的行数和返回的行数相同</p>
+</li>
+<li><p>扫描的行数和访问类型(type)</p>
+<p>访问类型：扫描表、扫描索引、范围访问和单值访问</p>
+<p>索引让Mysql以最高效、扫描行数最少的方式找到需要的记录</p>
+</li>
+</ul>
+<h5 id="重构查询方式"><a href="#重构查询方式" class="headerlink" title="重构查询方式"></a>重构查询方式</h5><ol>
+<li>一个复杂查询还是多个简单查询</li>
+<li>切分查询</li>
+<li>分解关联查询</li>
+</ol>
+<h5 id="查询执行的基础"><a href="#查询执行的基础" class="headerlink" title="查询执行的基础"></a>查询执行的基础</h5><p>Mysql发送一个请求的时候，Mysql到底做了些什么：</p>
+<ol>
+<li>客户端发送 一条查询给服务器</li>
+<li>服务器先检查查询缓存，如果命中了缓存，则立刻返回存储在缓存中的结果。佛欧泽进入下一阶段</li>
+<li>服务器进行SQL解析、预处理，再由优化器生成对应的执行计划</li>
+<li>Mysql根据优化器生产的执行计划、调用存储引擎的API来执行查询</li>
+<li>将结果返回给客户端</li>
+</ol>
+<ul>
+<li><p>Mysql客户端/服务器通信协议</p>
+</li>
+<li><p>查询状态</p>
+<ol>
+<li><p>Sleep</p>
+<p>线程正在等待客户端</p>
+</li>
+<li><p>Query</p>
+<p>线程正在执行查询或者正在将结果发送给客户端</p>
+</li>
+<li><p>Locked</p>
+<p>在Mysql服务器层，该线程正在等待表锁</p>
+</li>
+<li><p>Analyzing and statistics</p>
+<p>线程正在收集存储引擎的统计信息，并生成查询的执行计划</p>
+</li>
+<li><p>Copying to tem table</p>
+<p>线程正在执行查询，并且将其结果集收集都复制到一个临时表中</p>
+</li>
+<li><p>Storing result</p>
+<p>线程正在对结果集进行排序</p>
+</li>
+<li><p>Sending data</p>
+<p>线程可能在多个状态之间传递数据，或者在生成结果集，或者在向客户端返回数据</p>
+</li>
+</ol>
+</li>
+</ul>
+<h5 id="优化特定类型的查询"><a href="#优化特定类型的查询" class="headerlink" title="优化特定类型的查询"></a>优化特定类型的查询</h5><ol>
+<li><p>优化COUNT()查询</p>
+<ul>
+<li>COUNT()的作用：是它可以统计某个列值的数量，也可以统计行数，在统计值时要求列值是非空的</li>
+<li>关于MyISAM的神话： MyISAM的COUNT()函数总是非常快，这是个误解，只有在没有任何WHERE条件的COUNT(*)才非常快</li>
+<li>简单的优化</li>
+</ul>
+</li>
+<li><p>优化LIMIT分页</p>
+<p>为什么单纯的LIMIT性能不好，因为mysql会扫描全部数据，丢弃前面无用数据，然后只返回LIMIT的数据量</p>
+<ul>
+<li><p>把LIMIT更改为使用 BETWEEN … AND</p>
+</li>
+<li><p>记录上一次查询返回的id，下一次从该id开始查询</p>
+<p>ex：select * from rental where rental_id &lt; 16030 order by rental_id limit 201</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="EXPLAIN-字段说明"><a href="#EXPLAIN-字段说明" class="headerlink" title="EXPLAIN 字段说明"></a>EXPLAIN 字段说明</h4><ul>
+<li><p>type</p>
+<ol>
+<li><p>system：表中只有一行数据或者是空表，且只能用于myisam和memory表。如果是Innodb引擎表，type列在这个情况通常都是all或者index</p>
+</li>
+<li><p>const：使用唯一索引或者主键，返回记录一定是1行记录的等值where条件时，通常type是const。 </p>
+<p>ex：select * from student where student_id = 1;</p>
+</li>
+<li><p>eq_ref：出现在要连接过个表的查询计划中，驱动表只返回一行数据，且这行数据是第二个表的主键或者唯一索引，且必须为not null，唯一索引和主键是多列时，只有所有的列都用作比较时才会出现eq_ref </p>
+<p>ex：explain select * from book,student where student.id = book.id;</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0b5mr61nj20wj026mx8.jpg" alt=""></p>
+</li>
+<li><p>ref：不像eq_ref那样要求连接顺序，也没有主键和唯一索引的要求，只要使用相等条件检索时就可能出现，常见与辅助索引的等值查找。或者多列主键、唯一索引中，使用第一个列之外的列作为等值查找也会出现，总之，返回数据不唯一的等值查找就可能出现。 </p>
+<p>ex：select * from student where name=”梅勇杰” and sex=”男”</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0bhiq21cj20y503hglq.jpg" alt="">二种情况：过滤条件都有索引；多列主键、唯一索引，使用第一个列之外的列作为等值查找；</p>
+</li>
+<li><p>fulltext：全文索引检索，要注意，全文索引的优先级很高，若全文索引和普通索引同时存在时，mysql不管代价，优先选择使用全文索引 </p>
+</li>
+<li><p>index_merge：表示查询使用了两个以上的索引，最后取交集或者并集，常见and ，or的条件使用了不同的索引，官方排序这个在ref_or_null之后，但是实际上由于要读取所有索引，性能可能大部分时间都不如range </p>
+<p>ex：select * from student where name=”梅勇杰” and sex=”男”</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0cdvfh6oj210102ft8w.jpg" alt=""></p>
+</li>
+<li><p>unique_subquery：用于where中的in形式子查询，子查询返回不重复值唯一值 </p>
+</li>
+<li><p>index_subquery：用于in形式子查询使用到了辅助索引或者in常数列表，子查询可能返回重复值，可以使用索引将子查询去重</p>
+</li>
+<li><p>range：索引范围扫描，常见于使用 =, &lt;&gt;, &gt;, &gt;=, &lt;, &lt;=, IS NULL, &lt;=&gt;, BETWEEN, IN()或者like等运算符的查询中</p>
+</li>
+<li><p>index：索引全表扫描，把索引从头到尾扫一遍，常见于使用索引列就可以处理不需要读取数据文件的查询、可以使用索引排序或者分组的查询</p>
+</li>
+<li><p>all：这个就是全表扫描数据文件，然后再在server层进行过滤返回符合要求的记录</p>
+</li>
+</ol>
+</li>
+<li><p>partitions</p>
+<p>该列显示的为分区表命中的分区情况。 </p>
+</li>
+<li><p>possible_keys</p>
+<p>查询可能使用到的索引都会在这里列出来 </p>
+</li>
+<li><p>key</p>
+<p>查询真正使用到的索引，select_type为index_merge时，这里可能出现两个以上的索引，其他的select_type这里只会出现一个 </p>
+</li>
+<li><p>key_len</p>
+<p>用于处理查询的索引长度，如果是单列索引，那就整个索引长度算进去，如果是多列索引，那么查询不一定都能使用到所有的列，具体使用到了多少个列的索引，这里就会计算进去，没有使用到的列，这里不会计算进去。留意下这个列的值，算一下你的多列索引总长度就知道有没有使用到所有的列了。要注意，mysql的ICP特性使用到的索引不会计入其中。另外，key_len只计算where条件用到的索引长度，而排序和分组就算用到了索引，也不会计算到key_len中。</p>
+</li>
+<li><p>ref</p>
+<p>如果是使用的常数等值查询，这里会显示const，如果是连接查询，被驱动表的执行计划这里会显示驱动表的关联字段，如果是条件使用了表达式或者函数，或者条件列发生了内部隐式转换，这里可能显示为func </p>
+</li>
+<li><p>rows</p>
+<p>这里是执行计划中估算的扫描行数，不是精确值 </p>
+</li>
+<li><p>extra</p>
+<p>对于extra列，官网上有这样一段话：</p>
+<blockquote>
+<p>If you want to make your queries as fast as possible, look out for Extra column values of Using filesort and Using temporary, or, in JSON-formatted EXPLAINoutput, for using_filesort and using_temporary_table properties equal to true.</p>
+</blockquote>
+<p>大概的意思就是说，如果你想要优化你的查询，那就要注意extra辅助信息中的using filesort和using temporary，这两项非常消耗性能，需要注意。</p>
+<p>这个列可以显示的信息非常多，有几十种，常用的有：<br> A：distinct：在select部分使用了distinc关键字<br> B：no tables used：不带from字句的查询或者From dual查询<br> C：使用not in()形式子查询或not exists运算符的连接查询，这种叫做反连接。即，一般连接查询是先查询内表，再查询外表，反连接就是先查询外表，再查询内表。<br> D：using filesort：排序时无法使用到索引时，就会出现这个。常见于order by和group by语句中<br> E：using index：查询时不需要回表查询，直接通过索引就可以获取查询的数据。<br> F：using join buffer（block nested loop），using join buffer（batched key accss）：5.6.x之后的版本优化关联查询的BNL，BKA特性。主要是减少内表的循环数量以及比较顺序地扫描查询。<br> G：using sort_union，using_union，using intersect，using sort_intersection：<br> using intersect：表示使用and的各个索引的条件时，该信息表示是从处理结果获取交集<br> using union：表示使用or连接各个使用索引的条件时，该信息表示从处理结果获取并集<br> using sort_union和using sort_intersection：与前面两个对应的类似，只是他们是出现在用and和or查询信息量大时，先查询主键，然后进行排序合并后，才能读取记录并返回。<br> H：using temporary：表示使用了临时表存储中间结果。临时表可以是内存临时表和磁盘临时表，执行计划中看不出来，需要查看status变量，used_tmp_table，used_tmp_disk_table才能看出来。<br> I：using where：表示存储引擎返回的记录并不是所有的都满足查询条件，需要在server层进行过滤。查询条件中分为限制条件和检查条件，5.6之前，存储引擎只能根据限制条件扫描数据并返回，然后server层根据检查条件进行过滤再返回真正符合查询的数据。5.6.x之后支持ICP特性，可以把检查条件也下推到存储引擎层，不符合检查条件和限制条件的数据，直接不读取，这样就大大减少了存储引擎扫描的记录数量。extra列显示using index condition<br> J：firstmatch(tb_name)：5.6.x开始引入的优化子查询的新特性之一，常见于where字句含有in()类型的子查询。如果内表的数据量比较大，就可能出现这个<br> K：loosescan(m..n)：5.6.x之后引入的优化子查询的新特性之一，在in()类型的子查询中，子查询返回的可能有重复记录时，就可能出现这个</p>
+<p>除了这些之外，还有很多查询数据字典库，执行计划过程中就发现不可能存在结果的一些提示信息</p>
+</li>
+<li><p>filtered</p>
+<p>使用explain extended时会出现这个列，5.7之后的版本默认就有这个字段，不需要使用explain extended了。这个字段表示存储引擎返回的数据在server层过滤后，剩下多少满足查询的记录数量的比例，注意是百分比，不是具体记录数。 </p>
+</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>explain字段说明：<br><a href="https://www.jianshu.com/p/73f2c8448722" target="_blank" rel="noopener">https://www.jianshu.com/p/73f2c8448722</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/23/java/源码解析/Spring 源码详解/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/11/javaweb/自动化生成Api文档/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhoudsopgave
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overzicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">categorieën</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">labels</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Schema与数据类型优化"><span class="nav-number">1.</span> <span class="nav-text">Schema与数据类型优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建高性能的索引"><span class="nav-number">2.</span> <span class="nav-text">创建高性能的索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#B-Tree索引"><span class="nav-number">2.1.</span> <span class="nav-text">B-Tree索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#索引的优点"><span class="nav-number">2.2.</span> <span class="nav-text">索引的优点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Innodb-页结构"><span class="nav-number">3.</span> <span class="nav-text">Innodb 页结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高性能的索引策略"><span class="nav-number">4.</span> <span class="nav-text">高性能的索引策略</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#独立的列"><span class="nav-number">4.1.</span> <span class="nav-text">独立的列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#前缀索引和索引选择性"><span class="nav-number">4.2.</span> <span class="nav-text">前缀索引和索引选择性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多列索引"><span class="nav-number">4.3.</span> <span class="nav-text">多列索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择合适的索引列顺序"><span class="nav-number">4.4.</span> <span class="nav-text">选择合适的索引列顺序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚簇索引"><span class="nav-number">4.5.</span> <span class="nav-text">聚簇索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Innodb和MyISAM数据分布差异"><span class="nav-number">4.6.</span> <span class="nav-text">Innodb和MyISAM数据分布差异</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#覆盖索引"><span class="nav-number">4.7.</span> <span class="nav-text">覆盖索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#全表扫描和全索引扫描"><span class="nav-number">4.8.</span> <span class="nav-text">全表扫描和全索引扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用索引扫描来做排序"><span class="nav-number">4.9.</span> <span class="nav-text">使用索引扫描来做排序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#冗余和重复索引"><span class="nav-number">4.10.</span> <span class="nav-text">冗余和重复索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#未使用的索引"><span class="nav-number">4.11.</span> <span class="nav-text">未使用的索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#索引和锁"><span class="nav-number">4.12.</span> <span class="nav-text">索引和锁</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询性能优化"><span class="nav-number">5.</span> <span class="nav-text">查询性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么查询速度慢"><span class="nav-number">5.1.</span> <span class="nav-text">为什么查询速度慢</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#慢查询基础：优化数据访问"><span class="nav-number">5.2.</span> <span class="nav-text">慢查询基础：优化数据访问</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重构查询方式"><span class="nav-number">5.3.</span> <span class="nav-text">重构查询方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询执行的基础"><span class="nav-number">5.4.</span> <span class="nav-text">查询执行的基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#优化特定类型的查询"><span class="nav-number">5.5.</span> <span class="nav-text">优化特定类型的查询</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPLAIN-字段说明"><span class="nav-number">6.</span> <span class="nav-text">EXPLAIN 字段说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Mede mogelijk gemaakt door <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Thema – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
