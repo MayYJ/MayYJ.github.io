@@ -108,22 +108,22 @@
 
 
 
-  <meta name="description" content="概述虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎 :disappointed:所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :happy: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应">
+  <meta name="description" content="概述​虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎   :disappointed:  所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :laughing: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务">
 <meta name="keywords" content="tomcat">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于Tomcat">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/29/javaweb/关于Tomcat/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="概述虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎 :disappointed:所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :happy: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应">
+<meta property="og:description" content="概述​虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎   :disappointed:  所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :laughing: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://img-blog.csdn.net/20180109094904328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="https://img-blog.csdn.net/20180109095032618?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="og:image" content="https://img-blog.csdn.net/20180109110049444?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="https://img-blog.csdn.net/20180109095336437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:updated_time" content="2018-10-29T03:41:06.870Z">
+<meta property="og:updated_time" content="2018-10-29T08:10:59.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Tomcat">
-<meta name="twitter:description" content="概述虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎 :disappointed:所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :happy: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应">
+<meta name="twitter:description" content="概述​虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎   :disappointed:  所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :laughing: TomcatTomcat 服务器是一个免费的开放源代码的Web 应用服务">
 <meta name="twitter:image" content="https://img-blog.csdn.net/20180109094904328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 
 
@@ -358,7 +358,7 @@
                 
               
 
-              <time title="创建时间：2018-10-29 10:09:06 / 修改时间：11:41:06" itemprop="dateCreated datePublished" datetime="2018-10-29T10:09:06+08:00">2018-10-29</time>
+              <time title="创建时间：2018-10-29 10:09:06 / 修改时间：16:10:59" itemprop="dateCreated datePublished" datetime="2018-10-29T10:09:06+08:00">2018-10-29</time>
             
 
             
@@ -414,7 +414,7 @@
       
 
       
-        <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎 :disappointed:所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :happy:</p>
+        <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>​虽然以前通过SpringBoot的源码看了一些其内置的Tomcat源码，但是因为看得比较马虎   :disappointed:  所以只知道大概，今天要根据自己看得几篇博客和Tomcat源码来总结下在我看来的Tomcat，然后后面准备自己模仿Tomcat实现一个自己的HTTP服务器，想想还是很激动 :laughing:</p>
 <h4 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h4><p>Tomcat 服务器是一个免费的开放源代码的Web 应用服务器，属于轻量级应用<a href="https://baike.baidu.com/item/%E6%9C%8D%E5%8A%A1%E5%99%A8" target="_blank" rel="noopener">服务器</a>，在中小型系统和并发访问用户不是很多的场合下被普遍使用，是开发和调试JSP 程序的首选。 </p>
 <h4 id="Tomcat顶层架构"><a href="#Tomcat顶层架构" class="headerlink" title="Tomcat顶层架构"></a>Tomcat顶层架构</h4><p><img src="https://img-blog.csdn.net/20180109094904328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
 <p><img src="https://img-blog.csdn.net/20180109095032618?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMzgyNDU1Mzc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
