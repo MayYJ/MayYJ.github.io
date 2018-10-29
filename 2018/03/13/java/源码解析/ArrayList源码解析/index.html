@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,7 +84,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '6.4.2',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="####Arrays.copyof 12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength]">
-<meta name="keywords" content="ArrayList">
+  <meta name="description" content="Arrays.copyof12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength] : (O">
+<meta name="keywords" content="源码解析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ArrayList源码解析">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/03/13/java/源码解析/ArrayList源码解析/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="####Arrays.copyof 12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength]">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-26T09:27:55.498Z">
+<meta property="og:description" content="Arrays.copyof12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength] : (O">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-25T13:34:14.003Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ArrayList源码解析">
-<meta name="twitter:description" content="####Arrays.copyof 12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength]">
+<meta name="twitter:description" content="Arrays.copyof12345public static &amp;lt;T, U&amp;gt; T[] copyOf(U[] original, int newLength, Class&amp;lt;? extends T[]&amp;gt; newType) &amp;#123;        T[] copy = newType == Object[].class ? new Object[newLength] : (O">
 
 
 
@@ -178,7 +178,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -208,7 +208,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -228,7 +228,31 @@
           
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
   </li>
         
         
@@ -236,16 +260,13 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archieven</a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
 
       
       
     </ul>
   
-
-  
-    
 
   
 
@@ -267,6 +288,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
           
           <div id="content" class="content">
             
@@ -292,7 +316,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
       <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -322,14 +346,14 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Geplaatst op</span>
+                <span class="post-meta-item-text">发表于</span>
               
 
               
                 
               
 
-              <time title="Post aangemaakt: 2018-03-13 22:21:23" itemprop="dateCreated datePublished" datetime="2018-03-13T22:21:23+08:00">2018-03-13</time>
+              <time title="创建时间：2018-03-13 22:21:23" itemprop="dateCreated datePublished" datetime="2018-03-13T22:21:23+08:00">2018-03-13</time>
             
 
             
@@ -344,9 +368,9 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">Edited on</span>
+                  <span class="post-meta-item-text">更新于</span>
                 
-                <time title="Post aangepast: 2018-05-26 17:27:55" itemprop="dateModified" datetime="2018-05-26T17:27:55+08:00">2018-05-26</time>
+                <time title="修改时间：2018-10-25 21:34:14" itemprop="dateModified" datetime="2018-10-25T21:34:14+08:00">2018-10-25</time>
               
             
           </span>
@@ -360,7 +384,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
@@ -397,16 +421,12 @@
       
 
       
-        <p>####Arrays.copyof</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T, U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) &#123;</span><br><span class="line">        T[] copy = newType == Object[].class ? new Object[newLength] : (Object[])Array.newInstance(newType.getComponentType(), newLength);</span><br><span class="line">        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));</span><br><span class="line">        return copy;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+        <h4 id="Arrays-copyof"><a href="#Arrays-copyof" class="headerlink" title="Arrays.copyof"></a>Arrays.copyof</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T, U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) &#123;</span><br><span class="line">        T[] copy = newType == Object[].class ? new Object[newLength] : (Object[])Array.newInstance(newType.getComponentType(), newLength);</span><br><span class="line">        System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));</span><br><span class="line">        return copy;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>函数解释：返回一个元素original数组一样的但是引用不一样的数组。</p>
-<p>####System.arraycopy</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src,  <span class="keyword">int</span>  srcPos,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    Object dest, <span class="keyword">int</span> destPos,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    <span class="keyword">int</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="System-arraycopy"><a href="#System-arraycopy" class="headerlink" title="System.arraycopy"></a>System.arraycopy</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">arraycopy</span><span class="params">(Object src,  <span class="keyword">int</span>  srcPos,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    Object dest, <span class="keyword">int</span> destPos,</span></span></span><br><span class="line"><span class="function"><span class="params">                                    <span class="keyword">int</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>函数解释：从指定的源数组复制数组，从指定位置，到目标数组的制定位置。源数组为src，目标数组为dest，复制的组件数量为length，从源数组复制的位置从下标srcPos到srcPos+length-1(源数组要复制的结尾的下标)，被复制到dest数组从下标destPos到destPos+length-1(目标数组要复制的结尾的下标)的位置。</p>
-<p>####变量</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>; <span class="comment">//默认的数组容量</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] EMPTY_ELEMENTDATA = <span class="keyword">new</span> Object[<span class="number">0</span>]; <span class="comment">//临时实例化</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = <span class="keyword">new</span> Object[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">transient</span> Object[] elementData; <span class="comment">//缓存</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;<span class="comment">//数组大小</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ARRAY_SIZE = <span class="number">2147483639</span>; <span class="comment">//MAX_ARRAY_SIZE=Integer.MAX_VALNE-8;是因为虚拟机在数组数组类型数据中保留head word字段，其会占用空间。</span></span><br></pre></td></tr></table></figure>
-<p>####构造器</p>
-<ol>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>; <span class="comment">//默认的数组容量</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] EMPTY_ELEMENTDATA = <span class="keyword">new</span> Object[<span class="number">0</span>]; <span class="comment">//临时实例化</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = <span class="keyword">new</span> Object[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">transient</span> Object[] elementData; <span class="comment">//缓存</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;<span class="comment">//数组大小</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ARRAY_SIZE = <span class="number">2147483639</span>; <span class="comment">//MAX_ARRAY_SIZE=Integer.MAX_VALNE-8;是因为虚拟机在数组数组类型数据中保留head word字段，其会占用空间。</span></span><br></pre></td></tr></table></figure>
+<h4 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h4><ol>
 <li><p>无参构造函数</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList() &#123;</span><br><span class="line">   this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>构造时是将空数组赋值给elementData ，但是在随后的第一个add元素的时候，会先新创建一个容量为10的初始数组。</p>
@@ -418,8 +438,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    this.elementData = c.toArray();</span><br><span class="line">    if ((this.size = this.elementData.length) != 0) &#123;</span><br><span class="line">        if (this.elementData.getClass() != Object[].class) &#123;</span><br><span class="line">            this.elementData = Arrays.copyOf(this.elementData, this.size, Object[].class);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        this.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>####Method</p>
-<h5 id="add"><a href="#add" class="headerlink" title="add"></a>add</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void add(E e, Object[] elementData, int s) &#123;</span><br><span class="line">    if (s == elementData.length) &#123;</span><br><span class="line">        elementData = this.grow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    elementData[s] = e;</span><br><span class="line">    this.size = s + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h4><h5 id="add"><a href="#add" class="headerlink" title="add"></a>add</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private void add(E e, Object[] elementData, int s) &#123;</span><br><span class="line">    if (s == elementData.length) &#123;</span><br><span class="line">        elementData = this.grow();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    elementData[s] = e;</span><br><span class="line">    this.size = s + 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>每一次添加元素的时候都会检查缓存数组的长度是否不够，不够就会加1</p>
 <h5 id="grow"><a href="#grow" class="headerlink" title="grow"></a>grow</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private Object[] grow() &#123;</span><br><span class="line">    return this.grow(this.size + 1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  private Object[] grow(int minCapacity) &#123;</span><br><span class="line">    return this.elementData =   Arrays.copyOf(this.elementData,this.newCapacity(minCapacity));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="newCapacity"><a href="#newCapacity" class="headerlink" title="newCapacity"></a>newCapacity</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">newCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = <span class="keyword">this</span>.elementData.length;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);<span class="comment">// </span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">            <span class="keyword">return</span> Math.max(<span class="number">10</span>, minCapacity);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (minCapacity &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> minCapacity;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> newCapacity - <span class="number">2147483639</span> &lt;= <span class="number">0</span> ? newCapacity : hugeCapacity(minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -476,7 +495,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ArrayList/" rel="tag"># ArrayList</a>
+            <a href="/tags/源码解析/" rel="tag"># 源码解析</a>
           
         </div>
       
@@ -548,10 +567,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Inhoudsopgave
+            文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overzicht
+            站点概览
           </li>
         </ul>
       
@@ -559,6 +578,8 @@
       <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
             
               <p class="site-author-name" itemprop="name">May</p>
               <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
@@ -571,8 +592,8 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
-                    <span class="site-state-item-name">posts</span>
+                    <span class="site-state-item-count">41</span>
+                    <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
               
@@ -597,7 +618,7 @@
                       
                     
                     <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categorieën</span>
+                    <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
               
@@ -653,8 +674,12 @@
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
-                    <span class="site-state-item-name">labels</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
               
@@ -689,7 +714,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#add"><span class="nav-number">1.</span> <span class="nav-text">add</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#grow"><span class="nav-number">2.</span> <span class="nav-text">grow</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#newCapacity"><span class="nav-number">3.</span> <span class="nav-text">newCapacity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#remove"><span class="nav-number">4.</span> <span class="nav-text">remove</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addAll"><span class="nav-number">5.</span> <span class="nav-text">addAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#removeRange"><span class="nav-number">6.</span> <span class="nav-text">removeRange</span></a></li></ol><li class="nav-item nav-level-4"><a class="nav-link" href="#一些内部类"><span class="nav-number"></span> <span class="nav-text">一些内部类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ArrayListSpliterator"><span class="nav-number">1.</span> <span class="nav-text">ArrayListSpliterator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SubList"><span class="nav-number">2.</span> <span class="nav-text">SubList</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Itr"><span class="nav-number">3.</span> <span class="nav-text">Itr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ListItr"><span class="nav-number">4.</span> <span class="nav-text">ListItr</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三种元素访问"><span class="nav-number"></span> <span class="nav-text">三种元素访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一些需要注意的点"><span class="nav-number"></span> <span class="nav-text">一些需要注意的点</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Arrays-copyof"><span class="nav-number">1.</span> <span class="nav-text">Arrays.copyof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#System-arraycopy"><span class="nav-number">2.</span> <span class="nav-text">System.arraycopy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量"><span class="nav-number">3.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造器"><span class="nav-number">4.</span> <span class="nav-text">构造器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method"><span class="nav-number">5.</span> <span class="nav-text">Method</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#add"><span class="nav-number">5.1.</span> <span class="nav-text">add</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#grow"><span class="nav-number">5.2.</span> <span class="nav-text">grow</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#newCapacity"><span class="nav-number">5.3.</span> <span class="nav-text">newCapacity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#remove"><span class="nav-number">5.4.</span> <span class="nav-text">remove</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#addAll"><span class="nav-number">5.5.</span> <span class="nav-text">addAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#removeRange"><span class="nav-number">5.6.</span> <span class="nav-text">removeRange</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一些内部类"><span class="nav-number">6.</span> <span class="nav-text">一些内部类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ArrayListSpliterator"><span class="nav-number">6.1.</span> <span class="nav-text">ArrayListSpliterator</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SubList"><span class="nav-number">6.2.</span> <span class="nav-text">SubList</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Itr"><span class="nav-number">6.3.</span> <span class="nav-text">Itr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ListItr"><span class="nav-number">6.4.</span> <span class="nav-text">ListItr</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三种元素访问"><span class="nav-number">7.</span> <span class="nav-text">三种元素访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一些需要注意的点"><span class="nav-number">8.</span> <span class="nav-text">一些需要注意的点</span></a></li></ol></div>
             
 
           </div>
@@ -709,9 +734,9 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">May</span>
 
@@ -723,15 +748,10 @@
 
 
 
-  <div class="powered-by">Mede mogelijk gemaakt door <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
-
-
-  <div class="theme-info">Thema – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.2</div>
 
 
 
@@ -786,6 +806,9 @@
 
 
 
+  
+  
+
 
 
 
@@ -811,6 +834,16 @@
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
 
   
 
@@ -823,6 +856,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>

@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -84,7 +84,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '6.4.2',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     00000000 00000000 00001111--------------------------------      00000000 00">
+  <meta name="description" content="1234title: HashMap源码date: 2018-10-26 22:48:28tags: 源码解析categories: java  为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     000">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/06/15/java/源码解析/HashMap源码/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     00000000 00000000 00001111--------------------------------      00000000 00">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="1234title: HashMap源码date: 2018-10-26 22:48:28tags: 源码解析categories: java  为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     000">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB504a0b4a50972d79d058922aa06c8dc4?method=download&shareKey=691c015b5d66fdcc57f4ed1751a2131b">
-<meta property="og:updated_time" content="2018-09-19T10:35:17.696Z">
+<meta property="og:updated_time" content="2018-10-25T13:27:04.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     00000000 00000000 00001111--------------------------------      00000000 00">
+<meta name="twitter:description" content="1234title: HashMap源码date: 2018-10-26 22:48:28tags: 源码解析categories: java  为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标 1234      10100101 11000100 00100101 	&amp;amp;     000">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB504a0b4a50972d79d058922aa06c8dc4?method=download&shareKey=691c015b5d66fdcc57f4ed1751a2131b">
 
 
@@ -179,7 +179,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
   
@@ -209,7 +209,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
+    <button aria-label="切换导航栏">
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
       <span class="btn-bar"></span>
@@ -229,7 +229,31 @@
           
           <li class="menu-item menu-item-home">
     <a href="/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
   </li>
         
         
@@ -237,16 +261,13 @@
           
           <li class="menu-item menu-item-archives">
     <a href="/archives/" rel="section">
-      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archieven</a>
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
   </li>
 
       
       
     </ul>
   
-
-  
-    
 
   
 
@@ -268,6 +289,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+            
+
           
           <div id="content" class="content">
             
@@ -293,7 +317,7 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
       <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
@@ -323,14 +347,14 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Geplaatst op</span>
+                <span class="post-meta-item-text">发表于</span>
               
 
               
                 
               
 
-              <time title="Post aangemaakt: 2018-06-15 15:35:53" itemprop="dateCreated datePublished" datetime="2018-06-15T15:35:53+08:00">2018-06-15</time>
+              <time title="创建时间：2018-06-15 15:35:53" itemprop="dateCreated datePublished" datetime="2018-06-15T15:35:53+08:00">2018-06-15</time>
             
 
             
@@ -345,9 +369,9 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 
-                  <span class="post-meta-item-text">Edited on</span>
+                  <span class="post-meta-item-text">更新于</span>
                 
-                <time title="Post aangepast: 2018-09-19 18:35:17" itemprop="dateModified" datetime="2018-09-19T18:35:17+08:00">2018-09-19</time>
+                <time title="修改时间：2018-10-25 21:27:04" itemprop="dateModified" datetime="2018-10-25T21:27:04+08:00">2018-10-25</time>
               
             
           </span>
@@ -380,7 +404,8 @@
       
 
       
-        <ol>
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: HashMap源码</span><br><span class="line">date: 2018-10-26 22:48:28</span><br><span class="line">tags: 源码解析</span><br><span class="line">categories: java</span><br></pre></td></tr></table></figure>
+<ol>
 <li><p>为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">      10100101 11000100 00100101 	</span><br><span class="line">&amp;     00000000 00000000 00001111</span><br><span class="line">--------------------------------</span><br><span class="line">      00000000 00000000 00000101 //高位全部归零，只保留末四位</span><br></pre></td></tr></table></figure>
 </li>
@@ -438,7 +463,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/14/reading/HashMap源码/" rel="next" title="">
+              <a href="/2018/06/13/reading/数据结构/" rel="next" title="">
                 <i class="fa fa-chevron-left"></i> 
               </a>
             
@@ -500,6 +525,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
               <p class="site-author-name" itemprop="name">May</p>
               <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
           </div>
@@ -511,8 +538,8 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
-                    <span class="site-state-item-name">posts</span>
+                    <span class="site-state-item-count">41</span>
+                    <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
               
@@ -537,7 +564,7 @@
                       
                     
                     <span class="site-state-item-count">6</span>
-                    <span class="site-state-item-name">categorieën</span>
+                    <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
               
@@ -593,8 +620,12 @@
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
-                    <span class="site-state-item-name">labels</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
               
@@ -633,9 +664,9 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">May</span>
 
@@ -647,15 +678,10 @@
 
 
 
-  <div class="powered-by">Mede mogelijk gemaakt door <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.8.0</div>
 
 
 
-  <span class="post-meta-divider">|</span>
 
-
-
-  <div class="theme-info">Thema – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Muse</a> v6.4.2</div>
 
 
 
@@ -710,6 +736,9 @@
 
 
 
+  
+  
+
 
 
 
@@ -735,6 +764,16 @@
     <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
   
 
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
 
   
 
@@ -747,6 +786,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
