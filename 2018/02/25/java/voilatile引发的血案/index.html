@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="java内存模型每条线程都拥有自己的内存空间，自己内存空间的变量其它线程无法访问；共享的变量是存放在主内存 中的，如果线程要访问，那么就会从主内存中拷贝过来，然后在自己的内存空间中使用。 这有可能引发脏读问题，也就是说当一个线程获取到一个资源后对它进行了修改，但是并没有立即提交到主存，这就造成了其它线程去读取这个资源的时候获取到的资源不是最新的； 问题：初始时，两个线程访问同一个变量i=10，两个">
+  <meta name="description" content="java&amp;#x5185;&amp;#x5B58;&amp;#x6A21;&amp;#x578B;&amp;#x6BCF;&amp;#x6761;&amp;#x7EBF;&amp;#x7A0B;&amp;#x90FD;&amp;#x62E5;&amp;#x6709;&amp;#x81EA;&amp;#x5DF1;&amp;#x7684;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x95F4;&amp;#xFF0C;&amp;#x81EA;&amp;#x5DF1;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x9">
 <meta name="keywords" content="volatile">
 <meta property="og:type" content="article">
 <meta property="og:title" content="voilatile引发的血案">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/25/java/voilatile引发的血案/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="java内存模型每条线程都拥有自己的内存空间，自己内存空间的变量其它线程无法访问；共享的变量是存放在主内存 中的，如果线程要访问，那么就会从主内存中拷贝过来，然后在自己的内存空间中使用。 这有可能引发脏读问题，也就是说当一个线程获取到一个资源后对它进行了修改，但是并没有立即提交到主存，这就造成了其它线程去读取这个资源的时候获取到的资源不是最新的； 问题：初始时，两个线程访问同一个变量i=10，两个">
+<meta property="og:description" content="java&amp;#x5185;&amp;#x5B58;&amp;#x6A21;&amp;#x578B;&amp;#x6BCF;&amp;#x6761;&amp;#x7EBF;&amp;#x7A0B;&amp;#x90FD;&amp;#x62E5;&amp;#x6709;&amp;#x81EA;&amp;#x5DF1;&amp;#x7684;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x95F4;&amp;#xFF0C;&amp;#x81EA;&amp;#x5DF1;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x9">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-05-26T09:27:55.481Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="voilatile引发的血案">
-<meta name="twitter:description" content="java内存模型每条线程都拥有自己的内存空间，自己内存空间的变量其它线程无法访问；共享的变量是存放在主内存 中的，如果线程要访问，那么就会从主内存中拷贝过来，然后在自己的内存空间中使用。 这有可能引发脏读问题，也就是说当一个线程获取到一个资源后对它进行了修改，但是并没有立即提交到主存，这就造成了其它线程去读取这个资源的时候获取到的资源不是最新的； 问题：初始时，两个线程访问同一个变量i=10，两个">
+<meta name="twitter:description" content="java&amp;#x5185;&amp;#x5B58;&amp;#x6A21;&amp;#x578B;&amp;#x6BCF;&amp;#x6761;&amp;#x7EBF;&amp;#x7A0B;&amp;#x90FD;&amp;#x62E5;&amp;#x6709;&amp;#x81EA;&amp;#x5DF1;&amp;#x7684;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x95F4;&amp;#xFF0C;&amp;#x81EA;&amp;#x5DF1;&amp;#x5185;&amp;#x5B58;&amp;#x7A7A;&amp;#x9">
 
 
 
@@ -421,42 +421,60 @@
       
 
       
-        <h5 id="java内存模型"><a href="#java内存模型" class="headerlink" title="java内存模型"></a>java内存模型</h5><p>每条线程都拥有自己的内存空间，自己内存空间的变量其它线程无法访问；共享的变量是存放在主内存 中的，如果线程要访问，那么就会从主内存中拷贝过来，然后在自己的内存空间中使用。</p>
-<p>这有可能引发脏读问题，也就是说当一个线程获取到一个资源后对它进行了修改，但是并没有立即提交到主存，这就造成了其它线程去读取这个资源的时候获取到的资源不是最新的；</p>
-<p>问题：初始时，两个线程访问同一个变量i=10，两个线程也都对他们进行了+1操作，这是因为两个线程都取得的i为10所以加1后都为11，所以最终主存中i的值为11；而我们期望的是12；<br>解决方法：使用java.util.concurrent.atomic包下提供了一些原子操作类对变量进行操作，这样这个变量对的取值和赋值为一个原子性的操作不会被打断，那么不管另外一个线程什么时候读取i变量都能够保证为一个最新的值，即能保证i最终为12</p>
-<h5 id="并发编程的三大概念"><a href="#并发编程的三大概念" class="headerlink" title="并发编程的三大概念"></a>并发编程的三大概念</h5><ul>
-<li><p>原子性</p>
+        <h5 id="java&#x5185;&#x5B58;&#x6A21;&#x578B;"><a href="#java&#x5185;&#x5B58;&#x6A21;&#x578B;" class="headerlink" title="java&#x5185;&#x5B58;&#x6A21;&#x578B;"></a>java&#x5185;&#x5B58;&#x6A21;&#x578B;</h5><p>&#x6BCF;&#x6761;&#x7EBF;&#x7A0B;&#x90FD;&#x62E5;&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x81EA;&#x5DF1;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x7684;&#x53D8;&#x91CF;&#x5176;&#x5B83;&#x7EBF;&#x7A0B;&#x65E0;&#x6CD5;&#x8BBF;&#x95EE;&#xFF1B;&#x5171;&#x4EAB;&#x7684;&#x53D8;&#x91CF;&#x662F;&#x5B58;&#x653E;&#x5728;&#x4E3B;&#x5185;&#x5B58; &#x4E2D;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x7EBF;&#x7A0B;&#x8981;&#x8BBF;&#x95EE;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x4ECE;&#x4E3B;&#x5185;&#x5B58;&#x4E2D;&#x62F7;&#x8D1D;&#x8FC7;&#x6765;&#xFF0C;&#x7136;&#x540E;&#x5728;&#x81EA;&#x5DF1;&#x7684;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x4E2D;&#x4F7F;&#x7528;&#x3002;</p>
+<p>&#x8FD9;&#x6709;&#x53EF;&#x80FD;&#x5F15;&#x53D1;&#x810F;&#x8BFB;&#x95EE;&#x9898;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x5F53;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x83B7;&#x53D6;&#x5230;&#x4E00;&#x4E2A;&#x8D44;&#x6E90;&#x540E;&#x5BF9;&#x5B83;&#x8FDB;&#x884C;&#x4E86;&#x4FEE;&#x6539;&#xFF0C;&#x4F46;&#x662F;&#x5E76;&#x6CA1;&#x6709;&#x7ACB;&#x5373;&#x63D0;&#x4EA4;&#x5230;&#x4E3B;&#x5B58;&#xFF0C;&#x8FD9;&#x5C31;&#x9020;&#x6210;&#x4E86;&#x5176;&#x5B83;&#x7EBF;&#x7A0B;&#x53BB;&#x8BFB;&#x53D6;&#x8FD9;&#x4E2A;&#x8D44;&#x6E90;&#x7684;&#x65F6;&#x5019;&#x83B7;&#x53D6;&#x5230;&#x7684;&#x8D44;&#x6E90;&#x4E0D;&#x662F;&#x6700;&#x65B0;&#x7684;&#xFF1B;</p>
+<p>&#x95EE;&#x9898;&#xFF1A;&#x521D;&#x59CB;&#x65F6;&#xFF0C;&#x4E24;&#x4E2A;&#x7EBF;&#x7A0B;&#x8BBF;&#x95EE;&#x540C;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;i=10&#xFF0C;&#x4E24;&#x4E2A;&#x7EBF;&#x7A0B;&#x4E5F;&#x90FD;&#x5BF9;&#x4ED6;&#x4EEC;&#x8FDB;&#x884C;&#x4E86;+1&#x64CD;&#x4F5C;&#xFF0C;&#x8FD9;&#x662F;&#x56E0;&#x4E3A;&#x4E24;&#x4E2A;&#x7EBF;&#x7A0B;&#x90FD;&#x53D6;&#x5F97;&#x7684;i&#x4E3A;10&#x6240;&#x4EE5;&#x52A0;1&#x540E;&#x90FD;&#x4E3A;11&#xFF0C;&#x6240;&#x4EE5;&#x6700;&#x7EC8;&#x4E3B;&#x5B58;&#x4E2D;i&#x7684;&#x503C;&#x4E3A;11&#xFF1B;&#x800C;&#x6211;&#x4EEC;&#x671F;&#x671B;&#x7684;&#x662F;12&#xFF1B;<br>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;&#x4F7F;&#x7528;java.util.concurrent.atomic&#x5305;&#x4E0B;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E9B;&#x539F;&#x5B50;&#x64CD;&#x4F5C;&#x7C7B;&#x5BF9;&#x53D8;&#x91CF;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#xFF0C;&#x8FD9;&#x6837;&#x8FD9;&#x4E2A;&#x53D8;&#x91CF;&#x5BF9;&#x7684;&#x53D6;&#x503C;&#x548C;&#x8D4B;&#x503C;&#x4E3A;&#x4E00;&#x4E2A;&#x539F;&#x5B50;&#x6027;&#x7684;&#x64CD;&#x4F5C;&#x4E0D;&#x4F1A;&#x88AB;&#x6253;&#x65AD;&#xFF0C;&#x90A3;&#x4E48;&#x4E0D;&#x7BA1;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x8BFB;&#x53D6;i&#x53D8;&#x91CF;&#x90FD;&#x80FD;&#x591F;&#x4FDD;&#x8BC1;&#x4E3A;&#x4E00;&#x4E2A;&#x6700;&#x65B0;&#x7684;&#x503C;&#xFF0C;&#x5373;&#x80FD;&#x4FDD;&#x8BC1;i&#x6700;&#x7EC8;&#x4E3A;12</p>
+<h5 id="&#x5E76;&#x53D1;&#x7F16;&#x7A0B;&#x7684;&#x4E09;&#x5927;&#x6982;&#x5FF5;"><a href="#&#x5E76;&#x53D1;&#x7F16;&#x7A0B;&#x7684;&#x4E09;&#x5927;&#x6982;&#x5FF5;" class="headerlink" title="&#x5E76;&#x53D1;&#x7F16;&#x7A0B;&#x7684;&#x4E09;&#x5927;&#x6982;&#x5FF5;"></a>&#x5E76;&#x53D1;&#x7F16;&#x7A0B;&#x7684;&#x4E09;&#x5927;&#x6982;&#x5FF5;</h5><ul>
+<li><p>&#x539F;&#x5B50;&#x6027;</p>
 <ol>
-<li>定义：一个操作或者多个操作要么全部执行并且执行过程中不能够被打断，要么都不执行。</li>
-<li>java中的原子性：对基本类型的读取和赋值是原子性的<br>x=10;<br>y=x;<br>x++;<br>x=x+1;<br>其中只有第一句话是原子性的操作；第一句话是直接将数值10写入到线程的内存当中；第二句话是先去读取x的值，然后再讲值写入y代表的内存当中；第三句话差不多也是先读取x的值然后进行+1操作；第四句话和第三句话一样。</li>
-<li>voilatile不能保证变量+-的原子性，可以使用java.util.concurrent.atomic包下提供了一些原子操作类</li>
+<li>&#x5B9A;&#x4E49;&#xFF1A;&#x4E00;&#x4E2A;&#x64CD;&#x4F5C;&#x6216;&#x8005;&#x591A;&#x4E2A;&#x64CD;&#x4F5C;&#x8981;&#x4E48;&#x5168;&#x90E8;&#x6267;&#x884C;&#x5E76;&#x4E14;&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x4E0D;&#x80FD;&#x591F;&#x88AB;&#x6253;&#x65AD;&#xFF0C;&#x8981;&#x4E48;&#x90FD;&#x4E0D;&#x6267;&#x884C;&#x3002;</li>
+<li>java&#x4E2D;&#x7684;&#x539F;&#x5B50;&#x6027;&#xFF1A;&#x5BF9;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#x7684;&#x8BFB;&#x53D6;&#x548C;&#x8D4B;&#x503C;&#x662F;&#x539F;&#x5B50;&#x6027;&#x7684;<br>x=10;<br>y=x;<br>x++;<br>x=x+1;<br>&#x5176;&#x4E2D;&#x53EA;&#x6709;&#x7B2C;&#x4E00;&#x53E5;&#x8BDD;&#x662F;&#x539F;&#x5B50;&#x6027;&#x7684;&#x64CD;&#x4F5C;&#xFF1B;&#x7B2C;&#x4E00;&#x53E5;&#x8BDD;&#x662F;&#x76F4;&#x63A5;&#x5C06;&#x6570;&#x503C;10&#x5199;&#x5165;&#x5230;&#x7EBF;&#x7A0B;&#x7684;&#x5185;&#x5B58;&#x5F53;&#x4E2D;&#xFF1B;&#x7B2C;&#x4E8C;&#x53E5;&#x8BDD;&#x662F;&#x5148;&#x53BB;&#x8BFB;&#x53D6;x&#x7684;&#x503C;&#xFF0C;&#x7136;&#x540E;&#x518D;&#x8BB2;&#x503C;&#x5199;&#x5165;y&#x4EE3;&#x8868;&#x7684;&#x5185;&#x5B58;&#x5F53;&#x4E2D;&#xFF1B;&#x7B2C;&#x4E09;&#x53E5;&#x8BDD;&#x5DEE;&#x4E0D;&#x591A;&#x4E5F;&#x662F;&#x5148;&#x8BFB;&#x53D6;x&#x7684;&#x503C;&#x7136;&#x540E;&#x8FDB;&#x884C;+1&#x64CD;&#x4F5C;&#xFF1B;&#x7B2C;&#x56DB;&#x53E5;&#x8BDD;&#x548C;&#x7B2C;&#x4E09;&#x53E5;&#x8BDD;&#x4E00;&#x6837;&#x3002;</li>
+<li>voilatile&#x4E0D;&#x80FD;&#x4FDD;&#x8BC1;&#x53D8;&#x91CF;+-&#x7684;&#x539F;&#x5B50;&#x6027;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;java.util.concurrent.atomic&#x5305;&#x4E0B;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E9B;&#x539F;&#x5B50;&#x64CD;&#x4F5C;&#x7C7B;</li>
 </ol>
 </li>
-<li><p>可见性</p>
+<li><p>&#x53EF;&#x89C1;&#x6027;</p>
 <ol>
-<li><p>定义：可见性是当多个线程访问同一个变量的时候，一个线程修改了这个歌变量的值，其他线程能够立即看得到修改的值。</p>
+<li><p>&#x5B9A;&#x4E49;&#xFF1A;&#x53EF;&#x89C1;&#x6027;&#x662F;&#x5F53;&#x591A;&#x4E2A;&#x7EBF;&#x7A0B;&#x8BBF;&#x95EE;&#x540C;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x4FEE;&#x6539;&#x4E86;&#x8FD9;&#x4E2A;&#x6B4C;&#x53D8;&#x91CF;&#x7684;&#x503C;&#xFF0C;&#x5176;&#x4ED6;&#x7EBF;&#x7A0B;&#x80FD;&#x591F;&#x7ACB;&#x5373;&#x770B;&#x5F97;&#x5230;&#x4FEE;&#x6539;&#x7684;&#x503C;&#x3002;</p>
 </li>
-<li><p>java中的可见性<br>对于可见性java提供了volatile关键字来保证可见性。<br>当一个共享变量被volatile修饰时，它会保证修改的值立即被更新到主存，当有其它线程需要读取值时也都会到主存中读取；而普通的共享变量被修改过后什么时候写入到主存是不确定的；</p>
+<li><p>java&#x4E2D;&#x7684;&#x53EF;&#x89C1;&#x6027;<br>&#x5BF9;&#x4E8E;&#x53EF;&#x89C1;&#x6027;java&#x63D0;&#x4F9B;&#x4E86;volatile&#x5173;&#x952E;&#x5B57;&#x6765;&#x4FDD;&#x8BC1;&#x53EF;&#x89C1;&#x6027;&#x3002;<br>&#x5F53;&#x4E00;&#x4E2A;&#x5171;&#x4EAB;&#x53D8;&#x91CF;&#x88AB;volatile&#x4FEE;&#x9970;&#x65F6;&#xFF0C;&#x5B83;&#x4F1A;&#x4FDD;&#x8BC1;&#x4FEE;&#x6539;&#x7684;&#x503C;&#x7ACB;&#x5373;&#x88AB;&#x66F4;&#x65B0;&#x5230;&#x4E3B;&#x5B58;&#xFF0C;&#x5F53;&#x6709;&#x5176;&#x5B83;&#x7EBF;&#x7A0B;&#x9700;&#x8981;&#x8BFB;&#x53D6;&#x503C;&#x65F6;&#x4E5F;&#x90FD;&#x4F1A;&#x5230;&#x4E3B;&#x5B58;&#x4E2D;&#x8BFB;&#x53D6;&#xFF1B;&#x800C;&#x666E;&#x901A;&#x7684;&#x5171;&#x4EAB;&#x53D8;&#x91CF;&#x88AB;&#x4FEE;&#x6539;&#x8FC7;&#x540E;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x5199;&#x5165;&#x5230;&#x4E3B;&#x5B58;&#x662F;&#x4E0D;&#x786E;&#x5B9A;&#x7684;&#xFF1B;</p>
 <ul>
-<li>有序性</li>
+<li>&#x6709;&#x5E8F;&#x6027;</li>
 </ul>
 <ol>
-<li><p>定义：即程序执行的顺序按照代码的先后顺序执行；</p>
-<p>​</p>
-<p>给一个例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">context = loadContext; //语句1</span><br><span class="line"></span><br><span class="line">inited = true; //语句2</span><br><span class="line"></span><br><span class="line">//线程2:</span><br><span class="line"></span><br><span class="line">while(!inited )&#123;</span><br><span class="line"></span><br><span class="line">sleep</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></table></figure>
+<li><p>&#x5B9A;&#x4E49;&#xFF1A;&#x5373;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x7684;&#x987A;&#x5E8F;&#x6309;&#x7167;&#x4EE3;&#x7801;&#x7684;&#x5148;&#x540E;&#x987A;&#x5E8F;&#x6267;&#x884C;&#xFF1B;</p>
+<p>&#x200B;</p>
+<p>&#x7ED9;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">context = loadContext; //&#x8BED;&#x53E5;1</span><br><span class="line"></span><br><span class="line">inited = true; //&#x8BED;&#x53E5;2</span><br><span class="line"></span><br><span class="line">//&#x7EBF;&#x7A0B;2:</span><br><span class="line"></span><br><span class="line">while(!inited ){</span><br><span class="line"></span><br><span class="line">sleep</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></tbody></table></figure>
 </li>
 </ol>
 </li>
 </ol>
-<p>上面的代码中由于语句1和语句2没有数据依赖，因此可能会重排序。假如发生了重排序，在线程1执行过程中先执行语句2，而此是线程2会以为初始化工作已经完成，那么就会跳出while循环，去执行doSomethingwithconfig(context)方法，而此时context并没有被初始化，就会导致程序出错。</p>
-<p>​               </p>
+<p>&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x4E2D;&#x7531;&#x4E8E;&#x8BED;&#x53E5;1&#x548C;&#x8BED;&#x53E5;2&#x6CA1;&#x6709;&#x6570;&#x636E;&#x4F9D;&#x8D56;&#xFF0C;&#x56E0;&#x6B64;&#x53EF;&#x80FD;&#x4F1A;&#x91CD;&#x6392;&#x5E8F;&#x3002;&#x5047;&#x5982;&#x53D1;&#x751F;&#x4E86;&#x91CD;&#x6392;&#x5E8F;&#xFF0C;&#x5728;&#x7EBF;&#x7A0B;1&#x6267;&#x884C;&#x8FC7;&#x7A0B;&#x4E2D;&#x5148;&#x6267;&#x884C;&#x8BED;&#x53E5;2&#xFF0C;&#x800C;&#x6B64;&#x662F;&#x7EBF;&#x7A0B;2&#x4F1A;&#x4EE5;&#x4E3A;&#x521D;&#x59CB;&#x5316;&#x5DE5;&#x4F5C;&#x5DF2;&#x7ECF;&#x5B8C;&#x6210;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x8DF3;&#x51FA;while&#x5FAA;&#x73AF;&#xFF0C;&#x53BB;&#x6267;&#x884C;doSomethingwithconfig(context)&#x65B9;&#x6CD5;&#xFF0C;&#x800C;&#x6B64;&#x65F6;context&#x5E76;&#x6CA1;&#x6709;&#x88AB;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5C31;&#x4F1A;&#x5BFC;&#x81F4;&#x7A0B;&#x5E8F;&#x51FA;&#x9519;&#x3002;</p>
+<p>&#x200B;               </p>
 </li>
-<li><p>java的有序性</p>
-<p>在Java内存模型中，允许编译器和处理器对指令进行重排序，但是重排序过程不会影响到单线程程序的执行，却会影响到多线程并发执行的正确性。</p>
+<li><p>java&#x7684;&#x6709;&#x5E8F;&#x6027;</p>
+<p>&#x5728;Java&#x5185;&#x5B58;&#x6A21;&#x578B;&#x4E2D;&#xFF0C;&#x5141;&#x8BB8;&#x7F16;&#x8BD1;&#x5668;&#x548C;&#x5904;&#x7406;&#x5668;&#x5BF9;&#x6307;&#x4EE4;&#x8FDB;&#x884C;&#x91CD;&#x6392;&#x5E8F;&#xFF0C;&#x4F46;&#x662F;&#x91CD;&#x6392;&#x5E8F;&#x8FC7;&#x7A0B;&#x4E0D;&#x4F1A;&#x5F71;&#x54CD;&#x5230;&#x5355;&#x7EBF;&#x7A0B;&#x7A0B;&#x5E8F;&#x7684;&#x6267;&#x884C;&#xFF0C;&#x5374;&#x4F1A;&#x5F71;&#x54CD;&#x5230;&#x591A;&#x7EBF;&#x7A0B;&#x5E76;&#x53D1;&#x6267;&#x884C;&#x7684;&#x6B63;&#x786E;&#x6027;&#x3002;</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">在Java里面，可以通过volatile关键字来保证一定的“有序性”。即volatile变量的语句不会与它前面或者后面的语句进行重排序，但是不能保证它前面或者后面的语句之间不会重排序。</span><br><span class="line">   happens-before原则：</span><br><span class="line"></span><br><span class="line">- 程序次序规则：：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作</span><br><span class="line">  注意，虽然这条规则中提到“书写在前面的操作先行发生于书写在后面的操作”，这个应该是程序看起来执行的顺序是按照代码顺序执行的，但是虚拟机可能会对程序代码进行指令重排序。虽然进行重排序，但是最终执行的结果是与程序顺序执行的结果一致的，它只会对不存在数据依赖性的指令进行重排序。因此，在单个线程中，程序执行看起来是有序执行的，这一点要注意理解。事实上，这个规则是用来保证程序在单线程中执行结果的正确性，但无法保证程序在多线程中执行的正确性。</span><br><span class="line">- 锁定规则：一个unLock操作先行发生于后面对同一个锁的lock操作</span><br><span class="line">  也就是说无论在单线程中还是多线程中，同一个锁如果处于被锁定的状态，那么必须先对锁进行了释放操作，后面才能继续进行lock操作。</span><br><span class="line">- volatile变量规则</span><br><span class="line">  直观地解释就是，如果一个线程先去写一个变量，然后一个线程去进行读取，那么写入操作肯定会先行发生于读操作。</span><br><span class="line">- 传递规则：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C</span><br><span class="line">- 线程启动规则</span><br><span class="line">- 线程中断规则</span><br><span class="line">- 线程终结规则</span><br><span class="line">- 对象终结规则</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x5728;Java&#x91CC;&#x9762;&#xFF0C;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;volatile&#x5173;&#x952E;&#x5B57;&#x6765;&#x4FDD;&#x8BC1;&#x4E00;&#x5B9A;&#x7684;&#x201C;&#x6709;&#x5E8F;&#x6027;&#x201D;&#x3002;&#x5373;volatile&#x53D8;&#x91CF;&#x7684;&#x8BED;&#x53E5;&#x4E0D;&#x4F1A;&#x4E0E;&#x5B83;&#x524D;&#x9762;&#x6216;&#x8005;&#x540E;&#x9762;&#x7684;&#x8BED;&#x53E5;&#x8FDB;&#x884C;&#x91CD;&#x6392;&#x5E8F;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x80FD;&#x4FDD;&#x8BC1;&#x5B83;&#x524D;&#x9762;&#x6216;&#x8005;&#x540E;&#x9762;&#x7684;&#x8BED;&#x53E5;&#x4E4B;&#x95F4;&#x4E0D;&#x4F1A;&#x91CD;&#x6392;&#x5E8F;&#x3002;</span><br><span class="line">   happens-before&#x539F;&#x5219;&#xFF1A;</span><br><span class="line"></span><br><span class="line">- &#x7A0B;&#x5E8F;&#x6B21;&#x5E8F;&#x89C4;&#x5219;&#xFF1A;&#xFF1A;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5185;&#xFF0C;&#x6309;&#x7167;&#x4EE3;&#x7801;&#x987A;&#x5E8F;&#xFF0C;&#x4E66;&#x5199;&#x5728;&#x524D;&#x9762;&#x7684;&#x64CD;&#x4F5C;&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x4E66;&#x5199;&#x5728;&#x540E;&#x9762;&#x7684;&#x64CD;&#x4F5C;</span><br><span class="line">  &#x6CE8;&#x610F;&#xFF0C;&#x867D;&#x7136;&#x8FD9;&#x6761;&#x89C4;&#x5219;&#x4E2D;&#x63D0;&#x5230;&#x201C;&#x4E66;&#x5199;&#x5728;&#x524D;&#x9762;&#x7684;&#x64CD;&#x4F5C;&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x4E66;&#x5199;&#x5728;&#x540E;&#x9762;&#x7684;&#x64CD;&#x4F5C;&#x201D;&#xFF0C;&#x8FD9;&#x4E2A;&#x5E94;&#x8BE5;&#x662F;&#x7A0B;&#x5E8F;&#x770B;&#x8D77;&#x6765;&#x6267;&#x884C;&#x7684;&#x987A;&#x5E8F;&#x662F;&#x6309;&#x7167;&#x4EE3;&#x7801;&#x987A;&#x5E8F;&#x6267;&#x884C;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x865A;&#x62DF;&#x673A;&#x53EF;&#x80FD;&#x4F1A;&#x5BF9;&#x7A0B;&#x5E8F;&#x4EE3;&#x7801;&#x8FDB;&#x884C;&#x6307;&#x4EE4;&#x91CD;&#x6392;&#x5E8F;&#x3002;&#x867D;&#x7136;&#x8FDB;&#x884C;&#x91CD;&#x6392;&#x5E8F;&#xFF0C;&#x4F46;&#x662F;&#x6700;&#x7EC8;&#x6267;&#x884C;&#x7684;&#x7ED3;&#x679C;&#x662F;&#x4E0E;&#x7A0B;&#x5E8F;&#x987A;&#x5E8F;&#x6267;&#x884C;&#x7684;&#x7ED3;&#x679C;&#x4E00;&#x81F4;&#x7684;&#xFF0C;&#x5B83;&#x53EA;&#x4F1A;&#x5BF9;&#x4E0D;&#x5B58;&#x5728;&#x6570;&#x636E;&#x4F9D;&#x8D56;&#x6027;&#x7684;&#x6307;&#x4EE4;&#x8FDB;&#x884C;&#x91CD;&#x6392;&#x5E8F;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x5728;&#x5355;&#x4E2A;&#x7EBF;&#x7A0B;&#x4E2D;&#xFF0C;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x770B;&#x8D77;&#x6765;&#x662F;&#x6709;&#x5E8F;&#x6267;&#x884C;&#x7684;&#xFF0C;&#x8FD9;&#x4E00;&#x70B9;&#x8981;&#x6CE8;&#x610F;&#x7406;&#x89E3;&#x3002;&#x4E8B;&#x5B9E;&#x4E0A;&#xFF0C;&#x8FD9;&#x4E2A;&#x89C4;&#x5219;&#x662F;&#x7528;&#x6765;&#x4FDD;&#x8BC1;&#x7A0B;&#x5E8F;&#x5728;&#x5355;&#x7EBF;&#x7A0B;&#x4E2D;&#x6267;&#x884C;&#x7ED3;&#x679C;&#x7684;&#x6B63;&#x786E;&#x6027;&#xFF0C;&#x4F46;&#x65E0;&#x6CD5;&#x4FDD;&#x8BC1;&#x7A0B;&#x5E8F;&#x5728;&#x591A;&#x7EBF;&#x7A0B;&#x4E2D;&#x6267;&#x884C;&#x7684;&#x6B63;&#x786E;&#x6027;&#x3002;</span><br><span class="line">- &#x9501;&#x5B9A;&#x89C4;&#x5219;&#xFF1A;&#x4E00;&#x4E2A;unLock&#x64CD;&#x4F5C;&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x540E;&#x9762;&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x9501;&#x7684;lock&#x64CD;&#x4F5C;</span><br><span class="line">  &#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x65E0;&#x8BBA;&#x5728;&#x5355;&#x7EBF;&#x7A0B;&#x4E2D;&#x8FD8;&#x662F;&#x591A;&#x7EBF;&#x7A0B;&#x4E2D;&#xFF0C;&#x540C;&#x4E00;&#x4E2A;&#x9501;&#x5982;&#x679C;&#x5904;&#x4E8E;&#x88AB;&#x9501;&#x5B9A;&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x90A3;&#x4E48;&#x5FC5;&#x987B;&#x5148;&#x5BF9;&#x9501;&#x8FDB;&#x884C;&#x4E86;&#x91CA;&#x653E;&#x64CD;&#x4F5C;&#xFF0C;&#x540E;&#x9762;&#x624D;&#x80FD;&#x7EE7;&#x7EED;&#x8FDB;&#x884C;lock&#x64CD;&#x4F5C;&#x3002;</span><br><span class="line">- volatile&#x53D8;&#x91CF;&#x89C4;&#x5219;</span><br><span class="line">  &#x76F4;&#x89C2;&#x5730;&#x89E3;&#x91CA;&#x5C31;&#x662F;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5148;&#x53BB;&#x5199;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#xFF0C;&#x7136;&#x540E;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x53BB;&#x8FDB;&#x884C;&#x8BFB;&#x53D6;&#xFF0C;&#x90A3;&#x4E48;&#x5199;&#x5165;&#x64CD;&#x4F5C;&#x80AF;&#x5B9A;&#x4F1A;&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x8BFB;&#x64CD;&#x4F5C;&#x3002;</span><br><span class="line">- &#x4F20;&#x9012;&#x89C4;&#x5219;&#xFF1A;&#x5982;&#x679C;&#x64CD;&#x4F5C;A&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x64CD;&#x4F5C;B&#xFF0C;&#x800C;&#x64CD;&#x4F5C;B&#x53C8;&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x64CD;&#x4F5C;C&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x5F97;&#x51FA;&#x64CD;&#x4F5C;A&#x5148;&#x884C;&#x53D1;&#x751F;&#x4E8E;&#x64CD;&#x4F5C;C</span><br><span class="line">- &#x7EBF;&#x7A0B;&#x542F;&#x52A8;&#x89C4;&#x5219;</span><br><span class="line">- &#x7EBF;&#x7A0B;&#x4E2D;&#x65AD;&#x89C4;&#x5219;</span><br><span class="line">- &#x7EBF;&#x7A0B;&#x7EC8;&#x7ED3;&#x89C4;&#x5219;</span><br><span class="line">- &#x5BF9;&#x8C61;&#x7EC8;&#x7ED3;&#x89C4;&#x5219;</span><br></pre></td></tr></tbody></table></figure><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -573,7 +591,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -663,7 +681,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

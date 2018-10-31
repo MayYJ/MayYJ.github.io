@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/07/21/java/源码解析/ThreadPoolExecutor源码详解/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/09/03/reading/计算机网络/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -329,7 +329,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/07/21/java/源码解析/ThreadPoolExecutor源码详解/" itemprop="url">
+                <a class="post-title-link" href="/2018/09/03/reading/计算机网络/" itemprop="url">
                   未命名
                 </a>
               
@@ -356,7 +356,7 @@
                 
               
 
-              <time title="创建时间：2018-07-21 15:43:21" itemprop="dateCreated datePublished" datetime="2018-07-21T15:43:21+08:00">2018-07-21</time>
+              <time title="创建时间：2018-09-03 20:21:11" itemprop="dateCreated datePublished" datetime="2018-09-03T20:21:11+08:00">2018-09-03</time>
             
 
             
@@ -373,7 +373,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-07-23 10:58:34" itemprop="dateModified" datetime="2018-07-23T10:58:34+08:00">2018-07-23</time>
+                <time title="修改时间：2018-09-12 10:29:34" itemprop="dateModified" datetime="2018-09-12T10:29:34+08:00">2018-09-12</time>
               
             
           </span>
@@ -408,17 +408,630 @@
       
         
           
-          ThreadPoolExecutor源码详解一些属性
-clt
+          &#x6982;&#x8FF0;&#x4EA4;&#x6362;&#x6280;&#x672F;&#x7535;&#x8DEF;&#x4EA4;&#x6362;
 
-1private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
-这个属性前三位存储的是线程池的状态，后面的29位存储的是线程池的工作线程数
-线程池的状态：
+&#x5927;&#x81F4;&#x8FC7;&#x7A0B;&#xFF1A;&#x7AEF;&#x5230;&#x7AEF;&#x5
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/07/21/java/源码解析/ThreadPoolExecutor源码详解/" rel="contents">
+              <a class="btn" href="/2018/09/03/reading/计算机网络/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/27/javaweb/Cookie和Session/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/27/javaweb/Cookie和Session/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-27 17:17:33 / 修改时间：18:43:55" itemprop="dateCreated datePublished" datetime="2018-08-27T17:17:33+08:00">2018-08-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Cookie&#x673A;&#x5236;
+&#x5B9A;&#x4E49;
+Cookie&#x4F7F;&#x670D;&#x52A1;&#x5668;&#x5728;&#x672C;&#x5730;&#x673A;&#x5668;&#x4E0A;&#x5B58;&#x50A8;&#x7684;
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/08/27/javaweb/Cookie和Session/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/14/javaweb/Docker/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/javaweb/Docker/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-14 16:41:55" itemprop="dateCreated datePublished" datetime="2018-08-14T16:41:55+08:00">2018-08-14</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          &#x66F4;&#x6362;Docker&#x955C;&#x50CF;&#x6E90;&#x7F16;&#x8F91; /etc/docker/daemon.json  &#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x670
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/08/14/javaweb/Docker/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/05/reading/高性能Mysql知识点总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/05/reading/高性能Mysql知识点总结/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-05 16:46:35" itemprop="dateCreated datePublished" datetime="2018-08-05T16:46:35+08:00">2018-08-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-09 21:21:13" itemprop="dateModified" datetime="2018-08-09T21:21:13+08:00">2018-08-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Schema&#x4E0E;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x4F18;&#x5316;
+&#x9009;&#x62E9;&#x4F18;&#x5316;&#x5F97;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x539F;&#x5219
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/08/05/reading/高性能Mysql知识点总结/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/07/23/javaweb/Spring 源码详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/23/javaweb/Spring 源码详解/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-23 21:10:53" itemprop="dateCreated datePublished" datetime="2018-07-23T21:10:53+08:00">2018-07-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-09-20 22:03:46" itemprop="dateModified" datetime="2018-09-20T22:03:46+08:00">2018-09-20</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Spring IOCSpring IOC&#x6982;&#x8FF0;
+&#x4F9D;&#x8D56;&#x53CD;&#x8F6C;&#xFF1A;&#x628A;&#x63A7;&#x5236;&#x6743;&#x4ECE;&#x5177;&#x4F53;&#x7684;&#x4E1A;&
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/07/23/javaweb/Spring 源码详解/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -561,327 +1174,13 @@ clt
       
         
           
-          关于java8 实战并行数据处理与性能
-在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作
-留意装箱和拆箱，这个比较消耗性能
-与流中元素顺序相关的操作比顺序无关的操作性能差
-设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是
+          &#x5173;&#x4E8E;java8 &#x5B9E;&#x6218;&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;
+&#x5728;&#x4F7F;&#x7528;&#x524D;&#x5FC5
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2018/07/18/reading/关于java8 实战/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/07/15/java/源码解析/阻塞队列详解/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/15/java/源码解析/阻塞队列详解/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-15 11:30:00" itemprop="dateCreated datePublished" datetime="2018-07-15T11:30:00+08:00">2018-07-15</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-07-21 15:02:52" itemprop="dateModified" datetime="2018-07-21T15:02:52+08:00">2018-07-21</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          阻塞队列详解BlockingQueue
-add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true
-offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回tru
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/07/15/java/源码解析/阻塞队列详解/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/07/11/java/源码解析/ThreadLocal源码解析/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/11/java/源码解析/ThreadLocal源码解析/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-07-11 10:40:42" itemprop="dateCreated datePublished" datetime="2018-07-11T10:40:42+08:00">2018-07-11</time>
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          关于ThreadLocal
-每个线程保存的是ThreadLocal.ThreadLocalMap
-
-ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的一些源码
-
-12345678910111213//在ThreadLocal中保存的就是这个Entry数组，这个entry
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/07/11/java/源码解析/ThreadLocal源码解析/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1036,167 +1335,12 @@ ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的�
       
         
           
-          存储器管理存储器的层次结构多级存储器结构
-操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制
-主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）
-
-程序的装入和链接程序的装入
-绝对装入方式：程序员需要知道程序将驻留在什
+          &#x5B58;&#x50A8;&#x5668;&#x7BA1;&#x7406;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x5C42;&#x6B21;&#x7ED3;&#x6784;&#x591A;&#x7EA7;&#x5B58;&#x50A8;&#x5668;&#x7ED
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2018/06/25/reading/计算机操作系统/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/06/20/java/Java 虚拟机参数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/20/java/Java 虚拟机参数/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-06-20 13:55:52 / 修改时间：17:55:30" itemprop="dateCreated datePublished" datetime="2018-06-20T13:55:52+08:00">2018-06-20</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Java 虚拟机参数-Xms 设置初始堆大小
--Xmx 设置最大堆大小
--XX:ReservedCodeCacheSize=240m 这个参数主要用来设置codecache大小，比如我们jit编译的代码都是放在codecache里的，所以codecache如果满了的话，那带来的问题就是无法再jit编
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/06/20/java/Java 虚拟机参数/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1336,16 +1480,9 @@ ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的�
         
           
           
-根据jdk类注释中可以得到的一些信息
+&#x6839;&#x636E;jdk&#x7C7B;&#x6CE8;&#x91CA;&#x4E2D;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x7684;&#x4E00;&#x4E9B;&#x4FE1;&#x606F;
 
-HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable，
-要求线程安全那么就使用HashTable
-
-要求键值不能为空
-
-如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间
-
-关于mo
+HashTable&#x662F;&#x7EBF
           ...
           <!--noindex-->
           
@@ -1505,10 +1642,9 @@ HashTable是线程安全的，但是如果不要求线程安全推荐使用HashM
       
         
           
-          1234title: HashMap源码date: 2018-10-26 22:48:28tags: 源码解析categories: java
+          1234title: HashMap&#x6E90;&#x7801;date: 2018-10-26 22:48:28tags: &#x6E90;&#x7801;&#x89E3;&#x6790;categories: java
 
-为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标
-1
+&#x4E3A;&#x4EC0;&#x4E48;hashMap&#x7
           ...
           <!--noindex-->
           
@@ -1656,17 +1792,9 @@ HashTable是线程安全的，但是如果不要求线程安全推荐使用HashM
       
         
           
-          线性表顺序存储方式
-定义
-用一段地址连续的存储空间存储线性表的元素
-
-存储结构 
-1234typedef struct&#123;    Elemtype data[MAX_SIZE];    int length;&#125;SqList
-
-添加元素实现方式
-
-实现原理
-将要插入的位置以后的元素全
+          &#x7EBF;&#x6027;&#x8868;&#x987A;&#x5E8F;&#x5B58;&#x50A8;&#x65B9;&#x5F0F;
+&#x5B9A;&#x4E49;
+&#x7528;&#x4E00;&#x6BB5;&#x5730;&#x5740;&#x8FDE;&#x7EED;&#x7
           ...
           <!--noindex-->
           
@@ -1713,161 +1841,11 @@ HashTable是线程安全的，但是如果不要求线程安全推荐使用HashM
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/05/28/java/关于数据类型的思考/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/28/java/关于数据类型的思考/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-28 13:44:24 / 修改时间：13:59:18" itemprop="dateCreated datePublished" datetime="2018-05-28T13:44:24+08:00">2018-05-28</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          byte b = (byte) 0xaa 引发的思考
-为什么这样的强制类型转换时被允许的
-我们知道0xaa 的二进制数是  1010 1010，因为byte的存储范围是-128-127，这场来说是不可能把 0xaa 赋值给byte 数据类型的，但是这里不同的是进行了一次强制类型转换，这里我的理解是其
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/05/28/java/关于数据类型的思考/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1912,7 +1890,7 @@ HashTable是线程安全的，但是如果不要求线程安全推荐使用HashM
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2002,7 +1980,17 @@ HashTable是线程安全的，但是如果不要求线程安全推荐使用HashM
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

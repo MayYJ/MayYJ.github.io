@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+  <meta name="description" content="Cookie&amp;#x673A;&amp;#x5236; &amp;#x5B9A;&amp;#x4E49; Cookie&amp;#x4F7F;&amp;#x670D;&amp;#x52A1;&amp;#x5668;&amp;#x5728;&amp;#x672C;&amp;#x5730;&amp;#x673A;&amp;#x5668;&amp;#x4E0A;&amp;#x5B58;&amp;#x50A8;&amp;#x7684;&amp;#x5C0F;&amp;#x6BB5;&amp;#x6587;&amp;#x672C;&amp;#x5E76;&amp;#x968F;&amp;#">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/08/27/javaweb/Cookie和Session/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+<meta property="og:description" content="Cookie&amp;#x673A;&amp;#x5236; &amp;#x5B9A;&amp;#x4E49; Cookie&amp;#x4F7F;&amp;#x670D;&amp;#x52A1;&amp;#x5668;&amp;#x5728;&amp;#x672C;&amp;#x5730;&amp;#x673A;&amp;#x5668;&amp;#x4E0A;&amp;#x5B58;&amp;#x50A8;&amp;#x7684;&amp;#x5C0F;&amp;#x6BB5;&amp;#x6587;&amp;#x672C;&amp;#x5E76;&amp;#x968F;&amp;#">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-08-27T10:43:55.106Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="Cookie机制 定义 Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器  产生流程 正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，">
+<meta name="twitter:description" content="Cookie&amp;#x673A;&amp;#x5236; &amp;#x5B9A;&amp;#x4E49; Cookie&amp;#x4F7F;&amp;#x670D;&amp;#x52A1;&amp;#x5668;&amp;#x5728;&amp;#x672C;&amp;#x5730;&amp;#x673A;&amp;#x5668;&amp;#x4E0A;&amp;#x5B58;&amp;#x50A8;&amp;#x7684;&amp;#x5C0F;&amp;#x6BB5;&amp;#x6587;&amp;#x672C;&amp;#x5E76;&amp;#x968F;&amp;#">
 
 
 
@@ -390,68 +390,86 @@
       
 
       
-        <h4 id="Cookie机制"><a href="#Cookie机制" class="headerlink" title="Cookie机制"></a>Cookie机制</h4><ul>
-<li><p>定义</p>
-<p>Cookie使服务器在本地机器上存储的小段文本并随每一个请求发送至同一服务器</p>
+        <h4 id="Cookie&#x673A;&#x5236;"><a href="#Cookie&#x673A;&#x5236;" class="headerlink" title="Cookie&#x673A;&#x5236;"></a>Cookie&#x673A;&#x5236;</h4><ul>
+<li><p>&#x5B9A;&#x4E49;</p>
+<p>Cookie&#x4F7F;&#x670D;&#x52A1;&#x5668;&#x5728;&#x672C;&#x5730;&#x673A;&#x5668;&#x4E0A;&#x5B58;&#x50A8;&#x7684;&#x5C0F;&#x6BB5;&#x6587;&#x672C;&#x5E76;&#x968F;&#x6BCF;&#x4E00;&#x4E2A;&#x8BF7;&#x6C42;&#x53D1;&#x9001;&#x81F3;&#x540C;&#x4E00;&#x670D;&#x52A1;&#x5668;</p>
 </li>
-<li><p>产生流程</p>
-<p>正统的cookie分发使通过扩展HTTP协议实现的，服务器通过在HTTP响应头中加一行特殊的指示以提示浏览器按照指示生成相应的cookie，一般这个时候就会把服务器产生的sessionId发送给浏览器保存在cookie中以便维持有状态。当浏览器发送请求时，会检查所有存储的cookie，如果某个cookie所声明的作用范围大于等于将要请求的资源所在位置，则把该cookie附在请求资源的HTTP请求头上发送给浏览器。</p>
-</li>
-</ul>
-<h4 id="Session机制"><a href="#Session机制" class="headerlink" title="Session机制"></a>Session机制</h4><ul>
-<li><p>定义</p>
-<p>session机制是一种服务器端的机制，服务器使用一种类似于散列表的结构来保存信息</p>
-</li>
-<li><p>产生流程</p>
-<p>当程序需要为某个客户端的请求创建一个session时，服务器首先会检查这个客户端的请求里是否已经包含了一个sessionId，如果有就将该session检索出来放在Request中来使用，如果没有就创建一个新的seesion放在Request来使用，产生的sessionId将被在本次响应中返回给客户端保存，一般保存方式就是cookie</p>
+<li><p>&#x4EA7;&#x751F;&#x6D41;&#x7A0B;</p>
+<p>&#x6B63;&#x7EDF;&#x7684;cookie&#x5206;&#x53D1;&#x4F7F;&#x901A;&#x8FC7;&#x6269;&#x5C55;HTTP&#x534F;&#x8BAE;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x901A;&#x8FC7;&#x5728;HTTP&#x54CD;&#x5E94;&#x5934;&#x4E2D;&#x52A0;&#x4E00;&#x884C;&#x7279;&#x6B8A;&#x7684;&#x6307;&#x793A;&#x4EE5;&#x63D0;&#x793A;&#x6D4F;&#x89C8;&#x5668;&#x6309;&#x7167;&#x6307;&#x793A;&#x751F;&#x6210;&#x76F8;&#x5E94;&#x7684;cookie&#xFF0C;&#x4E00;&#x822C;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x5C31;&#x4F1A;&#x628A;&#x670D;&#x52A1;&#x5668;&#x4EA7;&#x751F;&#x7684;sessionId&#x53D1;&#x9001;&#x7ED9;&#x6D4F;&#x89C8;&#x5668;&#x4FDD;&#x5B58;&#x5728;cookie&#x4E2D;&#x4EE5;&#x4FBF;&#x7EF4;&#x6301;&#x6709;&#x72B6;&#x6001;&#x3002;&#x5F53;&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x8BF7;&#x6C42;&#x65F6;&#xFF0C;&#x4F1A;&#x68C0;&#x67E5;&#x6240;&#x6709;&#x5B58;&#x50A8;&#x7684;cookie&#xFF0C;&#x5982;&#x679C;&#x67D0;&#x4E2A;cookie&#x6240;&#x58F0;&#x660E;&#x7684;&#x4F5C;&#x7528;&#x8303;&#x56F4;&#x5927;&#x4E8E;&#x7B49;&#x4E8E;&#x5C06;&#x8981;&#x8BF7;&#x6C42;&#x7684;&#x8D44;&#x6E90;&#x6240;&#x5728;&#x4F4D;&#x7F6E;&#xFF0C;&#x5219;&#x628A;&#x8BE5;cookie&#x9644;&#x5728;&#x8BF7;&#x6C42;&#x8D44;&#x6E90;&#x7684;HTTP&#x8BF7;&#x6C42;&#x5934;&#x4E0A;&#x53D1;&#x9001;&#x7ED9;&#x6D4F;&#x89C8;&#x5668;&#x3002;</p>
 </li>
 </ul>
-<h4 id="两者的不同点"><a href="#两者的不同点" class="headerlink" title="两者的不同点"></a>两者的不同点</h4><ol>
-<li><p>存取方式的不同</p>
-<p>Cookie只能保存ASCII字符串，存储UNICODE字符需要先进行编码</p>
-<p>Session能保存任何类型的数据甚至java类</p>
+<h4 id="Session&#x673A;&#x5236;"><a href="#Session&#x673A;&#x5236;" class="headerlink" title="Session&#x673A;&#x5236;"></a>Session&#x673A;&#x5236;</h4><ul>
+<li><p>&#x5B9A;&#x4E49;</p>
+<p>session&#x673A;&#x5236;&#x662F;&#x4E00;&#x79CD;&#x670D;&#x52A1;&#x5668;&#x7AEF;&#x7684;&#x673A;&#x5236;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x4F7F;&#x7528;&#x4E00;&#x79CD;&#x7C7B;&#x4F3C;&#x4E8E;&#x6563;&#x5217;&#x8868;&#x7684;&#x7ED3;&#x6784;&#x6765;&#x4FDD;&#x5B58;&#x4FE1;&#x606F;</p>
 </li>
-<li><p>隐私策略不同</p>
-<p>Cookie对于客户端是可见的，Session是不可见的</p>
+<li><p>&#x4EA7;&#x751F;&#x6D41;&#x7A0B;</p>
+<p>&#x5F53;&#x7A0B;&#x5E8F;&#x9700;&#x8981;&#x4E3A;&#x67D0;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x8BF7;&#x6C42;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;session&#x65F6;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x9996;&#x5148;&#x4F1A;&#x68C0;&#x67E5;&#x8FD9;&#x4E2A;&#x5BA2;&#x6237;&#x7AEF;&#x7684;&#x8BF7;&#x6C42;&#x91CC;&#x662F;&#x5426;&#x5DF2;&#x7ECF;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;sessionId&#xFF0C;&#x5982;&#x679C;&#x6709;&#x5C31;&#x5C06;&#x8BE5;session&#x68C0;&#x7D22;&#x51FA;&#x6765;&#x653E;&#x5728;Request&#x4E2D;&#x6765;&#x4F7F;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x5C31;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684;seesion&#x653E;&#x5728;Request&#x6765;&#x4F7F;&#x7528;&#xFF0C;&#x4EA7;&#x751F;&#x7684;sessionId&#x5C06;&#x88AB;&#x5728;&#x672C;&#x6B21;&#x54CD;&#x5E94;&#x4E2D;&#x8FD4;&#x56DE;&#x7ED9;&#x5BA2;&#x6237;&#x7AEF;&#x4FDD;&#x5B58;&#xFF0C;&#x4E00;&#x822C;&#x4FDD;&#x5B58;&#x65B9;&#x5F0F;&#x5C31;&#x662F;cookie</p>
 </li>
-<li><p>有效期上的不同</p>
-<p>Cookie可以设置一个较长时间的过期时间，但是Session关闭了阅读器该Session就会失效，因而不能长期有效，如果Session长时间有效会导致服务器内存溢出</p>
+</ul>
+<h4 id="&#x4E24;&#x8005;&#x7684;&#x4E0D;&#x540C;&#x70B9;"><a href="#&#x4E24;&#x8005;&#x7684;&#x4E0D;&#x540C;&#x70B9;" class="headerlink" title="&#x4E24;&#x8005;&#x7684;&#x4E0D;&#x540C;&#x70B9;"></a>&#x4E24;&#x8005;&#x7684;&#x4E0D;&#x540C;&#x70B9;</h4><ol>
+<li><p>&#x5B58;&#x53D6;&#x65B9;&#x5F0F;&#x7684;&#x4E0D;&#x540C;</p>
+<p>Cookie&#x53EA;&#x80FD;&#x4FDD;&#x5B58;ASCII&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x5B58;&#x50A8;UNICODE&#x5B57;&#x7B26;&#x9700;&#x8981;&#x5148;&#x8FDB;&#x884C;&#x7F16;&#x7801;</p>
+<p>Session&#x80FD;&#x4FDD;&#x5B58;&#x4EFB;&#x4F55;&#x7C7B;&#x578B;&#x7684;&#x6570;&#x636E;&#x751A;&#x81F3;java&#x7C7B;</p>
 </li>
-<li><p>服务器压力不同 </p>
-<p>Cookie存储在本地，Session存储在服务器</p>
+<li><p>&#x9690;&#x79C1;&#x7B56;&#x7565;&#x4E0D;&#x540C;</p>
+<p>Cookie&#x5BF9;&#x4E8E;&#x5BA2;&#x6237;&#x7AEF;&#x662F;&#x53EF;&#x89C1;&#x7684;&#xFF0C;Session&#x662F;&#x4E0D;&#x53EF;&#x89C1;&#x7684;</p>
 </li>
-<li><p>跨域的支持上的不同</p>
-<p>Cookie支持跨域，但是Session不支持跨域，不同域名使用不同Session</p>
+<li><p>&#x6709;&#x6548;&#x671F;&#x4E0A;&#x7684;&#x4E0D;&#x540C;</p>
+<p>Cookie&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;&#x4E00;&#x4E2A;&#x8F83;&#x957F;&#x65F6;&#x95F4;&#x7684;&#x8FC7;&#x671F;&#x65F6;&#x95F4;&#xFF0C;&#x4F46;&#x662F;Session&#x5173;&#x95ED;&#x4E86;&#x9605;&#x8BFB;&#x5668;&#x8BE5;Session&#x5C31;&#x4F1A;&#x5931;&#x6548;&#xFF0C;&#x56E0;&#x800C;&#x4E0D;&#x80FD;&#x957F;&#x671F;&#x6709;&#x6548;&#xFF0C;&#x5982;&#x679C;Session&#x957F;&#x65F6;&#x95F4;&#x6709;&#x6548;&#x4F1A;&#x5BFC;&#x81F4;&#x670D;&#x52A1;&#x5668;&#x5185;&#x5B58;&#x6EA2;&#x51FA;</p>
+</li>
+<li><p>&#x670D;&#x52A1;&#x5668;&#x538B;&#x529B;&#x4E0D;&#x540C; </p>
+<p>Cookie&#x5B58;&#x50A8;&#x5728;&#x672C;&#x5730;&#xFF0C;Session&#x5B58;&#x50A8;&#x5728;&#x670D;&#x52A1;&#x5668;</p>
+</li>
+<li><p>&#x8DE8;&#x57DF;&#x7684;&#x652F;&#x6301;&#x4E0A;&#x7684;&#x4E0D;&#x540C;</p>
+<p>Cookie&#x652F;&#x6301;&#x8DE8;&#x57DF;&#xFF0C;&#x4F46;&#x662F;Session&#x4E0D;&#x652F;&#x6301;&#x8DE8;&#x57DF;&#xFF0C;&#x4E0D;&#x540C;&#x57DF;&#x540D;&#x4F7F;&#x7528;&#x4E0D;&#x540C;Session</p>
 </li>
 </ol>
-<h4 id="关于Cookie和Session的跨域共享"><a href="#关于Cookie和Session的跨域共享" class="headerlink" title="关于Cookie和Session的跨域共享"></a>关于Cookie和Session的跨域共享</h4><ul>
-<li><p><strong>正常情况下Cookie发送</strong></p>
-<p>现在我们有两个站点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">www.example.com/site1</span><br><span class="line">www.example.com/site2</span><br></pre></td></tr></table></figure>
-<p>这两个站点因为在同一个域名下，所以在访问这两个站点时，会发送相同的cookie，因为浏览器存储cookie域是<a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
+<h4 id="&#x5173;&#x4E8E;Cookie&#x548C;Session&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;"><a href="#&#x5173;&#x4E8E;Cookie&#x548C;Session&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;" class="headerlink" title="&#x5173;&#x4E8E;Cookie&#x548C;Session&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;"></a>&#x5173;&#x4E8E;Cookie&#x548C;Session&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;</h4><ul>
+<li><p><strong>&#x6B63;&#x5E38;&#x60C5;&#x51B5;&#x4E0B;Cookie&#x53D1;&#x9001;</strong></p>
+<p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x6709;&#x4E24;&#x4E2A;&#x7AD9;&#x70B9;</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">www.example.com/site1</span><br><span class="line">www.example.com/site2</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x8FD9;&#x4E24;&#x4E2A;&#x7AD9;&#x70B9;&#x56E0;&#x4E3A;&#x5728;&#x540C;&#x4E00;&#x4E2A;&#x57DF;&#x540D;&#x4E0B;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x8BBF;&#x95EE;&#x8FD9;&#x4E24;&#x4E2A;&#x7AD9;&#x70B9;&#x65F6;&#xFF0C;&#x4F1A;&#x53D1;&#x9001;&#x76F8;&#x540C;&#x7684;cookie&#xFF0C;&#x56E0;&#x4E3A;&#x6D4F;&#x89C8;&#x5668;&#x5B58;&#x50A8;cookie&#x57DF;&#x662F;<a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
 </li>
-<li><p><strong>我们想实现的是同一个域但是不同的子域如何进行单点登录</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sub1.onmpw.com</span><br><span class="line">sub2.onmpw.com</span><br></pre></td></tr></table></figure>
-<p>上面就是两个同一个域但是不同的子域的例子，我们可以采用以下的实现方式实现：</p>
+<li><p><strong>&#x6211;&#x4EEC;&#x60F3;&#x5B9E;&#x73B0;&#x7684;&#x662F;&#x540C;&#x4E00;&#x4E2A;&#x57DF;&#x4F46;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x5B50;&#x57DF;&#x5982;&#x4F55;&#x8FDB;&#x884C;&#x5355;&#x70B9;&#x767B;&#x5F55;</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sub1.onmpw.com</span><br><span class="line">sub2.onmpw.com</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x4E0A;&#x9762;&#x5C31;&#x662F;&#x4E24;&#x4E2A;&#x540C;&#x4E00;&#x4E2A;&#x57DF;&#x4F46;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x5B50;&#x57DF;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x91C7;&#x7528;&#x4EE5;&#x4E0B;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x5B9E;&#x73B0;&#xFF1A;</p>
 <ol>
-<li><p>登录sub1.onmpw.com系统 </p>
+<li><p>&#x767B;&#x5F55;sub1.onmpw.com&#x7CFB;&#x7EDF; </p>
 </li>
-<li><p>登录成功以后，设置cookie信息。这里需要注意，我们可以将用户名和密码存到cookie中，但是在设置的时候必须将这cookie的所属域设置为顶级域 .onmpw.com。这里可以使用setcookie函数，该函数的第四个参数是用来设置cookie所述域的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cookie.setDomain(&quot;.onmpw.com&quot;);</span><br></pre></td></tr></table></figure>
+<li><p>&#x767B;&#x5F55;&#x6210;&#x529F;&#x4EE5;&#x540E;&#xFF0C;&#x8BBE;&#x7F6E;cookie&#x4FE1;&#x606F;&#x3002;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x6CE8;&#x610F;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5C06;&#x7528;&#x6237;&#x540D;&#x548C;&#x5BC6;&#x7801;&#x5B58;&#x5230;cookie&#x4E2D;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x8BBE;&#x7F6E;&#x7684;&#x65F6;&#x5019;&#x5FC5;&#x987B;&#x5C06;&#x8FD9;cookie&#x7684;&#x6240;&#x5C5E;&#x57DF;&#x8BBE;&#x7F6E;&#x4E3A;&#x9876;&#x7EA7;&#x57DF; .onmpw.com&#x3002;&#x8FD9;&#x91CC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;setcookie&#x51FD;&#x6570;&#xFF0C;&#x8BE5;&#x51FD;&#x6570;&#x7684;&#x7B2C;&#x56DB;&#x4E2A;&#x53C2;&#x6570;&#x662F;&#x7528;&#x6765;&#x8BBE;&#x7F6E;cookie&#x6240;&#x8FF0;&#x57DF;&#x7684;&#x3002;</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cookie.setDomain(&quot;.onmpw.com&quot;);</span><br></pre></td></tr></tbody></table></figure>
 </li>
-<li><p>访问sub2.onmpw.com系统，浏览器会将cookie中的信息username和password附带在请求中一块儿发送到sub2.onmpw.com系统。这时该系统会先检查session是否登录，如果没有登录则验证cookie中的username和password从而实现自动登录。</p>
+<li><p>&#x8BBF;&#x95EE;sub2.onmpw.com&#x7CFB;&#x7EDF;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x4F1A;&#x5C06;cookie&#x4E2D;&#x7684;&#x4FE1;&#x606F;username&#x548C;password&#x9644;&#x5E26;&#x5728;&#x8BF7;&#x6C42;&#x4E2D;&#x4E00;&#x5757;&#x513F;&#x53D1;&#x9001;&#x5230;sub2.onmpw.com&#x7CFB;&#x7EDF;&#x3002;&#x8FD9;&#x65F6;&#x8BE5;&#x7CFB;&#x7EDF;&#x4F1A;&#x5148;&#x68C0;&#x67E5;session&#x662F;&#x5426;&#x767B;&#x5F55;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x767B;&#x5F55;&#x5219;&#x9A8C;&#x8BC1;cookie&#x4E2D;&#x7684;username&#x548C;password&#x4ECE;&#x800C;&#x5B9E;&#x73B0;&#x81EA;&#x52A8;&#x767B;&#x5F55;&#x3002;</p>
 </li>
-<li><p>sub2.onmpw.com 登录成功以后再写session信息。以后的验证就用自己的session信息验证就可以了。 </p>
+<li><p>sub2.onmpw.com &#x767B;&#x5F55;&#x6210;&#x529F;&#x4EE5;&#x540E;&#x518D;&#x5199;session&#x4FE1;&#x606F;&#x3002;&#x4EE5;&#x540E;&#x7684;&#x9A8C;&#x8BC1;&#x5C31;&#x7528;&#x81EA;&#x5DF1;&#x7684;session&#x4FE1;&#x606F;&#x9A8C;&#x8BC1;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#x3002; </p>
 </li>
 </ol>
 </li>
-<li><p><strong>但是现在出现了一个问题</strong></p>
-<p>问题：当我们进入一个子域，要退出时我们可以删除自身的session信息和所属域为.onmpw.com的cookie，但是由于session时不跨域的不能删除另一个子域的session信息，也就是不能同时退出</p>
-<p>解决方案：把第一登录生成的JSESSIONID，通过setDomain放到一个共享的自定义的cookie中。之后访问二级域名的时候，将自定义cookie中的值取出来，然后再放到JESSIONID的cookie值中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cookie c = new Cookie(&quot;JSESSIONID&quot;, session.getId());  </span><br><span class="line">c.setDomain(&quot;abc.com&quot;);  </span><br><span class="line">resp.addCookie(c);</span><br></pre></td></tr></table></figure>
+<li><p><strong>&#x4F46;&#x662F;&#x73B0;&#x5728;&#x51FA;&#x73B0;&#x4E86;&#x4E00;&#x4E2A;&#x95EE;&#x9898;</strong></p>
+<p>&#x95EE;&#x9898;&#xFF1A;&#x5F53;&#x6211;&#x4EEC;&#x8FDB;&#x5165;&#x4E00;&#x4E2A;&#x5B50;&#x57DF;&#xFF0C;&#x8981;&#x9000;&#x51FA;&#x65F6;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5220;&#x9664;&#x81EA;&#x8EAB;&#x7684;session&#x4FE1;&#x606F;&#x548C;&#x6240;&#x5C5E;&#x57DF;&#x4E3A;.onmpw.com&#x7684;cookie&#xFF0C;&#x4F46;&#x662F;&#x7531;&#x4E8E;session&#x65F6;&#x4E0D;&#x8DE8;&#x57DF;&#x7684;&#x4E0D;&#x80FD;&#x5220;&#x9664;&#x53E6;&#x4E00;&#x4E2A;&#x5B50;&#x57DF;&#x7684;session&#x4FE1;&#x606F;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x4E0D;&#x80FD;&#x540C;&#x65F6;&#x9000;&#x51FA;</p>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6848;&#xFF1A;&#x628A;&#x7B2C;&#x4E00;&#x767B;&#x5F55;&#x751F;&#x6210;&#x7684;JSESSIONID&#xFF0C;&#x901A;&#x8FC7;setDomain&#x653E;&#x5230;&#x4E00;&#x4E2A;&#x5171;&#x4EAB;&#x7684;&#x81EA;&#x5B9A;&#x4E49;&#x7684;cookie&#x4E2D;&#x3002;&#x4E4B;&#x540E;&#x8BBF;&#x95EE;&#x4E8C;&#x7EA7;&#x57DF;&#x540D;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5C06;&#x81EA;&#x5B9A;&#x4E49;cookie&#x4E2D;&#x7684;&#x503C;&#x53D6;&#x51FA;&#x6765;&#xFF0C;&#x7136;&#x540E;&#x518D;&#x653E;&#x5230;JESSIONID&#x7684;cookie&#x503C;&#x4E2D;</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cookie c = new Cookie(&quot;JSESSIONID&quot;, session.getId());  </span><br><span class="line">c.setDomain(&quot;abc.com&quot;);  </span><br><span class="line">resp.addCookie(c);</span><br></pre></td></tr></tbody></table></figure>
 </li>
 </ul>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -562,7 +580,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -652,7 +670,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

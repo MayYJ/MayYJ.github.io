@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x8BE6;&amp;#x89E3;BlockingQueue add() &amp;#x8FD9;&amp;#x4E2A;&amp;#x65B9;&amp;#x6CD5;&amp;#x662F;&amp;#x5411;&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x4E2D;&amp;#x6DFB;&amp;#x52A0;&amp;#x4E00;&amp;#x4E2A;&amp;#x5143;&amp;#x7">
+<meta name="keywords" content="阻塞队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阻塞队列详解">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/阻塞队列详解/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x8BE6;&amp;#x89E3;BlockingQueue add() &amp;#x8FD9;&amp;#x4E2A;&amp;#x65B9;&amp;#x6CD5;&amp;#x662F;&amp;#x5411;&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x4E2D;&amp;#x6DFB;&amp;#x52A0;&amp;#x4E00;&amp;#x4E2A;&amp;#x5143;&amp;#x7">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthcm802m0j20fl0i3dhg.jpg">
+<meta property="og:updated_time" content="2018-10-30T12:15:35.210Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阻塞队列详解">
+<meta name="twitter:description" content="&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x8BE6;&amp;#x89E3;BlockingQueue add() &amp;#x8FD9;&amp;#x4E2A;&amp;#x65B9;&amp;#x6CD5;&amp;#x662F;&amp;#x5411;&amp;#x963B;&amp;#x585E;&amp;#x961F;&amp;#x5217;&amp;#x4E2D;&amp;#x6DFB;&amp;#x52A0;&amp;#x4E00;&amp;#x4E2A;&amp;#x5143;&amp;#x7">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/阻塞队列详解/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>阻塞队列详解 | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/阻塞队列详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阻塞队列详解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-30 20:14:55 / 修改时间：20:15:35" itemprop="dateCreated datePublished" datetime="2018-10-30T20:14:55+08:00">2018-10-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="&#x963B;&#x585E;&#x961F;&#x5217;&#x8BE6;&#x89E3;"><a href="#&#x963B;&#x585E;&#x961F;&#x5217;&#x8BE6;&#x89E3;" class="headerlink" title="&#x963B;&#x585E;&#x961F;&#x5217;&#x8BE6;&#x89E3;"></a>&#x963B;&#x585E;&#x961F;&#x5217;&#x8BE6;&#x89E3;</h3><h4 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h4><ul>
+<li>add() &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x662F;&#x5411;&#x963B;&#x585E;&#x961F;&#x5217;&#x4E2D;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#xFF0C;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#x5982;&#x679C;&#x961F;&#x5217;&#x6EE1;&#x4E86;&#x4E0D;&#x4F1A;&#x7B49;&#x5F85;&#xFF0C;&#x4F1A;&#x76F4;&#x63A5;&#x629B;&#x51FA;&#x5F02;&#x5E38;&#xFF0C;&#x6DFB;&#x52A0;&#x6210;&#x529F;&#x5C31;&#x4F1A;&#x8FD4;&#x56DE;true</li>
+<li>offer() &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x65F6;&#x5411;&#x963B;&#x585E;&#x961F;&#x5217;&#x4E2D;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#xFF0C;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#x5982;&#x679C;&#x961F;&#x5217;&#x6EE1;&#x4E86;&#x4E0D;&#x4F1A;&#x7B49;&#x5F85;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x4F1A;&#x629B;&#x5F02;&#x5E38;&#xFF0C;&#x800C;&#x662F;&#x8FD4;&#x56DE;false&#xFF0C;&#x6DFB;&#x52A0;&#x6210;&#x529F;&#x8FD4;&#x56DE;true</li>
+<li>put() &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x662F;&#x5411;&#x963B;&#x585E;&#x961F;&#x5217;&#x4E2D;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#xFF0C;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#x5982;&#x679C;&#x961F;&#x5217;&#x6EE1;&#x4E86;&#x4F1A;&#x8FDB;&#x884C;&#x963B;&#x585E;&#x7B49;&#x5F85;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x4F1A;&#x8FD4;&#x56DE;&#x4EC0;&#x4E48;</li>
+<li>offer(e, timeout, unit) &#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#xFF0C;&#x4F1A;&#x8FDB;&#x884C;timeout&#x7684;&#x65F6;&#x95F4;&#x7B49;&#x5F85;&#xFF0C;&#x5176;&#x5B83;&#x5C31;&#x8DDF;offer()&#x65B9;&#x6CD5;&#x4E00;&#x6837;&#x4E86;</li>
+<li>take() &#x8FD9;&#x4E2A;&#x8DDF;put&#x65B9;&#x6CD5;&#x5BF9;&#x5E94;&#xFF0C;&#x8FDB;&#x884C;&#x963B;&#x585E;&#x7684;&#x53D6;&#x5143;&#x7D20;</li>
+<li>poll(timeout, unit)  &#x7B49;&#x5F85;timeout&#x7684;&#x65F6;&#x95F4;&#x53D6;&#x5143;&#x7D20;&#xFF0C;&#x5982;&#x679C;&#x8D85;&#x65F6;&#x5C31;&#x8FD4;&#x56DE;null </li>
+</ul>
+<h4 id="SynchronizeQueue"><a href="#SynchronizeQueue" class="headerlink" title="SynchronizeQueue"></a>SynchronizeQueue</h4><p>&#x8BE5;&#x961F;&#x5217;&#x5927;&#x6982;&#x7684;&#x7ED3;&#x6784;&#x5982;&#x4E0B;</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg" alt=""></p>
+<h5 id="TransferStack"><a href="#TransferStack" class="headerlink" title="TransferStack"></a>TransferStack</h5><p>&#x8FD9;&#x662F;&#x975E;&#x516C;&#x5E73;&#x7684;&#xFF0C;&#x60F3;&#x5BF9;&#x4E8E;&#x516C;&#x5E73;&#x6765;&#x8BF4;&#xFF0C;&#x8FD9;&#x4E2A;&#x5B9E;&#x73B0;&#x7684;&#x533A;&#x522B;&#x662F;&#x6BCF;&#x6B21;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#xFF0C;&#x516C;&#x5E73;&#x7684;&#x5B9E;&#x73B0;&#x662F;&#x5982;&#x679C;&#x4E0D;&#x80FD;&#x591F;&#x5339;&#x914D;&#x76F4;&#x63A5;&#x5C06;&#x7ED3;&#x70B9;&#x52A0;&#x5165;&#x5230;&#x6700;&#x540E;&#xFF0C;&#x4F46;&#x662F;&#x975E;&#x516C;&#x5E73;&#x7684;&#x65B9;&#x5F0F;&#x662F;&#x5E2E;&#x52A9;&#x524D;&#x4E00;&#x4E2A;&#x6B63;&#x5728;&#x4F20;&#x9012;&#x6570;&#x636E;&#x7684;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x5B8C;&#x6210;&#x4EA4;&#x6613;&#xFF0C;&#x7136;&#x540E;&#x653E;&#x5728;&#x6808;&#x9996;&#xFF1B;&#x5B83;&#x4E3B;&#x8981;&#x60F3;&#x8981;&#x8FBE;&#x5230;&#x7684;&#x662F;&#x7EBF;&#x7A0B;&#x5C40;&#x90E8;&#x6027;&#xFF0C;&#x4EE5;&#x6B64;&#x6765;&#x63D0;&#x9AD8;&#x6027;&#x80FD;</p>
+<h6 id="SNode"><a href="#SNode" class="headerlink" title="SNode"></a>SNode</h6><ul>
+<li><p>&#x4E00;&#x4E9B;&#x5C5E;&#x6027;</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&#x8FDE;&#x63A5;&#x4E0B;&#x4E00;&#x4E2A;&#x7ED3;&#x70B9;</span></span><br><span class="line"><span class="keyword">volatile</span> SNode next;        <span class="comment">// next node in stack</span></span><br><span class="line"><span class="comment">//&#x5982;&#x679C;&#x6709;&#x4E0E;&#x5F53;&#x524D;&#x8282;&#x70B9;&#x5339;&#x914D;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5C31;&#x628A;&#x8BE5;&#x8282;&#x70B9;&#x8D4B;&#x503C;&#x7ED9;&#x8FD9;&#x4E2A;&#x5C5E;&#x6027;</span></span><br><span class="line"><span class="keyword">volatile</span> SNode match;       <span class="comment">// the node matched to this</span></span><br><span class="line"><span class="comment">//&#x8BE5;&#x8282;&#x70B9;&#x63A7;&#x5236;&#x7684;&#x7EBF;&#x7A0B;</span></span><br><span class="line"><span class="keyword">volatile</span> Thread waiter;     <span class="comment">// to control park/unpark</span></span><br><span class="line"><span class="comment">//&#x8BE5;&#x8282;&#x70B9;&#x62E5;&#x6709;&#x7684;&#x6570;&#x636E;</span></span><br><span class="line">Object item;                <span class="comment">// data; or null for REQUESTs</span></span><br><span class="line"><span class="comment">//&#x8BE5;&#x8282;&#x70B9;&#x7684;&#x6A21;&#x5F0F;&#xFF0C;&#x6709;&#x4E09;&#x79CD;&#x6A21;&#x5F0F; REQUEST&#x3001;DATA&#x3001;FULFILLING</span></span><br><span class="line"><span class="keyword">int</span> mode;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h6 id="&#x4E00;&#x4E9B;&#x6808;&#x5143;&#x7D20;&#x7684;&#x64CD;&#x4F5C;"><a href="#&#x4E00;&#x4E9B;&#x6808;&#x5143;&#x7D20;&#x7684;&#x64CD;&#x4F5C;" class="headerlink" title="&#x4E00;&#x4E9B;&#x6808;&#x5143;&#x7D20;&#x7684;&#x64CD;&#x4F5C;"></a>&#x4E00;&#x4E9B;&#x6808;&#x5143;&#x7D20;&#x7684;&#x64CD;&#x4F5C;</h6><ol>
+<li>&#x8FD9;&#x91CC;&#x5BF9;&#x7684;&#x53C2;&#x6570;&#x4E2D;&#x7684;timed&#x548C;nanos&#x662F;&#x4E0E;&#x7B97;&#x6CD5;&#x7684;&#x7B2C;&#x4E8C;&#x70B9;&#x53C8;&#x5173;&#x7684;&#xFF0C;timed&#x3001;nanos&#x662F;&#x5B9E;&#x73B0;&#x7684;&#x4E00;&#x4E2A;&#x8FC7;&#x671F;&#x673A;&#x5236;&#xFF0C;</li>
+</ol>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E <span class="title">transfer</span><span class="params">(E e, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>{</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * Basic algorithm is to loop trying one of three actions:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 1. If apparently empty or already containing nodes of same</span></span><br><span class="line"><span class="comment">             *    mode, try to push node on stack and wait for a match,</span></span><br><span class="line"><span class="comment">             *    returning it, or null if cancelled.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 2. If apparently containing node of complementary mode,</span></span><br><span class="line"><span class="comment">             *    try to push a fulfilling node on to stack, match</span></span><br><span class="line"><span class="comment">             *    with corresponding waiting node, pop both from</span></span><br><span class="line"><span class="comment">             *    stack, and return matched item. The matching or</span></span><br><span class="line"><span class="comment">             *    unlinking might not actually be necessary because of</span></span><br><span class="line"><span class="comment">             *    other threads performing action 3:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 3. If top of stack already holds another fulfilling node,</span></span><br><span class="line"><span class="comment">             *    help it out by doing its match and/or pop</span></span><br><span class="line"><span class="comment">             *    operations, and then continue. The code for helping</span></span><br><span class="line"><span class="comment">             *    is essentially the same as for fulfilling, except</span></span><br><span class="line"><span class="comment">             *    that it doesn&apos;t return the item.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line"></span><br><span class="line">            SNode s = <span class="keyword">null</span>; <span class="comment">// constructed/reused as needed</span></span><br><span class="line">            <span class="keyword">int</span> mode = (e == <span class="keyword">null</span>) ? REQUEST : DATA;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (;;) {</span><br><span class="line">                SNode h = head;</span><br><span class="line">                <span class="keyword">if</span> (h == <span class="keyword">null</span> || h.mode == mode) {  <span class="comment">// empty or same-mode</span></span><br><span class="line">                    <span class="keyword">if</span> (timed &amp;&amp; nanos &lt;= <span class="number">0</span>) {      <span class="comment">// can&apos;t wait</span></span><br><span class="line">                        <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.isCancelled())</span><br><span class="line">                            casHead(h, h.next);     <span class="comment">// pop cancelled node</span></span><br><span class="line">                        <span class="keyword">else</span></span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    } <span class="keyword">else</span> <span class="keyword">if</span> (casHead(h, s = snode(s, e, h, mode))) {</span><br><span class="line">                        SNode m = awaitFulfill(s, timed, nanos);</span><br><span class="line">                        <span class="keyword">if</span> (m == s) {               <span class="comment">// wait was cancelled</span></span><br><span class="line">                            clean(s);</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                        }</span><br><span class="line">                        <span class="keyword">if</span> ((h = head) != <span class="keyword">null</span> &amp;&amp; h.next == s)</span><br><span class="line">                            casHead(h, s.next);     <span class="comment">// help s&apos;s fulfiller</span></span><br><span class="line">                        <span class="keyword">return</span> (E) ((mode == REQUEST) ? m.item : s.item);</span><br><span class="line">                    }</span><br><span class="line">                } <span class="keyword">else</span> <span class="keyword">if</span> (!isFulfilling(h.mode)) { <span class="comment">// try to fulfill</span></span><br><span class="line">                    <span class="keyword">if</span> (h.isCancelled())            <span class="comment">// already cancelled</span></span><br><span class="line">                        casHead(h, h.next);         <span class="comment">// pop and retry</span></span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (casHead(h, s=snode(s, e, h, FULFILLING|mode))) {</span><br><span class="line">                        <span class="keyword">for</span> (;;) { <span class="comment">// loop until matched or waiters disappear</span></span><br><span class="line">                            SNode m = s.next;       <span class="comment">// m is s&apos;s match</span></span><br><span class="line">                            <span class="keyword">if</span> (m == <span class="keyword">null</span>) {        <span class="comment">// all waiters are gone</span></span><br><span class="line">                                casHead(s, <span class="keyword">null</span>);   <span class="comment">// pop fulfill node</span></span><br><span class="line">                                s = <span class="keyword">null</span>;           <span class="comment">// use new node next time</span></span><br><span class="line">                                <span class="keyword">break</span>;              <span class="comment">// restart main loop</span></span><br><span class="line">                            }</span><br><span class="line">                            SNode mn = m.next;</span><br><span class="line">                            <span class="keyword">if</span> (m.tryMatch(s)) {</span><br><span class="line">                                casHead(s, mn);     <span class="comment">// pop both s and m</span></span><br><span class="line">                                <span class="keyword">return</span> (E) ((mode == REQUEST) ? m.item : s.item);</span><br><span class="line">                            } <span class="keyword">else</span>                  <span class="comment">// lost match</span></span><br><span class="line">                                s.casNext(m, mn);   <span class="comment">// help unlink</span></span><br><span class="line">                        }</span><br><span class="line">                    }</span><br><span class="line">                } <span class="keyword">else</span> {                            <span class="comment">// help a fulfiller</span></span><br><span class="line">                    SNode m = h.next;               <span class="comment">// m is h&apos;s match</span></span><br><span class="line">                    <span class="keyword">if</span> (m == <span class="keyword">null</span>)                  <span class="comment">// waiter is gone</span></span><br><span class="line">                        casHead(h, <span class="keyword">null</span>);           <span class="comment">// pop fulfilling node</span></span><br><span class="line">                    <span class="keyword">else</span> {</span><br><span class="line">                        SNode mn = m.next;</span><br><span class="line">                        <span class="keyword">if</span> (m.tryMatch(h))          <span class="comment">// help match</span></span><br><span class="line">                            casHead(h, mn);         <span class="comment">// pop both h and m</span></span><br><span class="line">                        <span class="keyword">else</span>                        <span class="comment">// lost match</span></span><br><span class="line">                            h.casNext(m, mn);       <span class="comment">// help unlink</span></span><br><span class="line">                    }</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x8FD9;&#x4E2A;&#x5C31;&#x662F;&#x5B9E;&#x73B0;&#x7684;&#x7B97;&#x6CD5;&#xFF1A;</p>
+<ol>
+<li>&#x5F53;&#x6808;&#x4E3A;&#x7A7A;&#x6216;&#x8005;&#x6808;&#x4E2D;&#x7684;&#x9996;&#x5143;&#x7D20;&#x7684;&#x6A21;&#x5F0F;&#x4E0E;&#x5339;&#x914D;&#x7684;&#x7ED3;&#x70B9;&#x7684;&#x6A21;&#x5F0F;&#x76F8;&#x540C;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x628A;&#x7ED3;&#x70B9;&#x63A8;&#x5165;&#x6808;&#x7B49;&#x5F85;&#x5339;&#x914D;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x7B49;&#x5F85;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#x4F1A;&#x8C03;&#x7528;awaitFulfill&#xFF0C;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x4F1A;&#x4E0D;&#x4F1A;&#x76F4;&#x63A5;&#x5C06;&#x7EBF;&#x7A0B;&#x963B;&#x585E;&#x8FDB;&#x884C;&#x7B49;&#x5F85;&#xFF0C;&#x800C;&#x662F;&#x5148;&#x8FDB;&#x884C;&#x81EA;&#x65CB;&#xFF0C;&#x81EA;&#x65CB;&#x540E;&#x6CA1;&#x80FD;&#x591F;&#x591F;&#x6210;&#x529F;&#x5339;&#x914D;&#x624D;&#x8FDB;&#x884C;&#x963B;&#x585E;&#x7B49;&#x5F85;&#xFF1B;</li>
+<li>&#x5982;&#x679C;&#x5F53;&#x524D;&#x6808;&#x9876;&#x7684;&#x7ED3;&#x70B9;&#x4E0E;&#x8BF7;&#x6C42;&#x4EA4;&#x6613;&#x7684;&#x7ED3;&#x70B9;&#x4E92;&#x8865;&#xFF0C;&#x90A3;&#x4E48;&#x5C06;&#x8FD9;&#x4E2A;&#x8BF7;&#x6C42;&#x4EA4;&#x6613;&#x7684;&#x8282;&#x70B9;&#x7684;&#x6A21;&#x5F0F;&#x53D8;&#x4E3A;FULFILLING&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x5176;&#x538B;&#x5165;&#x6808;&#x4E2D;&#xFF0C;&#x548C;&#x4E92;&#x8865;&#x7684;&#x8282;&#x70B9;&#x8FDB;&#x884C;&#x5339;&#x914D;&#xFF0C;&#x5B8C;&#x6210;&#x4EA4;&#x6613;&#x4E4B;&#x540E;&#x5C06;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x4E00;&#x8D77;&#x5F39;&#x51FA;&#xFF0C;&#x5E76;&#x4E14;&#x8FD4;&#x56DE;&#x4EA4;&#x6613;&#x7684;&#x6570;&#x636E;&#x3002; </li>
+<li>&#x5982;&#x679C;&#x6808;&#x9876;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x4E00;&#x4E2A;&#x6A21;&#x5F0F;&#x4E3A;FULFILLING&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x8BF4;&#x660E;&#x6808;&#x9876;&#x7684;&#x8282;&#x70B9;&#x6B63;&#x5728;&#x8FDB;&#x884C;&#x5339;&#x914D;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x5E2E;&#x52A9;&#x8FD9;&#x4E2A;&#x6808;&#x9876;&#x8282;&#x70B9;&#x5FEB;&#x901F;&#x5B8C;&#x6210;&#x4EA4;&#x6613;&#xFF0C;&#x7136;&#x540E;&#x7EE7;&#x7EED;&#x4EA4;&#x6613;&#x3002;&#x6211;&#x60F3;&#x8981;&#x8BF4;&#x4E00;&#x4E0B;&#x8FD9;&#x91CC;&#x7684;&#x5E2E;&#x52A9;&#xFF0C;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x628A;&#x6B63;&#x5728;&#x8FDB;&#x884C;&#x6570;&#x636E;&#x4F20;&#x9012;&#x7684;&#x4E24;&#x4E2A;&#x8282;&#x70B9;&#x4ECE;&#x6808;&#x4E2D;&#x79FB;&#x9664;&#x3002;</li>
+</ol>
+<ol>
+<li><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">tryMatch</span><span class="params">(SNode s)</span> </span>{</span><br><span class="line">    <span class="keyword">if</span> (match == <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">        UNSAFE.compareAndSwapObject(<span class="keyword">this</span>, matchOffset, <span class="keyword">null</span>, s)) {</span><br><span class="line">        Thread w = waiter;</span><br><span class="line">        <span class="keyword">if</span> (w != <span class="keyword">null</span>) {    <span class="comment">// waiters need at most one unpark</span></span><br><span class="line">            waiter = <span class="keyword">null</span>;</span><br><span class="line">            LockSupport.unpark(w);</span><br><span class="line">        }</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> match == s;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ol>
+<p>&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x662F;&#x5728;&#x8FDB;&#x5165;&#x6808;&#x4E2D;&#x7684;&#x65F6;&#x5019;&#x5C1D;&#x8BD5;&#x53BB;&#x5339;&#x914D;&#x4E92;&#x8865;&#x6A21;&#x5F0F;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5339;&#x914D;&#x6210;&#x529F;&#x5C31;&#x4F1A;&#x4F7F;&#x6808;&#x4E2D;&#x8282;&#x70B9;&#x62E5;&#x6709;&#x7684;&#x7EBF;&#x7A0B;&#x5524;&#x9192;</p>
+<h5 id="TransferQueue"><a href="#TransferQueue" class="headerlink" title="TransferQueue"></a>TransferQueue</h5><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E <span class="title">transfer</span><span class="params">(E e, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>{</span><br><span class="line">            <span class="comment">/* Basic algorithm is to loop trying to take either of</span></span><br><span class="line"><span class="comment">             * two actions:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 1. If queue apparently empty or holding same-mode nodes,</span></span><br><span class="line"><span class="comment">             *    try to add node to queue of waiters, wait to be</span></span><br><span class="line"><span class="comment">             *    fulfilled (or cancelled) and return matching item.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 2. If queue apparently contains waiting items, and this</span></span><br><span class="line"><span class="comment">             *    call is of complementary mode, try to fulfill by CAS&apos;ing</span></span><br><span class="line"><span class="comment">             *    item field of waiting node and dequeuing it, and then</span></span><br><span class="line"><span class="comment">             *    returning matching item.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * In each case, along the way, check for and try to help</span></span><br><span class="line"><span class="comment">             * advance head and tail on behalf of other stalled/slow</span></span><br><span class="line"><span class="comment">             * threads.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * The loop starts off with a null check guarding against</span></span><br><span class="line"><span class="comment">             * seeing uninitialized head or tail values. This never</span></span><br><span class="line"><span class="comment">             * happens in current SynchronousQueue, but could if</span></span><br><span class="line"><span class="comment">             * callers held non-volatile/final ref to the</span></span><br><span class="line"><span class="comment">             * transferer. The check is here anyway because it places</span></span><br><span class="line"><span class="comment">             * null checks at top of loop, which is usually faster</span></span><br><span class="line"><span class="comment">             * than having them implicitly interspersed.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line"></span><br><span class="line">            QNode s = <span class="keyword">null</span>; <span class="comment">// constructed/reused as needed</span></span><br><span class="line">            <span class="keyword">boolean</span> isData = (e != <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (;;) {</span><br><span class="line">                QNode t = tail;</span><br><span class="line">                QNode h = head;</span><br><span class="line">                <span class="keyword">if</span> (t == <span class="keyword">null</span> || h == <span class="keyword">null</span>)         <span class="comment">// saw uninitialized value</span></span><br><span class="line">                    <span class="keyword">continue</span>;                       <span class="comment">// spin</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (h == t || t.isData == isData) { <span class="comment">// empty or same-mode</span></span><br><span class="line">                    QNode tn = t.next;</span><br><span class="line">                    <span class="keyword">if</span> (t != tail)                  <span class="comment">// inconsistent read</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="keyword">if</span> (tn != <span class="keyword">null</span>) {               <span class="comment">// lagging tail</span></span><br><span class="line">                        advanceTail(t, tn);</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    }</span><br><span class="line">                    <span class="keyword">if</span> (timed &amp;&amp; nanos &lt;= <span class="number">0</span>)        <span class="comment">// can&apos;t wait</span></span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (s == <span class="keyword">null</span>)</span><br><span class="line">                        s = <span class="keyword">new</span> QNode(e, isData);</span><br><span class="line">                    <span class="keyword">if</span> (!t.casNext(<span class="keyword">null</span>, s))        <span class="comment">// failed to link in</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">                    advanceTail(t, s);              <span class="comment">// swing tail and wait</span></span><br><span class="line">                    Object x = awaitFulfill(s, e, timed, nanos);</span><br><span class="line">                    <span class="keyword">if</span> (x == s) {                   <span class="comment">// wait was cancelled</span></span><br><span class="line">                        clean(t, s);</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    }</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (!s.isOffList()) {           <span class="comment">// not already unlinked</span></span><br><span class="line">                        advanceHead(t, s);          <span class="comment">// unlink if head</span></span><br><span class="line">                        <span class="keyword">if</span> (x != <span class="keyword">null</span>)              <span class="comment">// and forget fields</span></span><br><span class="line">                            s.item = s;</span><br><span class="line">                        s.waiter = <span class="keyword">null</span>;</span><br><span class="line">                    }</span><br><span class="line">                    <span class="keyword">return</span> (x != <span class="keyword">null</span>) ? (E)x : e;</span><br><span class="line"></span><br><span class="line">                } <span class="keyword">else</span> {                            <span class="comment">// complementary-mode</span></span><br><span class="line">                    QNode m = h.next;               <span class="comment">// node to fulfill</span></span><br><span class="line">                    <span class="keyword">if</span> (t != tail || m == <span class="keyword">null</span> || h != head)</span><br><span class="line">                        <span class="keyword">continue</span>;                   <span class="comment">// inconsistent read</span></span><br><span class="line"></span><br><span class="line">                    Object x = m.item;</span><br><span class="line">                    <span class="keyword">if</span> (isData == (x != <span class="keyword">null</span>) ||    <span class="comment">// m already fulfilled</span></span><br><span class="line">                        x == m ||                   <span class="comment">// m cancelled</span></span><br><span class="line">                        !m.casItem(x, e)) {         <span class="comment">// lost CAS</span></span><br><span class="line">                        advanceHead(h, m);          <span class="comment">// dequeue and retry</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    }</span><br><span class="line"></span><br><span class="line">                    advanceHead(h, m);              <span class="comment">// successfully fulfilled</span></span><br><span class="line">                    LockSupport.unpark(m.waiter);</span><br><span class="line">                    <span class="keyword">return</span> (x != <span class="keyword">null</span>) ? (E)x : e;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x7B97;&#x6CD5;&#x8BBE;&#x8BA1;&#x601D;&#x8DEF;&#xFF1A;</p>
+<ol>
+<li>&#x5982;&#x679C;&#x961F;&#x5217;&#x4E3A;&#x7A7A;&#xFF0C;&#x6216;&#x8005;&#x8BF7;&#x6C42;&#x4EA4;&#x6613;&#x7684;&#x8282;&#x70B9;&#x548C;&#x961F;&#x5217;&#x4E2D;&#x7684;&#x8282;&#x70B9;&#x5177;&#x6709;&#x76F8;&#x540C;&#x7684;&#x4EA4;&#x6613;&#x7C7B;&#x578B;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x5C06;&#x8BE5;&#x8BF7;&#x6C42;&#x4EA4;&#x6613;&#x7684;&#x8282;&#x70B9;&#x6DFB;&#x52A0;&#x5230;&#x961F;&#x5217;&#x5C3E;&#x90E8;&#x7B49;&#x5F85;&#x4EA4;&#x6613;&#xFF0C;&#x76F4;&#x5230;&#x88AB;&#x5339;&#x914D;&#x6216;&#x8005;&#x88AB;&#x53D6;&#x6D88;</li>
+<li>&#x5982;&#x679C;&#x961F;&#x5217;&#x4E2D;&#x5305;&#x542B;&#x4E86;&#x7B49;&#x5F85;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x5E76;&#x4E14;&#x8BF7;&#x6C42;&#x7684;&#x8282;&#x70B9;&#x548C;&#x7B49;&#x5F85;&#x7684;&#x8282;&#x70B9;&#x662F;&#x4E92;&#x8865;&#x7684;&#xFF0C;&#x90A3;&#x4E48;&#x8FDB;&#x884C;&#x5339;&#x914D;&#x5E76;&#x4E14;&#x8FDB;&#x884C;&#x4EA4;&#x6613;</li>
+</ol>
+<h5 id="&#x5173;&#x4E8E;awaitfulfill&#x65B9;&#x6CD5;"><a href="#&#x5173;&#x4E8E;awaitfulfill&#x65B9;&#x6CD5;" class="headerlink" title="&#x5173;&#x4E8E;awaitfulfill&#x65B9;&#x6CD5;"></a>&#x5173;&#x4E8E;awaitfulfill&#x65B9;&#x6CD5;</h5><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SNode <span class="title">awaitFulfill</span><span class="params">(SNode s, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>{</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">long</span> deadline = timed ? System.nanoTime() + nanos : <span class="number">0L</span>;</span><br><span class="line">           Thread w = Thread.currentThread();</span><br><span class="line">           <span class="keyword">int</span> spins = (shouldSpin(s) ?</span><br><span class="line">                        (timed ? maxTimedSpins : maxUntimedSpins) : <span class="number">0</span>);</span><br><span class="line">           <span class="keyword">for</span> (;;) {</span><br><span class="line">               <span class="keyword">if</span> (w.isInterrupted())</span><br><span class="line">                   s.tryCancel();</span><br><span class="line">               SNode m = s.match;</span><br><span class="line">               <span class="keyword">if</span> (m != <span class="keyword">null</span>)</span><br><span class="line">                   <span class="keyword">return</span> m;</span><br><span class="line">               <span class="comment">//&#x5B9E;&#x73B0;&#x8FC7;&#x671F;&#x673A;&#x5236;</span></span><br><span class="line">               <span class="keyword">if</span> (timed) {</span><br><span class="line">                   nanos = deadline - System.nanoTime();</span><br><span class="line">                   <span class="keyword">if</span> (nanos &lt;= <span class="number">0L</span>) {</span><br><span class="line">                       s.tryCancel();</span><br><span class="line">                       <span class="keyword">continue</span>;</span><br><span class="line">                   }</span><br><span class="line">               }</span><br><span class="line">               <span class="comment">//&#x5B9E;&#x73B0;&#x81EA;&#x65CB;&#x7B49;&#x5F85;</span></span><br><span class="line">               <span class="keyword">if</span> (spins &gt; <span class="number">0</span>)</span><br><span class="line">                   spins = shouldSpin(s) ? (spins-<span class="number">1</span>) : <span class="number">0</span>;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (s.waiter == <span class="keyword">null</span>)</span><br><span class="line">                   s.waiter = w; <span class="comment">// establish waiter so can park next iter</span></span><br><span class="line">               <span class="comment">//&#x8FD9;&#x91CC;&#x5C31;&#x662F;&#x7EBF;&#x7A0B;&#x4F1A;&#x4E0D;&#x4F1A;&#x8FC7;&#x671F;&#xFF0C;&#x4E0D;&#x4F1A;&#x8FC7;&#x671F;&#x76F4;&#x63A5;&#x963B;&#x585E;&#xFF1B;&#x4F1A;&#x8FC7;&#x671F;&#x5C31;&#x8C03;&#x7528;parkNanos&#x7136;&#x540E;&#x91CD;&#x65B0;&#x6267;&#x884C;&#x5FAA;&#x73AF;&#xFF0C;&#x5C31;&#x4F1A;&#x91CD;&#x65B0;&#x68C0;&#x67E5;nanos&#xFF0C;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;nanos&#x4F1A;&lt;=0&#x5C31;&#x4F1A;cancel&#x8FD9;&#x4E2A;&#x7ED3;&#x70B9;</span></span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (!timed)</span><br><span class="line">                   LockSupport.park(<span class="keyword">this</span>);</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (nanos &gt; spinForTimeoutThreshold)</span><br><span class="line">                   LockSupport.parkNanos(<span class="keyword">this</span>, nanos);</span><br><span class="line">           }</span><br><span class="line">       }</span><br></pre></td></tr></tbody></table></figure>
+<p>spins = shouldSpin(s) ? (spins-1) : 0; &#x8FD9;&#x91CC;&#x5B9E;&#x73B0;&#x4E86;&#x81EA;&#x65CB;&#x7B49;&#x5F85;&#xFF1B;timed&#x548C;nanos&#x662F;&#x7ED9;&#x7ED3;&#x70B9;&#x8BBE;&#x7F6E;&#x8FC7;&#x671F;&#x65F6;&#x95F4;&#xFF0C;time out&#x4E86;&#x5C31;&#x4F1A;s.tryCancel();&#x5982;&#x679C;&#x5728;&#x81EA;&#x65CB;&#x7684;&#x65F6;&#x95F4;&#x5185;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x5339;&#x914D;&#x7684;&#x7ED3;&#x70B9;&#xFF0C;&#x90A3;&#x4E48;&#x8FDB;&#x884C;&#x963B;&#x585E;&#x7B49;&#x5F85;&#xFF0C;&#x7136;&#x540E;&#x7B49;&#x5230;&#x6709;&#x5339;&#x914D;&#x7684;&#x7EBF;&#x7A0B;&#x5230;&#x6765;&#xFF0C;&#x901A;&#x8FC7;SNode&#x7684;waiter&#x5C5E;&#x6027;&#x5360;&#x5230;&#x5F53;&#x524D;&#x7EBF;&#x7A0B;&#x8FDB;&#x884C;&#x5524;&#x9192;&#xFF1B;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x77E5;&#x9053;&#x6709;&#x4E86;&#x8FC7;&#x671F;&#x65F6;&#x95F4;&#x5C31;&#x4E0D;&#x4F1A;&#x6709;&#x7EBF;&#x7A0B;&#x963B;&#x585E;&#x3002;</p>
+<h5 id="&#x5173;&#x4E8E;&#x516C;&#x5E73;&#x548C;&#x975E;&#x516C;&#x5E73;&#x7684;&#x533A;&#x522B;"><a href="#&#x5173;&#x4E8E;&#x516C;&#x5E73;&#x548C;&#x975E;&#x516C;&#x5E73;&#x7684;&#x533A;&#x522B;" class="headerlink" title="&#x5173;&#x4E8E;&#x516C;&#x5E73;&#x548C;&#x975E;&#x516C;&#x5E73;&#x7684;&#x533A;&#x522B;"></a>&#x5173;&#x4E8E;&#x516C;&#x5E73;&#x548C;&#x975E;&#x516C;&#x5E73;&#x7684;&#x533A;&#x522B;</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* The (Lifo) stack is used for non-fair mode, and the (Fifo)</span><br><span class="line">     * queue for fair mode. The performance of the two is generally</span><br><span class="line">     * similar. Fifo usually supports higher throughput under</span><br><span class="line">     * contention but Lifo maintains higher thread locality in common</span><br><span class="line">     * applications.</span><br></pre></td></tr></tbody></table></figure>
+<p>&#xFF08;Lifo&#xFF09;&#x5806;&#x6808;&#x7528;&#x4E8E;&#x975E;&#x516C;&#x5E73;&#x6A21;&#x5F0F;&#xFF0C;&#x800C;&#xFF08;Fifo&#xFF09;&#x961F;&#x5217;&#x7528;&#x4E8E;&#x516C;&#x5E73;&#x6A21;&#x5F0F;&#x3002; &#x4E24;&#x8005;&#x7684;&#x8868;&#x73B0;&#x5927;&#x81F4;&#x76F8;&#x4F3C;&#x3002; Fifo&#x901A;&#x5E38;&#x652F;&#x6301;&#x66F4;&#x9AD8;&#x7684;&#x541E;&#x5410;&#x91CF;&#xFF0C;&#x4F46;Lifo&#x5728;&#x5E38;&#x89C1;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E2D;&#x7EF4;&#x62A4;&#x66F4;&#x9AD8;&#x7684;&#x7EBF;&#x7A0B;&#x5C40;&#x90E8;&#x6027;&#x3002;</p>
+<h5 id="&#x6D41;&#x7A0B;&#x56FE;&#x5C55;&#x793A;&#x6574;&#x4E2A;&#x5927;&#x6982;&#x7684;&#x6D41;&#x7A0B;"><a href="#&#x6D41;&#x7A0B;&#x56FE;&#x5C55;&#x793A;&#x6574;&#x4E2A;&#x5927;&#x6982;&#x7684;&#x6D41;&#x7A0B;" class="headerlink" title="&#x6D41;&#x7A0B;&#x56FE;&#x5C55;&#x793A;&#x6574;&#x4E2A;&#x5927;&#x6982;&#x7684;&#x6D41;&#x7A0B;"></a>&#x6D41;&#x7A0B;&#x56FE;&#x5C55;&#x793A;&#x6574;&#x4E2A;&#x5927;&#x6982;&#x7684;&#x6D41;&#x7A0B;</h5><p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fthcm802m0j20fl0i3dhg.jpg" alt=""></p>
+<h4 id="ArrayBlockingQueue"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</h4><p>&#x8FD9;&#x4E2A;&#x5BB9;&#x5668;&#x6CA1;&#x6709;&#x4EC0;&#x4E48;&#x597D;&#x8BB2;&#x7684;&#xFF0C;&#x6211;&#x4EEC;&#x770B;&#x4E00;&#x4E0B;&#x5B83;&#x7684;&#x53D8;&#x91CF;&#x5C31;&#x5DEE;&#x4E0D;&#x591A;&#x77E5;&#x9053;&#x5B83;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Object[] items;</span><br><span class="line"><span class="keyword">int</span> takeIndex;</span><br><span class="line"><span class="keyword">int</span> putIndex;</span><br><span class="line"><span class="keyword">int</span> count;</span><br><span class="line"><span class="keyword">final</span> ReentrantLock lock;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull;</span><br><span class="line"><span class="keyword">transient</span> Itrs itrs = <span class="keyword">null</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x8BB2;&#x7684;&#x662F;&#xFF0C;&#x8FD9;&#x91CC;&#x4E5F;&#x8BBE;&#x7F6E;&#x4E86;&#x4E00;&#x4E2A;&#x8FC7;&#x671F;&#x65F6;&#x95F4;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x662F;&#x5F53;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x6DFB;&#x52A0;&#x5230;&#x5BB9;&#x5668;&#x91CC;&#x9762;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x5BB9;&#x5668;&#x6EE1;&#x4E86;&#xFF0C;&#x5C31;&#x7B49;&#x5F85;&#x4E00;&#x6BB5;&#x65F6;&#x95F4;&#xFF0C;&#x5982;&#x679C;&#x7B49;&#x5F85;&#x4E00;&#x6BB5;&#x65F6;&#x95F4;&#x540E;&#xFF0C;&#x8FD8;&#x662F;&#x4E0D;&#x53EF;&#x4EE5;&#x6DFB;&#x52A0;&#xFF0C;&#x5C31;&#x6DFB;&#x52A0;&#x5931;&#x8D25;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e, <span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException </span>{</span><br><span class="line"></span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        <span class="keyword">long</span> nanos = unit.toNanos(timeout);</span><br><span class="line">        <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> {</span><br><span class="line">            <span class="keyword">while</span> (count == items.length) {</span><br><span class="line">                <span class="keyword">if</span> (nanos &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                nanos = notFull.awaitNanos(nanos);</span><br><span class="line">            }</span><br><span class="line">            enqueue(e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        } <span class="keyword">finally</span> {</span><br><span class="line">            lock.unlock();</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h4><p>&#x53D8;&#x91CF;</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> capacity;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line"><span class="keyword">transient</span> Node&lt;E&gt; head;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Node&lt;E&gt; last; 	</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock takeLock = <span class="keyword">new</span> ReentrantLock();	</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty = takeLock.newCondition();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock putLock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull = putLock.newCondition();</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> E <span class="title">dequeue</span><span class="params">()</span> </span>{</span><br><span class="line">    <span class="comment">// assert takeLock.isHeldByCurrentThread();</span></span><br><span class="line">    <span class="comment">// assert head.item == null;</span></span><br><span class="line">    Node&lt;E&gt; h = head;</span><br><span class="line">    Node&lt;E&gt; first = h.next;</span><br><span class="line">    h.next = h; <span class="comment">// help GC</span></span><br><span class="line">    head = first;</span><br><span class="line">    E x = first.item;</span><br><span class="line">    first.item = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;h.next = h;&#x8FD9;&#x91CC;&#x662F;&#x901A;&#x8FC7;&#x81EA;&#x5DF1;&#x7684;&#x5C5E;&#x6027;&#x6307;&#x5411;&#x81EA;&#x5DF1;&#x5F62;&#x6210;&#x4E00;&#x4E2A;&#x73AF;&#xFF0C; GC&#x5C31;&#x4F1A;&#x8BA4;&#x4E3A;&#x5B83;&#x662F;&#x65E0;&#x7528;&#x7684;</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/阻塞队列/" rel="tag"># 阻塞队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/java/源码解析/ThreadPoolExecutor源码解析/" rel="next" title="ThreadPoolExecutor源码解析">
+                <i class="fa fa-chevron-left"></i> ThreadPoolExecutor源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞队列详解"><span class="nav-number">1.</span> <span class="nav-text">阻塞队列详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BlockingQueue"><span class="nav-number">1.1.</span> <span class="nav-text">BlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SynchronizeQueue"><span class="nav-number">1.2.</span> <span class="nav-text">SynchronizeQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TransferStack"><span class="nav-number">1.2.1.</span> <span class="nav-text">TransferStack</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SNode"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">SNode</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#一些栈元素的操作"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">一些栈元素的操作</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TransferQueue"><span class="nav-number">1.2.2.</span> <span class="nav-text">TransferQueue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于awaitfulfill方法"><span class="nav-number">1.2.3.</span> <span class="nav-text">关于awaitfulfill方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于公平和非公平的区别"><span class="nav-number">1.2.4.</span> <span class="nav-text">关于公平和非公平的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#流程图展示整个大概的流程"><span class="nav-number">1.2.5.</span> <span class="nav-text">流程图展示整个大概的流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayBlockingQueue"><span class="nav-number">1.3.</span> <span class="nav-text">ArrayBlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedBlockingQueue"><span class="nav-number">1.4.</span> <span class="nav-text">LinkedBlockingQueue</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="根据jdk类注释中可以得到的一些信息  HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable， 要求线程安全那么就使用HashTable  要求键值不能为空  如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间  关于modCount：在HashTable被创建完成后，除了使用iterator自己的remove方法，其他">
+  <meta name="description" content="&amp;#x6839;&amp;#x636E;jdk&amp;#x7C7B;&amp;#x6CE8;&amp;#x91CA;&amp;#x4E2D;&amp;#x53EF;&amp;#x4EE5;&amp;#x5F97;&amp;#x5230;&amp;#x7684;&amp;#x4E00;&amp;#x4E9B;&amp;#x4FE1;&amp;#x606F;  HashTable&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x4F46;&amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/06/15/java/源码解析/HashTable/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="根据jdk类注释中可以得到的一些信息  HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable， 要求线程安全那么就使用HashTable  要求键值不能为空  如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间  关于modCount：在HashTable被创建完成后，除了使用iterator自己的remove方法，其他">
+<meta property="og:description" content="&amp;#x6839;&amp;#x636E;jdk&amp;#x7C7B;&amp;#x6CE8;&amp;#x91CA;&amp;#x4E2D;&amp;#x53EF;&amp;#x4EE5;&amp;#x5F97;&amp;#x5230;&amp;#x7684;&amp;#x4E00;&amp;#x4E9B;&amp;#x4FE1;&amp;#x606F;  HashTable&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x4F46;&amp;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-06-15T08:37:14.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="根据jdk类注释中可以得到的一些信息  HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable， 要求线程安全那么就使用HashTable  要求键值不能为空  如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间  关于modCount：在HashTable被创建完成后，除了使用iterator自己的remove方法，其他">
+<meta name="twitter:description" content="&amp;#x6839;&amp;#x636E;jdk&amp;#x7C7B;&amp;#x6CE8;&amp;#x91CA;&amp;#x4E2D;&amp;#x53EF;&amp;#x4EE5;&amp;#x5F97;&amp;#x5230;&amp;#x7684;&amp;#x4E00;&amp;#x4E9B;&amp;#x4FE1;&amp;#x606F;  HashTable&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x4F46;&amp;">
 
 
 
@@ -387,30 +387,48 @@
 
       
         <ol>
-<li><p>根据jdk类注释中可以得到的一些信息</p>
+<li><p>&#x6839;&#x636E;jdk&#x7C7B;&#x6CE8;&#x91CA;&#x4E2D;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x7684;&#x4E00;&#x4E9B;&#x4FE1;&#x606F;</p>
 <ul>
-<li><p>HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable，</p>
-<p>要求线程安全那么就使用HashTable</p>
+<li><p>HashTable&#x662F;&#x7EBF;&#x7A0B;&#x5B89;&#x5168;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x5982;&#x679C;&#x4E0D;&#x8981;&#x6C42;&#x7EBF;&#x7A0B;&#x5B89;&#x5168;&#x63A8;&#x8350;&#x4F7F;&#x7528;HashMap&#x6765;&#x4EE3;&#x66FF;HashTable&#xFF0C;</p>
+<p>&#x8981;&#x6C42;&#x7EBF;&#x7A0B;&#x5B89;&#x5168;&#x90A3;&#x4E48;&#x5C31;&#x4F7F;&#x7528;HashTable</p>
 </li>
-<li><p>要求键值不能为空</p>
+<li><p>&#x8981;&#x6C42;&#x952E;&#x503C;&#x4E0D;&#x80FD;&#x4E3A;&#x7A7A;</p>
 </li>
-<li><p>如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间</p>
+<li><p>&#x5982;&#x679C;&#x4F1A;&#x7528;&#x8F83;&#x591A;&#x7684;&#x5143;&#x7D20;&#x4F7F;&#x7528;&#xFF0C;&#x90A3;&#x4E48;&#x6700;&#x597D;&#x8BBE;&#x7F6E;&#x8DB3;&#x591F;&#x7684;&#x5BB9;&#x91CF;&#x6765;&#x51CF;&#x5C11;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x65F6;&#x6269;&#x5BB9;&#x7684;&#x6D6A;&#x8D39;&#x7684;&#x65F6;&#x95F4;</p>
 </li>
-<li><p>关于modCount：在HashTable被创建完成后，除了使用iterator自己的remove方法，其他任何对于它结构性改变的方法都会抛出ConcurrentModificationException；因此在面对同步更改的情况下iterator能够失败得快而干净。但是这并不能对于非同步的同时更改带来硬性保证不会出现问题。</p>
-<p>我们在iterator中看到这个也就明白了，在得到自己的遍历器的时候就会自己期望的更改次数值为当前的已经的更改次数值。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expectedModCount = modCount;</span><br></pre></td></tr></table></figure>
-<p>当一个对象得到它的遍历器的时候也就是准备遍历它的所有元素，那么在这个遍历过程中我也就不想其中有元素会有所改变，所以在这个时候如果我们通过直接调用容器的删除添加元素等方法就会造成。</p>
+<li><p>&#x5173;&#x4E8E;modCount&#xFF1A;&#x5728;HashTable&#x88AB;&#x521B;&#x5EFA;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x9664;&#x4E86;&#x4F7F;&#x7528;iterator&#x81EA;&#x5DF1;&#x7684;remove&#x65B9;&#x6CD5;&#xFF0C;&#x5176;&#x4ED6;&#x4EFB;&#x4F55;&#x5BF9;&#x4E8E;&#x5B83;&#x7ED3;&#x6784;&#x6027;&#x6539;&#x53D8;&#x7684;&#x65B9;&#x6CD5;&#x90FD;&#x4F1A;&#x629B;&#x51FA;ConcurrentModificationException&#xFF1B;&#x56E0;&#x6B64;&#x5728;&#x9762;&#x5BF9;&#x540C;&#x6B65;&#x66F4;&#x6539;&#x7684;&#x60C5;&#x51B5;&#x4E0B;iterator&#x80FD;&#x591F;&#x5931;&#x8D25;&#x5F97;&#x5FEB;&#x800C;&#x5E72;&#x51C0;&#x3002;&#x4F46;&#x662F;&#x8FD9;&#x5E76;&#x4E0D;&#x80FD;&#x5BF9;&#x4E8E;&#x975E;&#x540C;&#x6B65;&#x7684;&#x540C;&#x65F6;&#x66F4;&#x6539;&#x5E26;&#x6765;&#x786C;&#x6027;&#x4FDD;&#x8BC1;&#x4E0D;&#x4F1A;&#x51FA;&#x73B0;&#x95EE;&#x9898;&#x3002;</p>
+<p>&#x6211;&#x4EEC;&#x5728;iterator&#x4E2D;&#x770B;&#x5230;&#x8FD9;&#x4E2A;&#x4E5F;&#x5C31;&#x660E;&#x767D;&#x4E86;&#xFF0C;&#x5728;&#x5F97;&#x5230;&#x81EA;&#x5DF1;&#x7684;&#x904D;&#x5386;&#x5668;&#x7684;&#x65F6;&#x5019;&#x5C31;&#x4F1A;&#x81EA;&#x5DF1;&#x671F;&#x671B;&#x7684;&#x66F4;&#x6539;&#x6B21;&#x6570;&#x503C;&#x4E3A;&#x5F53;&#x524D;&#x7684;&#x5DF2;&#x7ECF;&#x7684;&#x66F4;&#x6539;&#x6B21;&#x6570;&#x503C;&#x3002;</p>
+<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expectedModCount = modCount;</span><br></pre></td></tr></tbody></table></figure>
+<p>&#x5F53;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x5F97;&#x5230;&#x5B83;&#x7684;&#x904D;&#x5386;&#x5668;&#x7684;&#x65F6;&#x5019;&#x4E5F;&#x5C31;&#x662F;&#x51C6;&#x5907;&#x904D;&#x5386;&#x5B83;&#x7684;&#x6240;&#x6709;&#x5143;&#x7D20;&#xFF0C;&#x90A3;&#x4E48;&#x5728;&#x8FD9;&#x4E2A;&#x904D;&#x5386;&#x8FC7;&#x7A0B;&#x4E2D;&#x6211;&#x4E5F;&#x5C31;&#x4E0D;&#x60F3;&#x5176;&#x4E2D;&#x6709;&#x5143;&#x7D20;&#x4F1A;&#x6709;&#x6240;&#x6539;&#x53D8;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x901A;&#x8FC7;&#x76F4;&#x63A5;&#x8C03;&#x7528;&#x5BB9;&#x5668;&#x7684;&#x5220;&#x9664;&#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x7B49;&#x65B9;&#x6CD5;&#x5C31;&#x4F1A;&#x9020;&#x6210;&#x3002;</p>
 </li>
 </ul>
 </li>
 </ol>
 <ol start="2">
-<li><p>HashTable处理哈希冲突的方法也是使用了链式存储法</p>
+<li><p>HashTable&#x5904;&#x7406;&#x54C8;&#x5E0C;&#x51B2;&#x7A81;&#x7684;&#x65B9;&#x6CD5;&#x4E5F;&#x662F;&#x4F7F;&#x7528;&#x4E86;&#x94FE;&#x5F0F;&#x5B58;&#x50A8;&#x6CD5;</p>
 </li>
-<li><p>其实其他的大多就跟HashMap一样，最大不一样也就是进行了共享资源的同步。</p>
+<li><p>&#x5176;&#x5B9E;&#x5176;&#x4ED6;&#x7684;&#x5927;&#x591A;&#x5C31;&#x8DDF;HashMap&#x4E00;&#x6837;&#xFF0C;&#x6700;&#x5927;&#x4E0D;&#x4E00;&#x6837;&#x4E5F;&#x5C31;&#x662F;&#x8FDB;&#x884C;&#x4E86;&#x5171;&#x4EAB;&#x8D44;&#x6E90;&#x7684;&#x540C;&#x6B65;&#x3002;</p>
 </li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -447,7 +465,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/20/java/Java 虚拟机参数/" rel="prev" title="">
+              <a href="/2018/06/25/reading/计算机操作系统/" rel="prev" title="">
                  <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -512,7 +530,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -602,7 +620,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

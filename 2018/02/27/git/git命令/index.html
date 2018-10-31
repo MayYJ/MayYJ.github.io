@@ -108,13 +108,13 @@
 
 
 
-  <meta name="description" content="git reset–soft: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout –mixed: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变 –hard：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除) git rebase 和">
+  <meta name="description" content="git reset&amp;#x2013;soft: &amp;#x5C06;Head&amp;#x5F15;&amp;#x7528;&amp;#x6307;&amp;#x5411;&amp;#x7ED9;&amp;#x5B9A;&amp;#x63D0;&amp;#x4EA4;&amp;#xFF0C;&amp;#x7D22;&amp;#x5F15;&amp;#x548C;&amp;#x5DE5;&amp;#x4F5C;&amp;#x76EE;&amp;#x5F55;&amp;#x7684;&amp;#x5185;&amp;#x5BB9;&amp;#x90FD;&amp;#x4E">
 <meta name="keywords" content="git命令">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git命令">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/27/git/git命令/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="git reset–soft: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout –mixed: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变 –hard：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除) git rebase 和">
+<meta property="og:description" content="git reset&amp;#x2013;soft: &amp;#x5C06;Head&amp;#x5F15;&amp;#x7528;&amp;#x6307;&amp;#x5411;&amp;#x7ED9;&amp;#x5B9A;&amp;#x63D0;&amp;#x4EA4;&amp;#xFF0C;&amp;#x7D22;&amp;#x5F15;&amp;#x548C;&amp;#x5DE5;&amp;#x4F5C;&amp;#x76EE;&amp;#x5F55;&amp;#x7684;&amp;#x5185;&amp;#x5BB9;&amp;#x90FD;&amp;#x4E">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/305877-5dece524b7130343.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/305877-c4ddfcf679821e2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
@@ -123,7 +123,7 @@
 <meta property="og:updated_time" content="2018-10-27T06:01:23.582Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git命令">
-<meta name="twitter:description" content="git reset–soft: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout –mixed: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变 –hard：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除) git rebase 和">
+<meta name="twitter:description" content="git reset&amp;#x2013;soft: &amp;#x5C06;Head&amp;#x5F15;&amp;#x7528;&amp;#x6307;&amp;#x5411;&amp;#x7ED9;&amp;#x5B9A;&amp;#x63D0;&amp;#x4EA4;&amp;#xFF0C;&amp;#x7D22;&amp;#x5F15;&amp;#x548C;&amp;#x5DE5;&amp;#x4F5C;&amp;#x76EE;&amp;#x5F55;&amp;#x7684;&amp;#x5185;&amp;#x5BB9;&amp;#x90FD;&amp;#x4E">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/305877-5dece524b7130343.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 
 
@@ -426,22 +426,40 @@
       
 
       
-        <h4 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h4><p><strong>–soft</strong>: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout</p>
-<p><strong>–mixed</strong>: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变</p>
-<p><strong>–hard</strong>：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除)</p>
-<h4 id="git-rebase-和-git-merge"><a href="#git-rebase-和-git-merge" class="headerlink" title="git rebase 和 git merge"></a>git rebase 和 git merge</h4><p><img src="https://upload-images.jianshu.io/upload_images/305877-5dece524b7130343.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
+        <h4 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h4><p><strong>&#x2013;soft</strong>: &#x5C06;Head&#x5F15;&#x7528;&#x6307;&#x5411;&#x7ED9;&#x5B9A;&#x63D0;&#x4EA4;&#xFF0C;&#x7D22;&#x5F15;&#x548C;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;&#x7684;&#x5185;&#x5BB9;&#x90FD;&#x4E0D;&#x4F1A;&#x8868;&#xFF0C;&#x8FD9;&#x4E2A;&#x529F;&#x80FD;&#x5C31;&#x7C7B;&#x4F3C;&#x4E8E;git checkout</p>
+<p><strong>&#x2013;mixed</strong>: &#x5C06;HEAD &#x5F15;&#x7528;&#x6307;&#x5411;&#x7ED9;&#x5B9A;&#x63D0;&#x4EA4;&#xFF0C;&#x7D22;&#x5F15;&#x5185;&#x5BB9;&#x8DDF;&#x7740;&#x6539;&#x53D8;&#xFF0C;&#x4F46;&#x662F;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;&#x5185;&#x5BB9;&#x4E0D;&#x4F1A;&#x6539;&#x53D8;</p>
+<p><strong>&#x2013;hard</strong>&#xFF1A;&#x5C06;HEAD&#x5F15;&#x7528;&#x6307;&#x5411;&#x7ED9;&#x5B9A;&#x63D0;&#x4EA4;&#xFF0C;&#x7D22;&#x5F15;&#x5185;&#x5BB9;&#x548C;&#x5DE5;&#x4F5C;&#x76EE;&#x5F55;&#x5185;&#x5BB9;&#x90FD;&#x8DDF;&#x7740;&#x6539;&#x53D8;(&#x6240;&#x4EE5;&#x8FD9;&#x4E2A;&#x9700;&#x8981;&#x614E;&#x7528;&#xFF0C;&#x56E0;&#x4E3A;&#x4E00;&#x65E6;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;&#x4E24;&#x4E2A;commit&#x4E4B;&#x95F4;&#x6240;&#x6709;&#x6587;&#x4EF6;&#x90FD;&#x4F1A;&#x88AB;&#x5220;&#x9664;)</p>
+<h4 id="git-rebase-&#x548C;-git-merge"><a href="#git-rebase-&#x548C;-git-merge" class="headerlink" title="git rebase &#x548C; git merge"></a>git rebase &#x548C; git merge</h4><p><img src="https://upload-images.jianshu.io/upload_images/305877-5dece524b7130343.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-c4ddfcf679821e2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-467ba180733adca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<p><strong>解释</strong></p>
-<p>从上面的三张图就可以大致看出rebase和merge的区别：merge是在自己的分支新建一个commit而这个commit里面包含了master的所有新的提交；rebase是直接将master 的新的commit链接在当前分支的尾部或者首部</p>
-<p><strong>问题</strong></p>
+<p><strong>&#x89E3;&#x91CA;</strong></p>
+<p>&#x4ECE;&#x4E0A;&#x9762;&#x7684;&#x4E09;&#x5F20;&#x56FE;&#x5C31;&#x53EF;&#x4EE5;&#x5927;&#x81F4;&#x770B;&#x51FA;rebase&#x548C;merge&#x7684;&#x533A;&#x522B;&#xFF1A;merge&#x662F;&#x5728;&#x81EA;&#x5DF1;&#x7684;&#x5206;&#x652F;&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;commit&#x800C;&#x8FD9;&#x4E2A;commit&#x91CC;&#x9762;&#x5305;&#x542B;&#x4E86;master&#x7684;&#x6240;&#x6709;&#x65B0;&#x7684;&#x63D0;&#x4EA4;&#xFF1B;rebase&#x662F;&#x76F4;&#x63A5;&#x5C06;master &#x7684;&#x65B0;&#x7684;commit&#x94FE;&#x63A5;&#x5728;&#x5F53;&#x524D;&#x5206;&#x652F;&#x7684;&#x5C3E;&#x90E8;&#x6216;&#x8005;&#x9996;&#x90E8;</p>
+<p><strong>&#x95EE;&#x9898;</strong></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-8845daa6b5fd004e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<p>使用rebase这样的问题，如上图那样master分支新提交的commit添加到了当前分支的首部，那么其他的使用者就会与此产生冲突，所以最好在不会有其他人使用该分支的时候时候这个命令</p>
-<p><strong>两个命令解决冲突的方法</strong></p>
-<p>merge：发现冲突，提交冲突的解决，再合并</p>
-<p>rebase：修改冲突，git add，git rebase –continue</p>
-<h4 id="git-stash"><a href="#git-stash" class="headerlink" title="git stash"></a>git stash</h4><p>该命令想要解决的是当我们一个功能写到一半的时候，但是现在出现了另外一个更加急迫的功能需要先去完成，但是因为当前功能并没有完成，我们不想直接提交，这个时候就需要用到这个命令</p>
-
+<p>&#x4F7F;&#x7528;rebase&#x8FD9;&#x6837;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x5982;&#x4E0A;&#x56FE;&#x90A3;&#x6837;master&#x5206;&#x652F;&#x65B0;&#x63D0;&#x4EA4;&#x7684;commit&#x6DFB;&#x52A0;&#x5230;&#x4E86;&#x5F53;&#x524D;&#x5206;&#x652F;&#x7684;&#x9996;&#x90E8;&#xFF0C;&#x90A3;&#x4E48;&#x5176;&#x4ED6;&#x7684;&#x4F7F;&#x7528;&#x8005;&#x5C31;&#x4F1A;&#x4E0E;&#x6B64;&#x4EA7;&#x751F;&#x51B2;&#x7A81;&#xFF0C;&#x6240;&#x4EE5;&#x6700;&#x597D;&#x5728;&#x4E0D;&#x4F1A;&#x6709;&#x5176;&#x4ED6;&#x4EBA;&#x4F7F;&#x7528;&#x8BE5;&#x5206;&#x652F;&#x7684;&#x65F6;&#x5019;&#x65F6;&#x5019;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;</p>
+<p><strong>&#x4E24;&#x4E2A;&#x547D;&#x4EE4;&#x89E3;&#x51B3;&#x51B2;&#x7A81;&#x7684;&#x65B9;&#x6CD5;</strong></p>
+<p>merge&#xFF1A;&#x53D1;&#x73B0;&#x51B2;&#x7A81;&#xFF0C;&#x63D0;&#x4EA4;&#x51B2;&#x7A81;&#x7684;&#x89E3;&#x51B3;&#xFF0C;&#x518D;&#x5408;&#x5E76;</p>
+<p>rebase&#xFF1A;&#x4FEE;&#x6539;&#x51B2;&#x7A81;&#xFF0C;git add&#xFF0C;git rebase &#x2013;continue</p>
+<h4 id="git-stash"><a href="#git-stash" class="headerlink" title="git stash"></a>git stash</h4><p>&#x8BE5;&#x547D;&#x4EE4;&#x60F3;&#x8981;&#x89E3;&#x51B3;&#x7684;&#x662F;&#x5F53;&#x6211;&#x4EEC;&#x4E00;&#x4E2A;&#x529F;&#x80FD;&#x5199;&#x5230;&#x4E00;&#x534A;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F46;&#x662F;&#x73B0;&#x5728;&#x51FA;&#x73B0;&#x4E86;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x66F4;&#x52A0;&#x6025;&#x8FEB;&#x7684;&#x529F;&#x80FD;&#x9700;&#x8981;&#x5148;&#x53BB;&#x5B8C;&#x6210;&#xFF0C;&#x4F46;&#x662F;&#x56E0;&#x4E3A;&#x5F53;&#x524D;&#x529F;&#x80FD;&#x5E76;&#x6CA1;&#x6709;&#x5B8C;&#x6210;&#xFF0C;&#x6211;&#x4EEC;&#x4E0D;&#x60F3;&#x76F4;&#x63A5;&#x63D0;&#x4EA4;&#xFF0C;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x5C31;&#x9700;&#x8981;&#x7528;&#x5230;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;</p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -558,7 +576,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -648,7 +666,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

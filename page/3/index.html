@@ -426,8 +426,7 @@
       
         
           
-          代理模式静态代理所谓静态代理也就是在程序运行前就已经存在代理类的字节码文件，代理类和委托类的关系在运行前就确定了。
-通过继承实现静态代理直接贴代码：1234567891011121314151617181920212223public interface MoveAble &#123;    voi
+          &#x4EE3;&#x7406;&#x6A21;&#x5F0F;&#x9759;&#x6001;&#x4EE3;&#x7406;&#x6240;&#x8C13;&#x9759;&#x6001;&#x4EE3;&#x7406;&#x4E5F;&#x5C31;&#x662F;&#x5728;&#x7A0
           ...
           <!--noindex-->
           
@@ -605,8 +604,7 @@
       
         
           
-          为什么要序列化当我们创建一个对象后，如果程序终止那么对象就会销毁，但是存在我们需要对对象进行持久化的需求，以便在将来我们取出对象进行再次利用。序列化就是把对象变成字节码序列来实现轻量级持久化，也方便我们对其在网络上进行传输。
-怎么序列化12345678910111213141516171819202
+          &#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x5E8F;&#x5217;&#x5316;&#x5F53;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x540E;&#xFF0C;&#x598
           ...
           <!--noindex-->
           
@@ -731,7 +729,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-08-29 14:48:44" itemprop="dateModified" datetime="2018-08-29T14:48:44+08:00">2018-08-29</time>
+                <time title="修改时间：2018-10-31 20:00:26" itemprop="dateModified" datetime="2018-10-31T20:00:26+08:00">2018-10-31</time>
               
             
           </span>
@@ -784,332 +782,12 @@
       
         
           
-          总的同步IO用户进程发起read操作之后，立刻就可以开始去做其它的事。而另一方面，从kernel的角度，当它受到一个asynchronous read之后，首先它会立刻返回，所以不会对用户进程产生任何block。然后，kernel会等待数据准备完成，然后将数据拷贝到用户内存，当这一切都完成之后，ke
+          &#x56E0;&#x4E3A;&#x9700;&#x8981;&#x7528;&#x5230;Java Nio&#xFF0C;&#x53C8;&#x8BB0;&#x5F97;&#x81EA;&#x5DF1;&#x5199;&#x8FC7;&#x5173;&#x4E8E;&#x5176;&#x768
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2018/05/05/java/java nio/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/03/13/java/transient关键字/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/13/java/transient关键字/" itemprop="url">
-                  transient关键字
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-13 22:55:25" itemprop="dateCreated datePublished" datetime="2018-03-13T22:55:25+08:00">2018-03-13</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-05-26 17:27:55" itemprop="dateModified" datetime="2018-05-26T17:27:55+08:00">2018-05-26</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-          
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/03/13/java/transient关键字/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/03/13/java/深克隆和浅克隆/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/13/java/深克隆和浅克隆/" itemprop="url">
-                  深克隆和浅克隆
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-13 22:43:44" itemprop="dateCreated datePublished" datetime="2018-03-13T22:43:44+08:00">2018-03-13</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-05-26 17:27:55" itemprop="dateModified" datetime="2018-05-26T17:27:55+08:00">2018-05-26</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-          
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/03/13/java/深克隆和浅克隆/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1282,7 +960,7 @@
       
         
           
-          Arrays.copyof12345public static &lt;T, U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) &#123;        T[] copy = newT
+          Arrays.copyof12345public static &lt;T, U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) {        T[] copy = newType =
           ...
           <!--noindex-->
           
@@ -1460,12 +1138,8 @@
       
         
           
-          binary 二进制 octal 八进制 decimal 十进制 hexaddecimal 十六进制
-a = D(60) = B(001111100)
-b = D(13) = B(00001101)
-
-按位右移运算符(&gt;&gt;)左操作数按位右移右操作数指定的位数
-a&gt;&gt;2 = D
+          binary &#x4E8C;&#x8FDB;&#x5236; octal &#x516B;&#x8FDB;&#x5236; decimal &#x5341;&#x8FDB;&#x5236; hexaddecimal &#x5341;&#x516D;&#x8FDB;&#x5236;
+a = D(60
           ...
           <!--noindex-->
           
@@ -1643,8 +1317,8 @@ a&gt;&gt;2 = D
       
         
           
-          ####变化
-在JDK 8之前，String的源码实现都是通过使用char数组接收字符串，但是每个char字符是由两个字符组成，因为java内部使用UTF-16实现；如果一个字符串含有英文字符，那么这些英文字符的前 8 比特都将为 0，因为一个ASCII字符都能被单个字节来表示。然而我们在使用字符串
+          ####&#x53D8;&#x5316;
+&#x5728;JDK 8&#x4E4B;&#x524D;&#xFF0C;String&#x7684;&#x6E90;&#x7801;&#x5B9E;&#x73B0;&#x90FD;&#x662F;&#x901A;&#x8FC7;&#x4F7F;&#x752
           ...
           <!--noindex-->
           
@@ -1804,20 +1478,10 @@ a&gt;&gt;2 = D
       
         
           
-          java基础
-集合框架 hashmap、linkedlist、arraylist
+          java&#x57FA;&#x7840;
+&#x96C6;&#x5408;&#x6846;&#x67B6; hashmap&#x3001;linkedlist&#x3001;arraylist
 
-线程安全 vector、concurrenthash、hashtable
-
-线程安全 
-
-关键字： syncronized、 violate 、reenterlock
-
-
-jvm锁优化 自旋锁…..
-
-String
-
+&#x7EBF;&#x7A0B;&#x5B89;&#x5168; vector&#x3001;concu
           ...
           <!--noindex-->
           
@@ -1995,11 +1659,8 @@ String
       
         
           
-          关于linux下软件通过源码的安装
-主要是以下四个步骤：
-./configure  这个步骤主要是为了建立MakeFile文档
-make clean  主要是为了清除可能已经产生了修改却编译了的目标文件
-make 使用make就是要将原始码编译成为可以被执行的可执行档，而这个可执行档会放置在目前所在
+          &#x5173;&#x4E8E;linux&#x4E0B;&#x8F6F;&#x4EF6;&#x901A;&#x8FC7;&#x6E90;&#x7801;&#x7684;&#x5B89;&#x88C5;
+&#x4E3B;&#x8981;&#x662F;&#x4EE5;&#x4E0B;&#x56DB;
           ...
           <!--noindex-->
           
@@ -2046,11 +1707,368 @@ make 使用make就是要将原始码编译成为可以被执行的可执行档�
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/03/03/linux/linux装windwos后修复MBR/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/03/linux/linux装windwos后修复MBR/" itemprop="url">
+                  linux装windwos后修复MBR
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-03 01:51:25" itemprop="dateCreated datePublished" datetime="2018-03-03T01:51:25+08:00">2018-03-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-05-26 17:27:55" itemprop="dateModified" datetime="2018-05-26T17:27:55+08:00">2018-05-26</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          &#x539F;&#x56E0;&#x5728;linux&#x7CFB;&#x7EDF;&#x4E0B;&#x5B89;&#x88C5;windows&#x7CFB;&#x7EDF;&#xFF0C;windows&#x7CFB;&#x7EDF;&#x6BD4;&#x8F83;&#x9738;&#x
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/03/03/linux/linux装windwos后修复MBR/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/02/27/mysql/mysql相关问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/27/mysql/mysql相关问题/" itemprop="url">
+                  mysql相关问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-27 15:16:17" itemprop="dateCreated datePublished" datetime="2018-02-27T15:16:17+08:00">2018-02-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-25 21:21:40" itemprop="dateModified" datetime="2018-10-25T21:21:40+08:00">2018-10-25</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          &#x589E;&#x52A0;&#x8FDC;&#x7A0B;&#x767B;&#x5F55;&#x6743;&#x9650;
+&#x672C;&#x5730;&#x767B;&#x5F55;mysql&#x540E;&#x6267;&#x884C;&#x4E00;&#x4E0B;&#x547D;
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/02/27/mysql/mysql相关问题/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2095,7 +2113,7 @@ make 使用make就是要将原始码编译成为可以被执行的可执行档�
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2185,7 +2203,17 @@ make 使用make就是要将原始码编译成为可以被执行的可执行档�
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

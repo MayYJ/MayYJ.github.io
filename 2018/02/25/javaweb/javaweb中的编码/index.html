@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
+  <meta name="description" content="JavaWeb&amp;#x4E2D;&amp;#x7684;&amp;#x7F16;&amp;#x7801;&amp;#x95EE;&amp;#x9898; &amp;#x7F16;&amp;#x7801;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A; &amp;#x8BA1;&amp;#x7B97;&amp;#x673A;&amp;#x4E2D;&amp;#x5B58;&amp;#x50A8;&amp;#x4FE1;&amp;#x606F;&amp;#x7684;&amp;#x6700;&amp;#x5C0F;&amp;#x5355">
 <meta name="keywords" content="javaweb编码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="javaweb中的编码">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/25/javaweb/javaweb中的编码/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
+<meta property="og:description" content="JavaWeb&amp;#x4E2D;&amp;#x7684;&amp;#x7F16;&amp;#x7801;&amp;#x95EE;&amp;#x9898; &amp;#x7F16;&amp;#x7801;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A; &amp;#x8BA1;&amp;#x7B97;&amp;#x673A;&amp;#x4E2D;&amp;#x5B58;&amp;#x50A8;&amp;#x4FE1;&amp;#x606F;&amp;#x7684;&amp;#x6700;&amp;#x5C0F;&amp;#x5355">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-10-27T07:15:22.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="javaweb中的编码">
-<meta name="twitter:description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
+<meta name="twitter:description" content="JavaWeb&amp;#x4E2D;&amp;#x7684;&amp;#x7F16;&amp;#x7801;&amp;#x95EE;&amp;#x9898; &amp;#x7F16;&amp;#x7801;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A; &amp;#x8BA1;&amp;#x7B97;&amp;#x673A;&amp;#x4E2D;&amp;#x5B58;&amp;#x50A8;&amp;#x4FE1;&amp;#x606F;&amp;#x7684;&amp;#x6700;&amp;#x5C0F;&amp;#x5355">
 
 
 
@@ -421,51 +421,69 @@
       
 
       
-        <h3 id="JavaWeb中的编码问题"><a href="#JavaWeb中的编码问题" class="headerlink" title="JavaWeb中的编码问题"></a>JavaWeb中的编码问题</h3><ul>
-<li>编码的原因：<ol>
-<li>计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个</li>
-<li>人类要表示的符号太多，无法用1个字节表示。 </li>
+        <h3 id="JavaWeb&#x4E2D;&#x7684;&#x7F16;&#x7801;&#x95EE;&#x9898;"><a href="#JavaWeb&#x4E2D;&#x7684;&#x7F16;&#x7801;&#x95EE;&#x9898;" class="headerlink" title="JavaWeb&#x4E2D;&#x7684;&#x7F16;&#x7801;&#x95EE;&#x9898;"></a>JavaWeb&#x4E2D;&#x7684;&#x7F16;&#x7801;&#x95EE;&#x9898;</h3><ul>
+<li>&#x7F16;&#x7801;&#x7684;&#x539F;&#x56E0;&#xFF1A;<ol>
+<li>&#x8BA1;&#x7B97;&#x673A;&#x4E2D;&#x5B58;&#x50A8;&#x4FE1;&#x606F;&#x7684;&#x6700;&#x5C0F;&#x5355;&#x4F4D;&#x662F;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#xFF0C;&#x6240;&#x80FD;&#x8868;&#x793A;&#x7684;&#x5B57;&#x7B26;&#x8303;&#x56F4;&#x662F;0&#x2014;255&#x4E2A;</li>
+<li>&#x4EBA;&#x7C7B;&#x8981;&#x8868;&#x793A;&#x7684;&#x7B26;&#x53F7;&#x592A;&#x591A;&#xFF0C;&#x65E0;&#x6CD5;&#x7528;1&#x4E2A;&#x5B57;&#x8282;&#x8868;&#x793A;&#x3002; </li>
 </ol>
 </li>
 </ul>
-<h4 id="一些对于编码问题的总结"><a href="#一些对于编码问题的总结" class="headerlink" title="一些对于编码问题的总结"></a>一些对于编码问题的总结</h4><ol>
-<li>只要有IO流就必定有编码和解码</li>
-<li>关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来</li>
+<h4 id="&#x4E00;&#x4E9B;&#x5BF9;&#x4E8E;&#x7F16;&#x7801;&#x95EE;&#x9898;&#x7684;&#x603B;&#x7ED3;"><a href="#&#x4E00;&#x4E9B;&#x5BF9;&#x4E8E;&#x7F16;&#x7801;&#x95EE;&#x9898;&#x7684;&#x603B;&#x7ED3;" class="headerlink" title="&#x4E00;&#x4E9B;&#x5BF9;&#x4E8E;&#x7F16;&#x7801;&#x95EE;&#x9898;&#x7684;&#x603B;&#x7ED3;"></a>&#x4E00;&#x4E9B;&#x5BF9;&#x4E8E;&#x7F16;&#x7801;&#x95EE;&#x9898;&#x7684;&#x603B;&#x7ED3;</h4><ol>
+<li>&#x53EA;&#x8981;&#x6709;IO&#x6D41;&#x5C31;&#x5FC5;&#x5B9A;&#x6709;&#x7F16;&#x7801;&#x548C;&#x89E3;&#x7801;</li>
+<li>&#x5173;&#x4E8E;IDEA&#x5E73;&#x53F0;&#x4E0B;&#x7684;System.out.println()&#xFF0C;&#x5B83;&#x662F;&#x76F4;&#x63A5;&#x5C06;&#x6211;&#x4EEC;&#x7684;&#x7ECF;&#x8FC7;&#x89E3;&#x7801;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x8FDB;&#x884C;&#x6253;&#x5370;&#xFF0C;&#x7136;&#x540E;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7528;&#x8FD9;&#x4E9B;&#x5B57;&#x7B26;&#x6570;&#x7EC4;&#x4E0E;&#x5B57;&#x7B26;&#x5F62;&#x72B6;&#x8868;&#x8FDB;&#x884C;&#x5BF9;&#x6BD4;&#xFF0C;&#x6253;&#x5370;&#x51FA;&#x6765;</li>
 </ol>
-<h4 id="什么是编码解码"><a href="#什么是编码解码" class="headerlink" title="什么是编码解码"></a>什么是编码解码</h4><ul>
-<li>编码：编码的原因是把我们人类所认识的字符编码为计算机认识的0,1代码，便于存储在计算机的磁盘中或者在网络中传输；<strong>又出现了一个问题，为什么不对解码的内容直接进行存储，而非要编码为计算机认识的0，1代码？</strong>又因为地区的不一样或者甚至说不同软件之间都可能采用不同的编码，比如说记事本一般采用GBK编码而IDEA我们可以设置为UTF-8进行存储，如果我们直接对字节集解码的内容进行存储，就会不具有通用性。</li>
-<li>解码：将计算机磁盘存储的数据或者网络IO流中的数据，按照字符集解码为对应的字节数组；有了这样的字节数组那么计算机就可以对应字符形状表显示在显示器上</li>
+<h4 id="&#x4EC0;&#x4E48;&#x662F;&#x7F16;&#x7801;&#x89E3;&#x7801;"><a href="#&#x4EC0;&#x4E48;&#x662F;&#x7F16;&#x7801;&#x89E3;&#x7801;" class="headerlink" title="&#x4EC0;&#x4E48;&#x662F;&#x7F16;&#x7801;&#x89E3;&#x7801;"></a>&#x4EC0;&#x4E48;&#x662F;&#x7F16;&#x7801;&#x89E3;&#x7801;</h4><ul>
+<li>&#x7F16;&#x7801;&#xFF1A;&#x7F16;&#x7801;&#x7684;&#x539F;&#x56E0;&#x662F;&#x628A;&#x6211;&#x4EEC;&#x4EBA;&#x7C7B;&#x6240;&#x8BA4;&#x8BC6;&#x7684;&#x5B57;&#x7B26;&#x7F16;&#x7801;&#x4E3A;&#x8BA1;&#x7B97;&#x673A;&#x8BA4;&#x8BC6;&#x7684;0,1&#x4EE3;&#x7801;&#xFF0C;&#x4FBF;&#x4E8E;&#x5B58;&#x50A8;&#x5728;&#x8BA1;&#x7B97;&#x673A;&#x7684;&#x78C1;&#x76D8;&#x4E2D;&#x6216;&#x8005;&#x5728;&#x7F51;&#x7EDC;&#x4E2D;&#x4F20;&#x8F93;&#xFF1B;<strong>&#x53C8;&#x51FA;&#x73B0;&#x4E86;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#x4E0D;&#x5BF9;&#x89E3;&#x7801;&#x7684;&#x5185;&#x5BB9;&#x76F4;&#x63A5;&#x8FDB;&#x884C;&#x5B58;&#x50A8;&#xFF0C;&#x800C;&#x975E;&#x8981;&#x7F16;&#x7801;&#x4E3A;&#x8BA1;&#x7B97;&#x673A;&#x8BA4;&#x8BC6;&#x7684;0&#xFF0C;1&#x4EE3;&#x7801;&#xFF1F;</strong>&#x53C8;&#x56E0;&#x4E3A;&#x5730;&#x533A;&#x7684;&#x4E0D;&#x4E00;&#x6837;&#x6216;&#x8005;&#x751A;&#x81F3;&#x8BF4;&#x4E0D;&#x540C;&#x8F6F;&#x4EF6;&#x4E4B;&#x95F4;&#x90FD;&#x53EF;&#x80FD;&#x91C7;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x7F16;&#x7801;&#xFF0C;&#x6BD4;&#x5982;&#x8BF4;&#x8BB0;&#x4E8B;&#x672C;&#x4E00;&#x822C;&#x91C7;&#x7528;GBK&#x7F16;&#x7801;&#x800C;IDEA&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;&#x4E3A;UTF-8&#x8FDB;&#x884C;&#x5B58;&#x50A8;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x76F4;&#x63A5;&#x5BF9;&#x5B57;&#x8282;&#x96C6;&#x89E3;&#x7801;&#x7684;&#x5185;&#x5BB9;&#x8FDB;&#x884C;&#x5B58;&#x50A8;&#xFF0C;&#x5C31;&#x4F1A;&#x4E0D;&#x5177;&#x6709;&#x901A;&#x7528;&#x6027;&#x3002;</li>
+<li>&#x89E3;&#x7801;&#xFF1A;&#x5C06;&#x8BA1;&#x7B97;&#x673A;&#x78C1;&#x76D8;&#x5B58;&#x50A8;&#x7684;&#x6570;&#x636E;&#x6216;&#x8005;&#x7F51;&#x7EDC;IO&#x6D41;&#x4E2D;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x6309;&#x7167;&#x5B57;&#x7B26;&#x96C6;&#x89E3;&#x7801;&#x4E3A;&#x5BF9;&#x5E94;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#xFF1B;&#x6709;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x5B57;&#x8282;&#x6570;&#x7EC4;&#x90A3;&#x4E48;&#x8BA1;&#x7B97;&#x673A;&#x5C31;&#x53EF;&#x4EE5;&#x5BF9;&#x5E94;&#x5B57;&#x7B26;&#x5F62;&#x72B6;&#x8868;&#x663E;&#x793A;&#x5728;&#x663E;&#x793A;&#x5668;&#x4E0A;</li>
 </ul>
-<h4 id="常见的编码"><a href="#常见的编码" class="headerlink" title="常见的编码"></a>常见的编码</h4><ol>
+<h4 id="&#x5E38;&#x89C1;&#x7684;&#x7F16;&#x7801;"><a href="#&#x5E38;&#x89C1;&#x7684;&#x7F16;&#x7801;" class="headerlink" title="&#x5E38;&#x89C1;&#x7684;&#x7F16;&#x7801;"></a>&#x5E38;&#x89C1;&#x7684;&#x7F16;&#x7801;</h4><ol>
 <li>ASCII</li>
-<li>ISO-8859-1:256个字符，涵盖大多数西欧字符；</li>
-<li>GB2312：双字节，中文编码；</li>
-<li>GBK： GB2312的扩展；</li>
-<li>GB18030：中文，单双四字节都有；</li>
-<li>UTF-16：两个字节表示一个字符；</li>
-<li>UTF-8：运用变长技术，ASCII用单字节表示，中文用三个字节表示。</li>
+<li>ISO-8859-1:256&#x4E2A;&#x5B57;&#x7B26;&#xFF0C;&#x6DB5;&#x76D6;&#x5927;&#x591A;&#x6570;&#x897F;&#x6B27;&#x5B57;&#x7B26;&#xFF1B;</li>
+<li>GB2312&#xFF1A;&#x53CC;&#x5B57;&#x8282;&#xFF0C;&#x4E2D;&#x6587;&#x7F16;&#x7801;&#xFF1B;</li>
+<li>GBK&#xFF1A; GB2312&#x7684;&#x6269;&#x5C55;&#xFF1B;</li>
+<li>GB18030&#xFF1A;&#x4E2D;&#x6587;&#xFF0C;&#x5355;&#x53CC;&#x56DB;&#x5B57;&#x8282;&#x90FD;&#x6709;&#xFF1B;</li>
+<li>UTF-16&#xFF1A;&#x4E24;&#x4E2A;&#x5B57;&#x8282;&#x8868;&#x793A;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#xFF1B;</li>
+<li>UTF-8&#xFF1A;&#x8FD0;&#x7528;&#x53D8;&#x957F;&#x6280;&#x672F;&#xFF0C;ASCII&#x7528;&#x5355;&#x5B57;&#x8282;&#x8868;&#x793A;&#xFF0C;&#x4E2D;&#x6587;&#x7528;&#x4E09;&#x4E2A;&#x5B57;&#x8282;&#x8868;&#x793A;&#x3002;</li>
 </ol>
-<h4 id="Java中如何解编码"><a href="#Java中如何解编码" class="headerlink" title="Java中如何解编码"></a>Java中如何解编码</h4><ol>
-<li>首先会根据指定的charsetName也就是你指定的编码类型，通过Charset.forName(charsetName)找到Charset类，然后根据Charset创建CharsetEncoder对象，再调用CharsetEncoder.encode对字符串编码，不同的编码类型都会对应到一个类中 ，实际的编码过程就是在这些类中完成的。</li>
+<h4 id="Java&#x4E2D;&#x5982;&#x4F55;&#x89E3;&#x7F16;&#x7801;"><a href="#Java&#x4E2D;&#x5982;&#x4F55;&#x89E3;&#x7F16;&#x7801;" class="headerlink" title="Java&#x4E2D;&#x5982;&#x4F55;&#x89E3;&#x7F16;&#x7801;"></a>Java&#x4E2D;&#x5982;&#x4F55;&#x89E3;&#x7F16;&#x7801;</h4><ol>
+<li>&#x9996;&#x5148;&#x4F1A;&#x6839;&#x636E;&#x6307;&#x5B9A;&#x7684;charsetName&#x4E5F;&#x5C31;&#x662F;&#x4F60;&#x6307;&#x5B9A;&#x7684;&#x7F16;&#x7801;&#x7C7B;&#x578B;&#xFF0C;&#x901A;&#x8FC7;Charset.forName(charsetName)&#x627E;&#x5230;Charset&#x7C7B;&#xFF0C;&#x7136;&#x540E;&#x6839;&#x636E;Charset&#x521B;&#x5EFA;CharsetEncoder&#x5BF9;&#x8C61;&#xFF0C;&#x518D;&#x8C03;&#x7528;CharsetEncoder.encode&#x5BF9;&#x5B57;&#x7B26;&#x4E32;&#x7F16;&#x7801;&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x7F16;&#x7801;&#x7C7B;&#x578B;&#x90FD;&#x4F1A;&#x5BF9;&#x5E94;&#x5230;&#x4E00;&#x4E2A;&#x7C7B;&#x4E2D; &#xFF0C;&#x5B9E;&#x9645;&#x7684;&#x7F16;&#x7801;&#x8FC7;&#x7A0B;&#x5C31;&#x662F;&#x5728;&#x8FD9;&#x4E9B;&#x7C7B;&#x4E2D;&#x5B8C;&#x6210;&#x7684;&#x3002;</li>
 </ol>
-<h4 id="几种编码方式的比较"><a href="#几种编码方式的比较" class="headerlink" title="几种编码方式的比较"></a>几种编码方式的比较</h4><p>对于中文字符由于GBK比GB2312范围更大，编码方式相同，所以GBK更好。UTf-16编码效率更高，只是把一个字节拆成两个字节就完成它的工作，所以在磁盘与内存上的操作它更适合，但是在字节容易损坏的网络上utf-8更适合，它不像utf-16顺序编码，一个字节的损坏会影响后面的字符。且编码效率上utf-8介于GBK和utf-16之间。</p>
-<h4 id="JavaWeb中涉及的编码"><a href="#JavaWeb中涉及的编码" class="headerlink" title="JavaWeb中涉及的编码"></a>JavaWeb中涉及的编码</h4><ol>
-<li><p>url的编解码</p>
-<p><a href="http://localhost:8080//examples/servlets/serlet/%E5%90%9B%E5%B1%B1?authod=%E5%90%9B%E5%B1%B1" target="_blank" rel="noopener">http://localhost:8080//examples/servlets/serlet/君山?authod=君山</a></p>
+<h4 id="&#x51E0;&#x79CD;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x7684;&#x6BD4;&#x8F83;"><a href="#&#x51E0;&#x79CD;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x7684;&#x6BD4;&#x8F83;" class="headerlink" title="&#x51E0;&#x79CD;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x7684;&#x6BD4;&#x8F83;"></a>&#x51E0;&#x79CD;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x7684;&#x6BD4;&#x8F83;</h4><p>&#x5BF9;&#x4E8E;&#x4E2D;&#x6587;&#x5B57;&#x7B26;&#x7531;&#x4E8E;GBK&#x6BD4;GB2312&#x8303;&#x56F4;&#x66F4;&#x5927;&#xFF0C;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x76F8;&#x540C;&#xFF0C;&#x6240;&#x4EE5;GBK&#x66F4;&#x597D;&#x3002;UTf-16&#x7F16;&#x7801;&#x6548;&#x7387;&#x66F4;&#x9AD8;&#xFF0C;&#x53EA;&#x662F;&#x628A;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x62C6;&#x6210;&#x4E24;&#x4E2A;&#x5B57;&#x8282;&#x5C31;&#x5B8C;&#x6210;&#x5B83;&#x7684;&#x5DE5;&#x4F5C;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x78C1;&#x76D8;&#x4E0E;&#x5185;&#x5B58;&#x4E0A;&#x7684;&#x64CD;&#x4F5C;&#x5B83;&#x66F4;&#x9002;&#x5408;&#xFF0C;&#x4F46;&#x662F;&#x5728;&#x5B57;&#x8282;&#x5BB9;&#x6613;&#x635F;&#x574F;&#x7684;&#x7F51;&#x7EDC;&#x4E0A;utf-8&#x66F4;&#x9002;&#x5408;&#xFF0C;&#x5B83;&#x4E0D;&#x50CF;utf-16&#x987A;&#x5E8F;&#x7F16;&#x7801;&#xFF0C;&#x4E00;&#x4E2A;&#x5B57;&#x8282;&#x7684;&#x635F;&#x574F;&#x4F1A;&#x5F71;&#x54CD;&#x540E;&#x9762;&#x7684;&#x5B57;&#x7B26;&#x3002;&#x4E14;&#x7F16;&#x7801;&#x6548;&#x7387;&#x4E0A;utf-8&#x4ECB;&#x4E8E;GBK&#x548C;utf-16&#x4E4B;&#x95F4;&#x3002;</p>
+<h4 id="JavaWeb&#x4E2D;&#x6D89;&#x53CA;&#x7684;&#x7F16;&#x7801;"><a href="#JavaWeb&#x4E2D;&#x6D89;&#x53CA;&#x7684;&#x7F16;&#x7801;" class="headerlink" title="JavaWeb&#x4E2D;&#x6D89;&#x53CA;&#x7684;&#x7F16;&#x7801;"></a>JavaWeb&#x4E2D;&#x6D89;&#x53CA;&#x7684;&#x7F16;&#x7801;</h4><ol>
+<li><p>url&#x7684;&#x7F16;&#x89E3;&#x7801;</p>
+<p><a href="http://localhost:8080//examples/servlets/serlet/%E5%90%9B%E5%B1%B1?authod=%E5%90%9B%E5%B1%B1" target="_blank" rel="noopener">http://localhost:8080//examples/servlets/serlet/&#x541B;&#x5C71;?authod=&#x541B;&#x5C71;</a></p>
 <p>sheme domin port contextPath servletPath pathInfo queryString</p>
-<p>一般情况下pathInfo采用的是utf-8编码，然后浏览器会将非ASCII字符按照某种编码格式编码成16进制数字后将每个16进制数字表示的字节前加上%，Tomcat的设置上默认也是按照utf-8解码pathInfo；queryString是按照传输中在header中设置的contentType编码方式进行编码，然后在Tomcat中可以设置useBodyEncodingForURI=“true”将queryString的解码方式采用的也是contentType设置的编码方式。</p>
+<p>&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;pathInfo&#x91C7;&#x7528;&#x7684;&#x662F;utf-8&#x7F16;&#x7801;&#xFF0C;&#x7136;&#x540E;&#x6D4F;&#x89C8;&#x5668;&#x4F1A;&#x5C06;&#x975E;ASCII&#x5B57;&#x7B26;&#x6309;&#x7167;&#x67D0;&#x79CD;&#x7F16;&#x7801;&#x683C;&#x5F0F;&#x7F16;&#x7801;&#x6210;16&#x8FDB;&#x5236;&#x6570;&#x5B57;&#x540E;&#x5C06;&#x6BCF;&#x4E2A;16&#x8FDB;&#x5236;&#x6570;&#x5B57;&#x8868;&#x793A;&#x7684;&#x5B57;&#x8282;&#x524D;&#x52A0;&#x4E0A;%&#xFF0C;Tomcat&#x7684;&#x8BBE;&#x7F6E;&#x4E0A;&#x9ED8;&#x8BA4;&#x4E5F;&#x662F;&#x6309;&#x7167;utf-8&#x89E3;&#x7801;pathInfo&#xFF1B;queryString&#x662F;&#x6309;&#x7167;&#x4F20;&#x8F93;&#x4E2D;&#x5728;header&#x4E2D;&#x8BBE;&#x7F6E;&#x7684;contentType&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x7F16;&#x7801;&#xFF0C;&#x7136;&#x540E;&#x5728;Tomcat&#x4E2D;&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;useBodyEncodingForURI=&#x201C;true&#x201D;&#x5C06;queryString&#x7684;&#x89E3;&#x7801;&#x65B9;&#x5F0F;&#x91C7;&#x7528;&#x7684;&#x4E5F;&#x662F;contentType&#x8BBE;&#x7F6E;&#x7684;&#x7F16;&#x7801;&#x65B9;&#x5F0F;&#x3002;</p>
 </li>
-<li><p>HTTP Header 的编解码</p>
-<p>header中只能传输ASCII字符，不能采用其他编解码方式；如果一定要传递可以先将这些字符用URIEncoder编码再添加到Header中。</p>
+<li><p>HTTP Header &#x7684;&#x7F16;&#x89E3;&#x7801;</p>
+<p>header&#x4E2D;&#x53EA;&#x80FD;&#x4F20;&#x8F93;ASCII&#x5B57;&#x7B26;&#xFF0C;&#x4E0D;&#x80FD;&#x91C7;&#x7528;&#x5176;&#x4ED6;&#x7F16;&#x89E3;&#x7801;&#x65B9;&#x5F0F;&#xFF1B;&#x5982;&#x679C;&#x4E00;&#x5B9A;&#x8981;&#x4F20;&#x9012;&#x53EF;&#x4EE5;&#x5148;&#x5C06;&#x8FD9;&#x4E9B;&#x5B57;&#x7B26;&#x7528;URIEncoder&#x7F16;&#x7801;&#x518D;&#x6DFB;&#x52A0;&#x5230;Header&#x4E2D;&#x3002;</p>
 </li>
-<li><p>Post表单上的编解码</p>
-<p>在POST提交的时候会按照ContentType编码，tomcat也会按照ContentType解码；Tomcat在getParameter方法之前会获取contentType中的charset；但是这里有一种特殊情况，在 POST提交表单的时候默认情况下 ContentType是不会有值的就会采用默认的ISO-8859-1；而在jsp中设置的contentType中的Charset是告诉浏览器该页面该用什么解码。</p>
+<li><p>Post&#x8868;&#x5355;&#x4E0A;&#x7684;&#x7F16;&#x89E3;&#x7801;</p>
+<p>&#x5728;POST&#x63D0;&#x4EA4;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x6309;&#x7167;ContentType&#x7F16;&#x7801;&#xFF0C;tomcat&#x4E5F;&#x4F1A;&#x6309;&#x7167;ContentType&#x89E3;&#x7801;&#xFF1B;Tomcat&#x5728;getParameter&#x65B9;&#x6CD5;&#x4E4B;&#x524D;&#x4F1A;&#x83B7;&#x53D6;contentType&#x4E2D;&#x7684;charset&#xFF1B;&#x4F46;&#x662F;&#x8FD9;&#x91CC;&#x6709;&#x4E00;&#x79CD;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#xFF0C;&#x5728; POST&#x63D0;&#x4EA4;&#x8868;&#x5355;&#x7684;&#x65F6;&#x5019;&#x9ED8;&#x8BA4;&#x60C5;&#x51B5;&#x4E0B; ContentType&#x662F;&#x4E0D;&#x4F1A;&#x6709;&#x503C;&#x7684;&#x5C31;&#x4F1A;&#x91C7;&#x7528;&#x9ED8;&#x8BA4;&#x7684;ISO-8859-1&#xFF1B;&#x800C;&#x5728;jsp&#x4E2D;&#x8BBE;&#x7F6E;&#x7684;contentType&#x4E2D;&#x7684;Charset&#x662F;&#x544A;&#x8BC9;&#x6D4F;&#x89C8;&#x5668;&#x8BE5;&#x9875;&#x9762;&#x8BE5;&#x7528;&#x4EC0;&#x4E48;&#x89E3;&#x7801;&#x3002;</p>
 </li>
-<li><p>HTTP body的编解码</p>
-<p>在服务器通过response返给浏览器的时候与request给服务器的编解码过程差不多；通过设置response的contentType然后服务器和浏览器就用这个charset对body进行编解码。</p>
+<li><p>HTTP body&#x7684;&#x7F16;&#x89E3;&#x7801;</p>
+<p>&#x5728;&#x670D;&#x52A1;&#x5668;&#x901A;&#x8FC7;response&#x8FD4;&#x7ED9;&#x6D4F;&#x89C8;&#x5668;&#x7684;&#x65F6;&#x5019;&#x4E0E;request&#x7ED9;&#x670D;&#x52A1;&#x5668;&#x7684;&#x7F16;&#x89E3;&#x7801;&#x8FC7;&#x7A0B;&#x5DEE;&#x4E0D;&#x591A;&#xFF1B;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E;response&#x7684;contentType&#x7136;&#x540E;&#x670D;&#x52A1;&#x5668;&#x548C;&#x6D4F;&#x89C8;&#x5668;&#x5C31;&#x7528;&#x8FD9;&#x4E2A;charset&#x5BF9;body&#x8FDB;&#x884C;&#x7F16;&#x89E3;&#x7801;&#x3002;</p>
 </li>
 </ol>
-
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -582,7 +600,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -672,7 +690,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

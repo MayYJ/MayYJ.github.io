@@ -108,13 +108,13 @@
 
 
 
-  <meta name="description" content="单系统登录http无状态web采用的C/S架构，采用了HTTP协议，但是http是无状态的一种协议，即每一次请求都是独立的不会与上一次或者下一次的请求产生联系，但是我们又想在请求中记录用户的状态，那么就产生了cookie和session的会话机制 会话机制 浏览器第一次访问服务器的时候，服务器产生此会话的session，并且在response中的cookies中添加sessionId，浏览器接收到">
+  <meta name="description" content="&amp;#x5355;&amp;#x7CFB;&amp;#x7EDF;&amp;#x767B;&amp;#x5F55;http&amp;#x65E0;&amp;#x72B6;&amp;#x6001;web&amp;#x91C7;&amp;#x7528;&amp;#x7684;C/S&amp;#x67B6;&amp;#x6784;&amp;#xFF0C;&amp;#x91C7;&amp;#x7528;&amp;#x4E86;HTTP&amp;#x534F;&amp;#x8BAE;&amp;#xFF0C;&amp;#x4F46;&amp;#x662F;http&amp;#x662">
 <meta name="keywords" content="单点登录">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单点登录">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/27/javaweb/单点登录/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="单系统登录http无状态web采用的C/S架构，采用了HTTP协议，但是http是无状态的一种协议，即每一次请求都是独立的不会与上一次或者下一次的请求产生联系，但是我们又想在请求中记录用户的状态，那么就产生了cookie和session的会话机制 会话机制 浏览器第一次访问服务器的时候，服务器产生此会话的session，并且在response中的cookies中添加sessionId，浏览器接收到">
+<meta property="og:description" content="&amp;#x5355;&amp;#x7CFB;&amp;#x7EDF;&amp;#x767B;&amp;#x5F55;http&amp;#x65E0;&amp;#x72B6;&amp;#x6001;web&amp;#x91C7;&amp;#x7528;&amp;#x7684;C/S&amp;#x67B6;&amp;#x6784;&amp;#xFF0C;&amp;#x91C7;&amp;#x7528;&amp;#x4E86;HTTP&amp;#x534F;&amp;#x8BAE;&amp;#xFF0C;&amp;#x4F46;&amp;#x662F;http&amp;#x662">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fly1fwmtuzv045j209y0drjrj.jpg">
 <meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/M7B64fHXIStia4Rvwdy30oGiathTlLUDZxvNqEuNIjx00iaE8sML5aE54ZP4I2ebNB1qXaSAYbOaXS61MMiaiaQiaBUg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
@@ -122,7 +122,7 @@
 <meta property="og:updated_time" content="2018-10-29T00:55:19.028Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单点登录">
-<meta name="twitter:description" content="单系统登录http无状态web采用的C/S架构，采用了HTTP协议，但是http是无状态的一种协议，即每一次请求都是独立的不会与上一次或者下一次的请求产生联系，但是我们又想在请求中记录用户的状态，那么就产生了cookie和session的会话机制 会话机制 浏览器第一次访问服务器的时候，服务器产生此会话的session，并且在response中的cookies中添加sessionId，浏览器接收到">
+<meta name="twitter:description" content="&amp;#x5355;&amp;#x7CFB;&amp;#x7EDF;&amp;#x767B;&amp;#x5F55;http&amp;#x65E0;&amp;#x72B6;&amp;#x6001;web&amp;#x91C7;&amp;#x7528;&amp;#x7684;C/S&amp;#x67B6;&amp;#x6784;&amp;#xFF0C;&amp;#x91C7;&amp;#x7528;&amp;#x4E86;HTTP&amp;#x534F;&amp;#x8BAE;&amp;#xFF0C;&amp;#x4F46;&amp;#x662F;http&amp;#x662">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fly1fwmtuzv045j209y0drjrj.jpg">
 
 
@@ -425,15 +425,33 @@
       
 
       
-        <h4 id="单系统登录"><a href="#单系统登录" class="headerlink" title="单系统登录"></a>单系统登录</h4><h5 id="http无状态"><a href="#http无状态" class="headerlink" title="http无状态"></a>http无状态</h5><p>web采用的C/S架构，采用了HTTP协议，但是http是无状态的一种协议，即每一次请求都是独立的不会与上一次或者下一次的请求产生联系，但是我们又想在请求中记录用户的状态，那么就产生了cookie和session的会话机制</p>
-<h5 id="会话机制"><a href="#会话机制" class="headerlink" title="会话机制"></a>会话机制</h5><p><img src="https://ws1.sinaimg.cn/large/a67bf22fly1fwmtuzv045j209y0drjrj.jpg" alt=""></p>
-<p>浏览器第一次访问服务器的时候，服务器产生此会话的session，并且在response中的cookies中添加sessionId，浏览器接收到response就会把cookie保存在本地cookie中；当下一次再访问服务器的时候，浏览器就会在cookies中带着这个sessionId，服务器就可以通过sessionId在session池里面取出本次会话的session</p>
-<p>有了这个会话机制，我们就可以在session里面存储我们的登录状态，在单系统中我们就是通过在session里面设置isLogin的字段 实现自动登录</p>
-<h4 id="多系统登录"><a href="#多系统登录" class="headerlink" title="多系统登录"></a>多系统登录</h4><h5 id="cookie传送要求"><a href="#cookie传送要求" class="headerlink" title="cookie传送要求"></a>cookie传送要求</h5><p>在单系统中，只涉及到一个服务器，一个域名那么就不存在跨域问题；所谓cookie的跨域问题是正常的cookie的传输是在本地cookie文件中，每一个cookie都对应着一个域名，在向服务器发送请求如果有该域名下的cookie那么就会在请求中添加cookie；但是不同的域名是不能共享一个cookie的</p>
-<h5 id="cookie的跨域共享"><a href="#cookie的跨域共享" class="headerlink" title="cookie的跨域共享"></a>cookie的跨域共享</h5><p>在早期的系统中，就是采用这种方式进行单点登录，但是存在的缺点是各服务器使用的技术相同，因为cookie的key值 要相同；其次应用群域名得统一 ；然后cookie本身不安全 </p>
-<h4 id="单点登录"><a href="#单点登录" class="headerlink" title="单点登录"></a>单点登录</h4><h5 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h5><p><img src="https://mmbiz.qpic.cn/mmbiz_png/M7B64fHXIStia4Rvwdy30oGiathTlLUDZxvNqEuNIjx00iaE8sML5aE54ZP4I2ebNB1qXaSAYbOaXS61MMiaiaQiaBUg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt=""></p>
-<h5 id="注销"><a href="#注销" class="headerlink" title="注销"></a>注销</h5><p><img src="https://mmbiz.qpic.cn/mmbiz_png/M7B64fHXIStia4Rvwdy30oGiathTlLUDZx0SU9n8ffADbXzAeu4BnHYGo1EaUhlKsMynl31LNHtqvkVuwt7oOHkQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt=""></p>
-
+        <h4 id="&#x5355;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;"><a href="#&#x5355;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;" class="headerlink" title="&#x5355;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;"></a>&#x5355;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;</h4><h5 id="http&#x65E0;&#x72B6;&#x6001;"><a href="#http&#x65E0;&#x72B6;&#x6001;" class="headerlink" title="http&#x65E0;&#x72B6;&#x6001;"></a>http&#x65E0;&#x72B6;&#x6001;</h5><p>web&#x91C7;&#x7528;&#x7684;C/S&#x67B6;&#x6784;&#xFF0C;&#x91C7;&#x7528;&#x4E86;HTTP&#x534F;&#x8BAE;&#xFF0C;&#x4F46;&#x662F;http&#x662F;&#x65E0;&#x72B6;&#x6001;&#x7684;&#x4E00;&#x79CD;&#x534F;&#x8BAE;&#xFF0C;&#x5373;&#x6BCF;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;&#x90FD;&#x662F;&#x72EC;&#x7ACB;&#x7684;&#x4E0D;&#x4F1A;&#x4E0E;&#x4E0A;&#x4E00;&#x6B21;&#x6216;&#x8005;&#x4E0B;&#x4E00;&#x6B21;&#x7684;&#x8BF7;&#x6C42;&#x4EA7;&#x751F;&#x8054;&#x7CFB;&#xFF0C;&#x4F46;&#x662F;&#x6211;&#x4EEC;&#x53C8;&#x60F3;&#x5728;&#x8BF7;&#x6C42;&#x4E2D;&#x8BB0;&#x5F55;&#x7528;&#x6237;&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4EA7;&#x751F;&#x4E86;cookie&#x548C;session&#x7684;&#x4F1A;&#x8BDD;&#x673A;&#x5236;</p>
+<h5 id="&#x4F1A;&#x8BDD;&#x673A;&#x5236;"><a href="#&#x4F1A;&#x8BDD;&#x673A;&#x5236;" class="headerlink" title="&#x4F1A;&#x8BDD;&#x673A;&#x5236;"></a>&#x4F1A;&#x8BDD;&#x673A;&#x5236;</h5><p><img src="https://ws1.sinaimg.cn/large/a67bf22fly1fwmtuzv045j209y0drjrj.jpg" alt=""></p>
+<p>&#x6D4F;&#x89C8;&#x5668;&#x7B2C;&#x4E00;&#x6B21;&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x4EA7;&#x751F;&#x6B64;&#x4F1A;&#x8BDD;&#x7684;session&#xFF0C;&#x5E76;&#x4E14;&#x5728;response&#x4E2D;&#x7684;cookies&#x4E2D;&#x6DFB;&#x52A0;sessionId&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x63A5;&#x6536;&#x5230;response&#x5C31;&#x4F1A;&#x628A;cookie&#x4FDD;&#x5B58;&#x5728;&#x672C;&#x5730;cookie&#x4E2D;&#xFF1B;&#x5F53;&#x4E0B;&#x4E00;&#x6B21;&#x518D;&#x8BBF;&#x95EE;&#x670D;&#x52A1;&#x5668;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x6D4F;&#x89C8;&#x5668;&#x5C31;&#x4F1A;&#x5728;cookies&#x4E2D;&#x5E26;&#x7740;&#x8FD9;&#x4E2A;sessionId&#xFF0C;&#x670D;&#x52A1;&#x5668;&#x5C31;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;sessionId&#x5728;session&#x6C60;&#x91CC;&#x9762;&#x53D6;&#x51FA;&#x672C;&#x6B21;&#x4F1A;&#x8BDD;&#x7684;session</p>
+<p>&#x6709;&#x4E86;&#x8FD9;&#x4E2A;&#x4F1A;&#x8BDD;&#x673A;&#x5236;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x5728;session&#x91CC;&#x9762;&#x5B58;&#x50A8;&#x6211;&#x4EEC;&#x7684;&#x767B;&#x5F55;&#x72B6;&#x6001;&#xFF0C;&#x5728;&#x5355;&#x7CFB;&#x7EDF;&#x4E2D;&#x6211;&#x4EEC;&#x5C31;&#x662F;&#x901A;&#x8FC7;&#x5728;session&#x91CC;&#x9762;&#x8BBE;&#x7F6E;isLogin&#x7684;&#x5B57;&#x6BB5; &#x5B9E;&#x73B0;&#x81EA;&#x52A8;&#x767B;&#x5F55;</p>
+<h4 id="&#x591A;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;"><a href="#&#x591A;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;" class="headerlink" title="&#x591A;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;"></a>&#x591A;&#x7CFB;&#x7EDF;&#x767B;&#x5F55;</h4><h5 id="cookie&#x4F20;&#x9001;&#x8981;&#x6C42;"><a href="#cookie&#x4F20;&#x9001;&#x8981;&#x6C42;" class="headerlink" title="cookie&#x4F20;&#x9001;&#x8981;&#x6C42;"></a>cookie&#x4F20;&#x9001;&#x8981;&#x6C42;</h5><p>&#x5728;&#x5355;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x53EA;&#x6D89;&#x53CA;&#x5230;&#x4E00;&#x4E2A;&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x4E00;&#x4E2A;&#x57DF;&#x540D;&#x90A3;&#x4E48;&#x5C31;&#x4E0D;&#x5B58;&#x5728;&#x8DE8;&#x57DF;&#x95EE;&#x9898;&#xFF1B;&#x6240;&#x8C13;cookie&#x7684;&#x8DE8;&#x57DF;&#x95EE;&#x9898;&#x662F;&#x6B63;&#x5E38;&#x7684;cookie&#x7684;&#x4F20;&#x8F93;&#x662F;&#x5728;&#x672C;&#x5730;cookie&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x6BCF;&#x4E00;&#x4E2A;cookie&#x90FD;&#x5BF9;&#x5E94;&#x7740;&#x4E00;&#x4E2A;&#x57DF;&#x540D;&#xFF0C;&#x5728;&#x5411;&#x670D;&#x52A1;&#x5668;&#x53D1;&#x9001;&#x8BF7;&#x6C42;&#x5982;&#x679C;&#x6709;&#x8BE5;&#x57DF;&#x540D;&#x4E0B;&#x7684;cookie&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x5728;&#x8BF7;&#x6C42;&#x4E2D;&#x6DFB;&#x52A0;cookie&#xFF1B;&#x4F46;&#x662F;&#x4E0D;&#x540C;&#x7684;&#x57DF;&#x540D;&#x662F;&#x4E0D;&#x80FD;&#x5171;&#x4EAB;&#x4E00;&#x4E2A;cookie&#x7684;</p>
+<h5 id="cookie&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;"><a href="#cookie&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;" class="headerlink" title="cookie&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;"></a>cookie&#x7684;&#x8DE8;&#x57DF;&#x5171;&#x4EAB;</h5><p>&#x5728;&#x65E9;&#x671F;&#x7684;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x5C31;&#x662F;&#x91C7;&#x7528;&#x8FD9;&#x79CD;&#x65B9;&#x5F0F;&#x8FDB;&#x884C;&#x5355;&#x70B9;&#x767B;&#x5F55;&#xFF0C;&#x4F46;&#x662F;&#x5B58;&#x5728;&#x7684;&#x7F3A;&#x70B9;&#x662F;&#x5404;&#x670D;&#x52A1;&#x5668;&#x4F7F;&#x7528;&#x7684;&#x6280;&#x672F;&#x76F8;&#x540C;&#xFF0C;&#x56E0;&#x4E3A;cookie&#x7684;key&#x503C; &#x8981;&#x76F8;&#x540C;&#xFF1B;&#x5176;&#x6B21;&#x5E94;&#x7528;&#x7FA4;&#x57DF;&#x540D;&#x5F97;&#x7EDF;&#x4E00; &#xFF1B;&#x7136;&#x540E;cookie&#x672C;&#x8EAB;&#x4E0D;&#x5B89;&#x5168; </p>
+<h4 id="&#x5355;&#x70B9;&#x767B;&#x5F55;"><a href="#&#x5355;&#x70B9;&#x767B;&#x5F55;" class="headerlink" title="&#x5355;&#x70B9;&#x767B;&#x5F55;"></a>&#x5355;&#x70B9;&#x767B;&#x5F55;</h4><h5 id="&#x767B;&#x5F55;"><a href="#&#x767B;&#x5F55;" class="headerlink" title="&#x767B;&#x5F55;"></a>&#x767B;&#x5F55;</h5><p><img src="https://mmbiz.qpic.cn/mmbiz_png/M7B64fHXIStia4Rvwdy30oGiathTlLUDZxvNqEuNIjx00iaE8sML5aE54ZP4I2ebNB1qXaSAYbOaXS61MMiaiaQiaBUg/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt=""></p>
+<h5 id="&#x6CE8;&#x9500;"><a href="#&#x6CE8;&#x9500;" class="headerlink" title="&#x6CE8;&#x9500;"></a>&#x6CE8;&#x9500;</h5><p><img src="https://mmbiz.qpic.cn/mmbiz_png/M7B64fHXIStia4Rvwdy30oGiathTlLUDZx0SU9n8ffADbXzAeu4BnHYGo1EaUhlKsMynl31LNHtqvkVuwt7oOHkQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt=""></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>
       
     </div>
 
@@ -550,7 +568,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">42</span>
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -640,7 +658,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">25</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">30</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
