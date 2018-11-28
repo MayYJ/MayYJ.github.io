@@ -310,6 +310,324 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/14/javaweb/Docker/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/javaweb/Docker/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-14 16:41:55" itemprop="dateCreated datePublished" datetime="2018-08-14T16:41:55+08:00">2018-08-14</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          更换Docker镜像源编辑 /etc/docker/daemon.json  的文件，如果没有就添加，docker版本要大于1.12
+1&#123;"registry-mirrors":[]&#125;
+[] 里面可以填一下的镜像源：
+
+Docker官方中国区：https://registry.do
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/08/14/javaweb/Docker/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/08/05/reading/高性能Mysql知识点总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/05/reading/高性能Mysql知识点总结/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-08-05 16:46:35" itemprop="dateCreated datePublished" datetime="2018-08-05T16:46:35+08:00">2018-08-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-09 21:21:13" itemprop="dateModified" datetime="2018-08-09T21:21:13+08:00">2018-08-09</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Schema与数据类型优化
+选择优化得数据类型原则：
+
+更小的通常更好
+简单就好
+尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂
+
+
+尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据
+
+
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/08/05/reading/高性能Mysql知识点总结/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/07/23/javaweb/Spring 源码详解/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -408,8 +726,11 @@
       
         
           
-          Spring IOCSpring IOC&#x6982;&#x8FF0;
-&#x4F9D;&#x8D56;&#x53CD;&#x8F6C;&#xFF1A;&#x628A;&#x63A7;&#x5236;&#x6743;&#x4ECE;&#x5177;&#x4F53;&#x7684;&#x4E1A;&
+          Spring IOCSpring IOC概述
+依赖反转：把控制权从具体的业务对象手中转交到平台或者框架中，Spring IOC就是实现这个模式的载体
+
+为什么要使用Spring IOC
+因为在面向对象程序设计中，一个对象会包含其它的对象，如果合伙对象的引用或依赖关系的管理有具体对象来完成，会导致代码
           ...
           <!--noindex-->
           
@@ -557,8 +878,11 @@
       
         
           
-          &#x5173;&#x4E8E;java8 &#x5B9E;&#x6218;&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;
-&#x5728;&#x4F7F;&#x7528;&#x524D;&#x5FC5
+          关于java8 实战并行数据处理与性能
+在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作
+留意装箱和拆箱，这个比较消耗性能
+与流中元素顺序相关的操作比顺序无关的操作性能差
+设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是
           ...
           <!--noindex-->
           
@@ -718,7 +1042,12 @@
       
         
           
-          &#x5B58;&#x50A8;&#x5668;&#x7BA1;&#x7406;&#x5B58;&#x50A8;&#x5668;&#x7684;&#x5C42;&#x6B21;&#x7ED3;&#x6784;&#x591A;&#x7EA7;&#x5B58;&#x50A8;&#x5668;&#x7ED
+          存储器管理存储器的层次结构多级存储器结构
+操作系统的存储管理，负责对可执行存储器的分配、回收以及提供在存储层次间数据移动的管理机制
+主要分三层：CPU寄存器（寄存器），主存（高速缓存、主存、磁盘缓存）、辅存（磁盘、可移动介质）
+
+程序的装入和链接程序的装入
+绝对装入方式：程序员需要知道程序将驻留在什
           ...
           <!--noindex-->
           
@@ -863,9 +1192,16 @@
         
           
           
-&#x6839;&#x636E;jdk&#x7C7B;&#x6CE8;&#x91CA;&#x4E2D;&#x53EF;&#x4EE5;&#x5F97;&#x5230;&#x7684;&#x4E00;&#x4E9B;&#x4FE1;&#x606F;
+根据jdk类注释中可以得到的一些信息
 
-HashTable&#x662F;&#x7EBF
+HashTable是线程安全的，但是如果不要求线程安全推荐使用HashMap来代替HashTable，
+要求线程安全那么就使用HashTable
+
+要求键值不能为空
+
+如果会用较多的元素使用，那么最好设置足够的容量来减少添加元素时扩容的浪费的时间
+
+关于mo
           ...
           <!--noindex-->
           
@@ -1025,9 +1361,10 @@ HashTable&#x662F;&#x7EBF
       
         
           
-          1234title: HashMap&#x6E90;&#x7801;date: 2018-10-26 22:48:28tags: &#x6E90;&#x7801;&#x89E3;&#x6790;categories: java
+          1234title: HashMap源码date: 2018-10-26 22:48:28tags: 源码解析categories: java
 
-&#x4E3A;&#x4EC0;&#x4E48;hashMap&#x7
+为什么hashMap的capacity要选取2的幂，因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标
+1
           ...
           <!--noindex-->
           
@@ -1175,9 +1512,17 @@ HashTable&#x662F;&#x7EBF
       
         
           
-          &#x7EBF;&#x6027;&#x8868;&#x987A;&#x5E8F;&#x5B58;&#x50A8;&#x65B9;&#x5F0F;
-&#x5B9A;&#x4E49;
-&#x7528;&#x4E00;&#x6BB5;&#x5730;&#x5740;&#x8FDE;&#x7EED;&#x7
+          线性表顺序存储方式
+定义
+用一段地址连续的存储空间存储线性表的元素
+
+存储结构 
+1234typedef struct&#123;    Elemtype data[MAX_SIZE];    int length;&#125;SqList
+
+添加元素实现方式
+
+实现原理
+将要插入的位置以后的元素全
           ...
           <!--noindex-->
           
@@ -1355,7 +1700,8 @@ HashTable&#x662F;&#x7EBF
       
         
           
-          &#x4EE3;&#x7406;&#x6A21;&#x5F0F;&#x9759;&#x6001;&#x4EE3;&#x7406;&#x6240;&#x8C13;&#x9759;&#x6001;&#x4EE3;&#x7406;&#x4E5F;&#x5C31;&#x662F;&#x5728;&#x7A0
+          代理模式静态代理所谓静态代理也就是在程序运行前就已经存在代理类的字节码文件，代理类和委托类的关系在运行前就确定了。
+通过继承实现静态代理直接贴代码：1234567891011121314151617181920212223public interface MoveAble &#123;    voi
           ...
           <!--noindex-->
           
@@ -1533,368 +1879,13 @@ HashTable&#x662F;&#x7EBF
       
         
           
-          &#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x5E8F;&#x5217;&#x5316;&#x5F53;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x540E;&#xFF0C;&#x598
+          为什么要序列化当我们创建一个对象后，如果程序终止那么对象就会销毁，但是存在我们需要对对象进行持久化的需求，以便在将来我们取出对象进行再次利用。序列化就是把对象变成字节码序列来实现轻量级持久化，也方便我们对其在网络上进行传输。
+怎么序列化12345678910111213141516171819202
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
               <a class="btn" href="/2018/05/12/java/java序列化/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/05/05/java/java nio/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/java/java nio/" itemprop="url">
-                  nio
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-05-05 17:41:16" itemprop="dateCreated datePublished" datetime="2018-05-05T17:41:16+08:00">2018-05-05</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-07 19:23:12" itemprop="dateModified" datetime="2018-11-07T19:23:12+08:00">2018-11-07</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          &#x56E0;&#x4E3A;&#x9700;&#x8981;&#x7528;&#x5230;Java NIO&#xFF0C;&#x53C8;&#x8BB0;&#x5F97;&#x81EA;&#x5DF1;&#x5199;&#x8FC7;&#x5173;&#x4E8E;&#x5176;&#x768
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/05/05/java/java nio/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/03/13/java/源码解析/ArrayList源码解析/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/13/java/源码解析/ArrayList源码解析/" itemprop="url">
-                  ArrayList源码解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-13 22:21:23" itemprop="dateCreated datePublished" datetime="2018-03-13T22:21:23+08:00">2018-03-13</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-25 21:34:14" itemprop="dateModified" datetime="2018-10-25T21:34:14+08:00">2018-10-25</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Arrays.copyof12345public static &lt;T, U&gt; T[] copyOf(U[] original, int newLength, Class&lt;? extends T[]&gt; newType) {        T[] copy = newType =
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/03/13/java/源码解析/ArrayList源码解析/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1985,7 +1976,7 @@ HashTable&#x662F;&#x7EBF
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

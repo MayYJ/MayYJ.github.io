@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="&amp;#x5173;&amp;#x4E8E;ThreadLocal &amp;#x6BCF;&amp;#x4E2A;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4FDD;&amp;#x5B58;&amp;#x7684;&amp;#x662F;ThreadLocal.ThreadLocalMap  ThreadLocalMap&amp;#x8DDF;HashMap&amp;#x7C7B;&amp;#x4F3C;&amp;#xFF0C;&amp;#x6211;&amp;#x4EEC;&amp;#x63A5;&amp;#x">
+  <meta name="description" content="关于ThreadLocal 每个线程保存的是ThreadLocal.ThreadLocalMap  ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的一些源码  123456789101112//在ThreadLocal中保存的就是这个Entry数组，这个entry数组就是保存的我们的数据，Entry特殊的是它是一个弱引用，根据构造函数我们也知道它是让一个Thread">
 <meta name="keywords" content="ThreadLocal">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于ThreadLocal">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/关于ThreadLocal/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="&amp;#x5173;&amp;#x4E8E;ThreadLocal &amp;#x6BCF;&amp;#x4E2A;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4FDD;&amp;#x5B58;&amp;#x7684;&amp;#x662F;ThreadLocal.ThreadLocalMap  ThreadLocalMap&amp;#x8DDF;HashMap&amp;#x7C7B;&amp;#x4F3C;&amp;#xFF0C;&amp;#x6211;&amp;#x4EEC;&amp;#x63A5;&amp;#x">
+<meta property="og:description" content="关于ThreadLocal 每个线程保存的是ThreadLocal.ThreadLocalMap  ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的一些源码  123456789101112//在ThreadLocal中保存的就是这个Entry数组，这个entry数组就是保存的我们的数据，Entry特殊的是它是一个弱引用，根据构造函数我们也知道它是让一个Thread">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-10-30T12:12:34.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于ThreadLocal">
-<meta name="twitter:description" content="&amp;#x5173;&amp;#x4E8E;ThreadLocal &amp;#x6BCF;&amp;#x4E2A;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4FDD;&amp;#x5B58;&amp;#x7684;&amp;#x662F;ThreadLocal.ThreadLocalMap  ThreadLocalMap&amp;#x8DDF;HashMap&amp;#x7C7B;&amp;#x4F3C;&amp;#xFF0C;&amp;#x6211;&amp;#x4EEC;&amp;#x63A5;&amp;#x">
+<meta name="twitter:description" content="关于ThreadLocal 每个线程保存的是ThreadLocal.ThreadLocalMap  ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的一些源码  123456789101112//在ThreadLocal中保存的就是这个Entry数组，这个entry数组就是保存的我们的数据，Entry特殊的是它是一个弱引用，根据构造函数我们也知道它是让一个Thread">
 
 
 
@@ -409,37 +409,19 @@
       
 
       
-        <h4 id="&#x5173;&#x4E8E;ThreadLocal"><a href="#&#x5173;&#x4E8E;ThreadLocal" class="headerlink" title="&#x5173;&#x4E8E;ThreadLocal"></a>&#x5173;&#x4E8E;ThreadLocal</h4><ol>
-<li><p>&#x6BCF;&#x4E2A;&#x7EBF;&#x7A0B;&#x4FDD;&#x5B58;&#x7684;&#x662F;ThreadLocal.ThreadLocalMap</p>
+        <h4 id="关于ThreadLocal"><a href="#关于ThreadLocal" class="headerlink" title="关于ThreadLocal"></a>关于ThreadLocal</h4><ol>
+<li><p>每个线程保存的是ThreadLocal.ThreadLocalMap</p>
 </li>
-<li><p>ThreadLocalMap&#x8DDF;HashMap&#x7C7B;&#x4F3C;&#xFF0C;&#x6211;&#x4EEC;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x5177;&#x4F53;&#x770B;&#x770B;&#x5B83;&#x7684;&#x91CD;&#x8981;&#x7684;&#x4E00;&#x4E9B;&#x6E90;&#x7801;</p>
+<li><p>ThreadLocalMap跟HashMap类似，我们接下来就具体看看它的重要的一些源码</p>
 <ul>
-<li><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//&#x5728;ThreadLocal&#x4E2D;&#x4FDD;&#x5B58;&#x7684;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;Entry&#x6570;&#x7EC4;&#xFF0C;&#x8FD9;&#x4E2A;entry&#x6570;&#x7EC4;&#x5C31;&#x662F;&#x4FDD;&#x5B58;&#x7684;&#x6211;&#x4EEC;&#x7684;&#x6570;&#x636E;&#xFF0C;Entry&#x7279;&#x6B8A;&#x7684;&#x662F;&#x5B83;&#x662F;&#x4E00;&#x4E2A;&#x5F31;&#x5F15;&#x7528;&#xFF0C;&#x6839;&#x636E;&#x6784;&#x9020;&#x51FD;&#x6570;&#x6211;&#x4EEC;&#x4E5F;&#x77E5;&#x9053;&#x5B83;&#x662F;&#x8BA9;&#x4E00;&#x4E2A;ThreadLocal &#x4E0E;&#x4E00;&#x4E2A;&#x6211;&#x4EEC;&#x8981;&#x4FDD;&#x5B58;&#x7684;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x7ED1;&#x5B9A;</span></span><br><span class="line"><span class="keyword">private</span> Entry[] table;        </span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>{</span><br><span class="line">            <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">            Object value;</span><br><span class="line"></span><br><span class="line">            Entry(ThreadLocal&lt;?&gt; k, Object v) {</span><br><span class="line">                <span class="keyword">super</span>(k);</span><br><span class="line">                value = v;</span><br><span class="line">            }</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在ThreadLocal中保存的就是这个Entry数组，这个entry数组就是保存的我们的数据，Entry特殊的是它是一个弱引用，根据构造函数我们也知道它是让一个ThreadLocal 与一个我们要保存的数据进行绑定</span></span><br><span class="line"><span class="keyword">private</span> Entry[] table;        </span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">            <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">            Object value;</span><br><span class="line"></span><br><span class="line">            Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">                <span class="keyword">super</span>(k);</span><br><span class="line">                value = v;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>&#x5176;&#x5B83;&#x65B9;&#x9762;&#x5C31;&#x8DDF;HashMap&#x975E;&#x5E38;&#x7C7B;&#x4F3C;&#xFF0C;&#x4E5F;&#x6709;&#x6269;&#x5BB9;&#x673A;&#x5236;&#xFF0C;&#x800C;&#x4E14;&#x8DDF;HashMap&#x7684;&#x6269;&#x5BB9;&#x673A;&#x5236;&#x5DEE;&#x4E0D;&#x591A;</p>
+<li><p>其它方面就跟HashMap非常类似，也有扩容机制，而且跟HashMap的扩容机制差不多</p>
 </li>
 </ul>
 </li>
 </ol>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -556,7 +538,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

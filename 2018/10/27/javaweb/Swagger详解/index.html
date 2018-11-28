@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="Swagger&amp;#x6CE8;&amp;#x89E3;&amp;#x4F7F;&amp;#x7528;&amp;#x8BF4;&amp;#x660E;  @Api &amp;#x8FD9;&amp;#x4E2A;&amp;#x6CE8;&amp;#x89E3;&amp;#x7528;&amp;#x6765;&amp;#x751F;&amp;#x547D;&amp;#x6B64;&amp;#x7C7B;&amp;#x4E3A;Swagger resource API &amp;#xFF0C;&amp;#x53EA;&amp;#x6709;&amp;#x88">
+  <meta name="description" content="Swagger注解使用说明  @Api 这个注解用来生命此类为Swagger resource API ，只有被这个@Api注解的类才能被Swagger扫描到；但是我发现这个不是必要的，不要这个注解有其它条件也可以扫描到类下面的Api  @ApiOperation 这个注解用来声明单个方法为一个Api接口，其中value是用来给这个Api作简短的介绍；notes    允许你给出重要的和更详细的该">
 <meta name="keywords" content="Swagger">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Swagger详解">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/27/javaweb/Swagger详解/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="Swagger&amp;#x6CE8;&amp;#x89E3;&amp;#x4F7F;&amp;#x7528;&amp;#x8BF4;&amp;#x660E;  @Api &amp;#x8FD9;&amp;#x4E2A;&amp;#x6CE8;&amp;#x89E3;&amp;#x7528;&amp;#x6765;&amp;#x751F;&amp;#x547D;&amp;#x6B64;&amp;#x7C7B;&amp;#x4E3A;Swagger resource API &amp;#xFF0C;&amp;#x53EA;&amp;#x6709;&amp;#x88">
+<meta property="og:description" content="Swagger注解使用说明  @Api 这个注解用来生命此类为Swagger resource API ，只有被这个@Api注解的类才能被Swagger扫描到；但是我发现这个不是必要的，不要这个注解有其它条件也可以扫描到类下面的Api  @ApiOperation 这个注解用来声明单个方法为一个Api接口，其中value是用来给这个Api作简短的介绍；notes    允许你给出重要的和更详细的该">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-10-27T06:17:46.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swagger详解">
-<meta name="twitter:description" content="Swagger&amp;#x6CE8;&amp;#x89E3;&amp;#x4F7F;&amp;#x7528;&amp;#x8BF4;&amp;#x660E;  @Api &amp;#x8FD9;&amp;#x4E2A;&amp;#x6CE8;&amp;#x89E3;&amp;#x7528;&amp;#x6765;&amp;#x751F;&amp;#x547D;&amp;#x6B64;&amp;#x7C7B;&amp;#x4E3A;Swagger resource API &amp;#xFF0C;&amp;#x53EA;&amp;#x6709;&amp;#x88">
+<meta name="twitter:description" content="Swagger注解使用说明  @Api 这个注解用来生命此类为Swagger resource API ，只有被这个@Api注解的类才能被Swagger扫描到；但是我发现这个不是必要的，不要这个注解有其它条件也可以扫描到类下面的Api  @ApiOperation 这个注解用来声明单个方法为一个Api接口，其中value是用来给这个Api作简短的介绍；notes    允许你给出重要的和更详细的该">
 
 
 
@@ -409,46 +409,28 @@
       
 
       
-        <p>Swagger&#x6CE8;&#x89E3;&#x4F7F;&#x7528;&#x8BF4;&#x660E;</p>
+        <p>Swagger注解使用说明</p>
 <ul>
 <li><p>@Api</p>
-<p>&#x8FD9;&#x4E2A;&#x6CE8;&#x89E3;&#x7528;&#x6765;&#x751F;&#x547D;&#x6B64;&#x7C7B;&#x4E3A;Swagger resource API &#xFF0C;&#x53EA;&#x6709;&#x88AB;&#x8FD9;&#x4E2A;@Api&#x6CE8;&#x89E3;&#x7684;&#x7C7B;&#x624D;&#x80FD;&#x88AB;Swagger&#x626B;&#x63CF;&#x5230;&#xFF1B;&#x4F46;&#x662F;&#x6211;&#x53D1;&#x73B0;&#x8FD9;&#x4E2A;&#x4E0D;&#x662F;&#x5FC5;&#x8981;&#x7684;&#xFF0C;&#x4E0D;&#x8981;&#x8FD9;&#x4E2A;&#x6CE8;&#x89E3;&#x6709;&#x5176;&#x5B83;&#x6761;&#x4EF6;&#x4E5F;&#x53EF;&#x4EE5;&#x626B;&#x63CF;&#x5230;&#x7C7B;&#x4E0B;&#x9762;&#x7684;Api</p>
+<p>这个注解用来生命此类为Swagger resource API ，只有被这个@Api注解的类才能被Swagger扫描到；但是我发现这个不是必要的，不要这个注解有其它条件也可以扫描到类下面的Api</p>
 </li>
 <li><p>@ApiOperation</p>
-<p>&#x8FD9;&#x4E2A;&#x6CE8;&#x89E3;&#x7528;&#x6765;&#x58F0;&#x660E;&#x5355;&#x4E2A;&#x65B9;&#x6CD5;&#x4E3A;&#x4E00;&#x4E2A;Api&#x63A5;&#x53E3;&#xFF0C;&#x5176;&#x4E2D;<strong>value</strong>&#x662F;&#x7528;&#x6765;&#x7ED9;&#x8FD9;&#x4E2A;Api&#x4F5C;&#x7B80;&#x77ED;&#x7684;&#x4ECB;&#x7ECD;&#xFF1B;<strong>notes</strong>    &#x5141;&#x8BB8;&#x4F60;&#x7ED9;&#x51FA;&#x91CD;&#x8981;&#x7684;&#x548C;&#x66F4;&#x8BE6;&#x7EC6;&#x7684;&#x8BE5;&#x63A5;&#x53E3;&#x7684;&#x4FE1;&#x606F;&#xFF1B;<strong>response</strong>&#x548C;<strong>responseContainer</strong>&#x4E3B;&#x8981;&#x662F;&#x7528;&#x6765;&#x5C55;&#x793A;&#x8FD4;&#x56DE;&#x793A;&#x4F8B;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x5728;&#x6B64;&#x4F7F;&#x7528;&#x4E86;&#x8FD9;&#x4E24;&#x4E2A;&#x5C31;&#x4F1A;&#x4F53;&#x73B0;&#x5728;Example Value&#x4E0A;</p>
+<p>这个注解用来声明单个方法为一个Api接口，其中<strong>value</strong>是用来给这个Api作简短的介绍；<strong>notes</strong>    允许你给出重要的和更详细的该接口的信息；<strong>response</strong>和<strong>responseContainer</strong>主要是用来展示返回示例的，如果在此使用了这两个就会体现在Example Value上</p>
 </li>
-<li><p>@ApiResponses&#x3001;@ApiResponse</p>
-<p>&#x8FD9;&#x4E24;&#x4E2A;&#x6CE8;&#x89E3;&#x7EC4;&#x5408;&#x4F7F;&#x7528;&#x5728;&#x7C7B;&#x4E0A;&#xFF0C;&#x662F;&#x4E3A;&#x4E86;&#x5C55;&#x793A;&#x65B9;&#x6CD5;&#x8FD4;&#x56DE;&#x72B6;&#x6001;&#x7801;&#x7684;&#x542B;&#x4E49;</p>
+<li><p>@ApiResponses、@ApiResponse</p>
+<p>这两个注解组合使用在类上，是为了展示方法返回状态码的含义</p>
 </li>
 <li><p>@ApiParam</p>
-<p>&#x6B64;&#x6CE8;&#x89E3;&#x5C31;&#x662F;&#x7528;&#x6765;&#x663E;&#x793A;&#x8BF7;&#x6C42;&#x8BE5;&#x63A5;&#x53E3;&#x9700;&#x8981;&#x54EA;&#x4E9B;&#x53C2;&#x6570;,&#x8FD9;&#x4E2A;&#x7528;&#x6765;GET&#x65B9;&#x6CD5;&#x4E0A;</p>
+<p>此注解就是用来显示请求该接口需要哪些参数,这个用来GET方法上</p>
 </li>
-<li><p>@ApiImplicitParam&#x3001;@ApiImplicitParam</p>
-<p>&#x6B64;&#x6CE8;&#x89E3;&#x4E5F;&#x662F;&#x7528;&#x6765;&#x663E;&#x793A;&#x63A5;&#x53E3;&#x53C2;&#x6570;&#xFF0C;&#x4F46;&#x662F;&#x662F;&#x7528;&#x5728;&#x53C2;&#x6570;&#x653E;&#x5728;Body&#x91CC;&#x9762;&#x7684;&#x53C2;&#x6570;</p>
+<li><p>@ApiImplicitParam、@ApiImplicitParam</p>
+<p>此注解也是用来显示接口参数，但是是用在参数放在Body里面的参数</p>
 </li>
-<li><p>@ApiModel&#x3001;@ApiModelProperty</p>
-<p>&#x8FD9;&#x4E24;&#x4E2A;&#x6CE8;&#x89E3;&#x662F;&#x7528;&#x6765;&#x5728;&#x8BF7;&#x6C42;&#x53C2;&#x6570;&#x4E2D;&#x5982;&#x679C;&#x6709;&#x5BF9;&#x8C61;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x8FD9;&#x4E24;&#x4E2A;&#x6CE8;&#x89E3;&#x6765;&#x5177;&#x4F53;&#x63CF;&#x8FF0;&#x91CC;&#x9762;&#x7684;&#x53C2;&#x6570;</p>
+<li><p>@ApiModel、@ApiModelProperty</p>
+<p>这两个注解是用来在请求参数中如果有对象，可以用这两个注解来具体描述里面的参数</p>
 </li>
 </ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -556,7 +538,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

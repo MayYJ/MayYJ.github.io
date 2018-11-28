@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="servlet &amp;#x672C;&amp;#x8EAB;&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4E0D;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x56E0;&amp;#x4E3A;servlet&amp;#x4E00;&amp;#x822C;&amp;#x6765;&amp;#x8BF4;&amp;#x662F;&amp;#x65E0;&amp;#x72B6;&amp;#x6001;&amp;#x7684;&amp;#xFF0C;&amp;#x6240;">
+  <meta name="description" content="servlet 本身是线程不安全的，因为servlet一般来说是无状态的，所以保证了它的线程安全  DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I(isolation)隔离性、D(Durability)持久性；持久性实现回复管理子系统，一致性实现并发控制子系统，完整性实现完整性管理子系统，隔离性实现安全控制管理子系统  123456789101112">
 <meta name="keywords" content="练习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2018&#x2F;11&#x2F;18">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/11/18/give_me_offer/2018-11-18/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="servlet &amp;#x672C;&amp;#x8EAB;&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4E0D;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x56E0;&amp;#x4E3A;servlet&amp;#x4E00;&amp;#x822C;&amp;#x6765;&amp;#x8BF4;&amp;#x662F;&amp;#x65E0;&amp;#x72B6;&amp;#x6001;&amp;#x7684;&amp;#xFF0C;&amp;#x6240;">
+<meta property="og:description" content="servlet 本身是线程不安全的，因为servlet一般来说是无状态的，所以保证了它的线程安全  DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I(isolation)隔离性、D(Durability)持久性；持久性实现回复管理子系统，一致性实现并发控制子系统，完整性实现完整性管理子系统，隔离性实现安全控制管理子系统  123456789101112">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-11-18T16:34:05.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2018&#x2F;11&#x2F;18">
-<meta name="twitter:description" content="servlet &amp;#x672C;&amp;#x8EAB;&amp;#x662F;&amp;#x7EBF;&amp;#x7A0B;&amp;#x4E0D;&amp;#x5B89;&amp;#x5168;&amp;#x7684;&amp;#xFF0C;&amp;#x56E0;&amp;#x4E3A;servlet&amp;#x4E00;&amp;#x822C;&amp;#x6765;&amp;#x8BF4;&amp;#x662F;&amp;#x65E0;&amp;#x72B6;&amp;#x6001;&amp;#x7684;&amp;#xFF0C;&amp;#x6240;">
+<meta name="twitter:description" content="servlet 本身是线程不安全的，因为servlet一般来说是无状态的，所以保证了它的线程安全  DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I(isolation)隔离性、D(Durability)持久性；持久性实现回复管理子系统，一致性实现并发控制子系统，完整性实现完整性管理子系统，隔离性实现安全控制管理子系统  123456789101112">
 
 
 
@@ -422,57 +422,39 @@
 
       
         <ol>
-<li><p>servlet &#x672C;&#x8EAB;&#x662F;&#x7EBF;&#x7A0B;&#x4E0D;&#x5B89;&#x5168;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;servlet&#x4E00;&#x822C;&#x6765;&#x8BF4;&#x662F;&#x65E0;&#x72B6;&#x6001;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x4FDD;&#x8BC1;&#x4E86;&#x5B83;&#x7684;&#x7EBF;&#x7A0B;&#x5B89;&#x5168;</p>
+<li><p>servlet 本身是线程不安全的，因为servlet一般来说是无状态的，所以保证了它的线程安全</p>
 </li>
-<li><p>DBMS &#x4E2D;&#x4E8B;&#x52A1;&#x6709;&#x56DB;&#x4E2A;&#x7279;&#x6027;&#xFF1A;A(Atomic)&#x539F;&#x5B50;&#x6027;&#x3001;C(consistency)&#x4E00;&#x81F4;&#x6027;&#x3001;I(isolation)&#x9694;&#x79BB;&#x6027;&#x3001;D(Durability)&#x6301;&#x4E45;&#x6027;&#xFF1B;&#x6301;&#x4E45;&#x6027;&#x5B9E;&#x73B0;&#x56DE;&#x590D;&#x7BA1;&#x7406;&#x5B50;&#x7CFB;&#x7EDF;&#xFF0C;&#x4E00;&#x81F4;&#x6027;&#x5B9E;&#x73B0;&#x5E76;&#x53D1;&#x63A7;&#x5236;&#x5B50;&#x7CFB;&#x7EDF;&#xFF0C;&#x5B8C;&#x6574;&#x6027;&#x5B9E;&#x73B0;&#x5B8C;&#x6574;&#x6027;&#x7BA1;&#x7406;&#x5B50;&#x7CFB;&#x7EDF;&#xFF0C;&#x9694;&#x79BB;&#x6027;&#x5B9E;&#x73B0;&#x5B89;&#x5168;&#x63A7;&#x5236;&#x7BA1;&#x7406;&#x5B50;&#x7CFB;&#x7EDF;</p>
+<li><p>DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I(isolation)隔离性、D(Durability)持久性；持久性实现回复管理子系统，一致性实现并发控制子系统，完整性实现完整性管理子系统，隔离性实现安全控制管理子系统</p>
 </li>
-<li><figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>{</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Boolean <span class="title">methodB</span><span class="params">(<span class="keyword">int</span> k)</span> </span>{</span><br><span class="line">        j += k;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">(<span class="keyword">int</span> i)</span> </span>{</span><br><span class="line">        <span class="keyword">boolean</span> b;</span><br><span class="line">        b = i &lt; <span class="number">10</span> | methodB(<span class="number">4</span>);</span><br><span class="line">        b = i &lt; <span class="number">10</span> || methodB(<span class="number">8</span>);</span><br><span class="line"> </span><br><span class="line">    }</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>{</span><br><span class="line">        methodA(<span class="number">0</span>);</span><br><span class="line">        System.out.println(j);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>&#x7B54;&#x6848;&#x662F; 4&#xFF1B;</p>
-<p>|| &#x8FD0;&#x7B97;&#x7B26;&#xFF0C;&#x5982;&#x679C;&#x7B2C;&#x4E00;&#x9879;&#x6EE1;&#x8DB3;&#x4E3A;&#x771F;&#xFF0C;&#x90A3;&#x4E48;&#x4E0D;&#x8FDB;&#x884C;&#x7B2C;&#x4E8C;&#x9879;&#x8FD0;&#x7B97;</p>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Boolean <span class="title">methodB</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        j += k;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">methodA</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> b;</span><br><span class="line">        b = i &lt; <span class="number">10</span> | methodB(<span class="number">4</span>);</span><br><span class="line">        b = i &lt; <span class="number">10</span> || methodB(<span class="number">8</span>);</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        methodA(<span class="number">0</span>);</span><br><span class="line">        System.out.println(j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>答案是 4；</p>
+<p>|| 运算符，如果第一项满足为真，那么不进行第二项运算</p>
 </li>
-<li><p>&#x5173;&#x4E8E;&#x6392;&#x5E8F;&#x7684;&#x7A33;&#x5B9A;&#x6027;&#xFF1A;&#x901A;&#x4FD7;&#x5730;&#x8BB2;&#x5C31;&#x662F;&#x80FD;&#x4FDD;&#x8BC1;&#x6392;&#x5E8F;&#x524D;2&#x4E2A;&#x76F8;&#x7B49;&#x7684;&#x6570;&#x5176;&#x5728;&#x5E8F;&#x5217;&#x7684;&#x524D;&#x540E;&#x4F4D;&#x7F6E;&#x987A;&#x5E8F;&#x548C;&#x6392;&#x5E8F;&#x540E;&#x5B83;&#x4EEC;&#x4E24;&#x4E2A;&#x7684;&#x524D;&#x540E;&#x4F4D;&#x7F6E;&#x987A;&#x5E8F;&#x76F8;&#x540C;&#x3002;</p>
+<li><p>关于排序的稳定性：通俗地讲就是能保证排序前2个相等的数其在序列的前后位置顺序和排序后它们两个的前后位置顺序相同。</p>
 </li>
-<li><p>&#x7A7A;&#x6808;&#x65F6; top=-1</p>
+<li><p>空栈时 top=-1</p>
 </li>
-<li><p>&#x5E7F;&#x4E49;&#x8868;&#x8868;&#x5934;&#x662F;&#x5143;&#x7D20;&#xFF0C;&#x8868;&#x5C3E;&#x4E00;&#x5B9A;&#x662F;&#x5E7F;&#x4E49;&#x8868;</p>
+<li><p>广义表表头是元素，表尾一定是广义表</p>
 </li>
-<li><p>&#x5E38;&#x7528;&#x7684;&#x7EBF;&#x6027;&#x7ED3;&#x6784;&#x662F;&#xFF1A;&#x7EBF;&#x6027;&#x8868;&#xFF0C;&#x5806;&#x6808;&#xFF0C;&#x961F;&#x5217;&#xFF0C;&#x53CC;&#x961F;&#x5217;&#xFF0C;&#x6570;&#x7EC4;&#xFF0C;&#x4E32;</p>
-<p>&#x975E;&#x7EBF;&#x6027;&#x7ED3;&#x6784;&#x662F;&#xFF1A;&#x4E8C;&#x4F4D;&#x6570;&#x7EC4;&#xFF0C;&#x591A;&#x7EF4;&#x6570;&#x7EC4;&#xFF0C;&#x5E7F;&#x4E49;&#x8868;&#xFF0C;&#x6811;&#xFF0C;&#x56FE;</p>
+<li><p>常用的线性结构是：线性表，堆栈，队列，双队列，数组，串</p>
+<p>非线性结构是：二位数组，多维数组，广义表，树，图</p>
 </li>
-<li><p>&#x7BA1;&#x6001;&#x79F0;&#x4E3A;&#x7279;&#x6743;&#x6001;&#xFF0C;&#x7279;&#x6743;&#x6001;&#x6216;&#x6838;&#x5FC3;&#x6001;</p>
+<li><p>管态称为特权态，特权态或核心态</p>
 </li>
-<li><p>&#x62D2;&#x7EDD;&#x670D;&#x52A1;&#xFF0C;&#x82F1;&#x6587;&#x540D;&#x79F0;&#x662F;Denial of Service &#xFF0C;&#x53C8;&#x79F0;dos&#x653B;&#x51FB;&#xFF0C;&#x5373;&#x662F;&#x653B;&#x51FB;&#x8005;&#x60F3;&#x529E;&#x6CD5;&#x8BA9;&#x76EE;&#x6807;&#x673A;&#x5668;&#x505C;&#x6B62;&#x63D0;&#x4F9B;&#x670D;&#x52A1;&#xFF0C;&#x662F;&#x9ED1;&#x5BA2;&#x5E38;&#x7528;&#x7684;&#x653B;&#x51FB;&#x624B;&#x6BB5;&#x4E4B;&#x4E00; &#x3002;</p>
+<li><p>拒绝服务，英文名称是Denial of Service ，又称dos攻击，即是攻击者想办法让目标机器停止提供服务，是黑客常用的攻击手段之一 。</p>
 </li>
-<li><p>&#x4F20;&#x8F93;&#x4E8C;&#x8FDB;&#x5236;&#x6570;&#x5B57;&#x4FE1;&#x53F7;&#x9700;&#x8981;&#x7684;&#x5E26;&#x5BBD;&#x6BD4;&#x6A21;&#x62DF;&#x4FE1;&#x53F7;&#x7684;&#x5C0F;</p>
+<li><p>传输二进制数字信号需要的带宽比模拟信号的小</p>
 </li>
-<li><p>&#x5F53;&#x53D1;&#x9001;&#x6570;&#x636E;&#x65F6;&#xFF0C;&#x4E3B;&#x673A;A&#x4F1A;&#x5728;&#x81EA;&#x5DF1;&#x7684;ARP&#x7F13;&#x5B58;&#x8868;&#x4E2D;&#x5BFB;&#x627E;&#x662F;&#x5426;&#x6709;&#x76EE;&#x6807;IP&#x5730;&#x5740;&#xFF1A;</p>
-<p>&#x200B;        &#x2460;&#x5982;&#x679C;&#x627E;&#x5230;&#x4E86;&#xFF0C;&#x4E5F;&#x5C31;&#x77E5;&#x9053;&#x4E86;&#x76EE;&#x6807;MAC&#x5730;&#x5740;&#xFF0C;&#x76F4;&#x63A5;&#x628A;&#x76EE;&#x6807;MAC&#x5730;&#x5740;&#x5199;&#x5165;&#x5E27;&#x91CC;&#x9762;&#x53D1;&#x9001;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#xFF1B;</p>
-<p>&#x200B;        &#x2461;&#x5982;&#x679C;&#x5728;ARP&#x7F13;&#x5B58;&#x8868;&#x4E2D;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x76F8;&#x5BF9;&#x5E94;&#x7684;IP&#x5730;&#x5740;&#xFF0C;&#x4E3B;&#x673A;A&#x5C31;&#x4F1A;&#x5728;&#x7F51;&#x7EDC;&#x4E0A;&#x53D1;&#x9001;&#x4E00;&#x4E2A;&#x5E7F;&#x64AD;&#xFF0C;&#x76EE;&#x6807;MAC&#x5730;&#x5740;&#x662F;&#x201C;FF.FF.FF.FF.FF.FF&#x201D;&#xFF0C;<strong>&#x8FD9;&#x8868;&#x793A;&#x5411;&#x540C;&#x4E00;&#x7F51;&#x6BB5;&#x5185;&#x7684;&#x6240;&#x6709;&#x4E3B;&#x673A;&#x53D1;&#x51FA;&#x8FD9;&#x6837;&#x7684;&#x8BE2;&#x95EE;&#xFF1A;&#x201C;192.168.30.2&#x7684;MAC&#x5730;&#x5740;&#x662F;&#x4EC0;&#x4E48;&#xFF1F;&#x201D;</strong>&#x7F51;&#x7EDC;&#x4E0A;&#x5176;&#x4ED6;&#x4E3B;&#x673A;&#x5E76;&#x4E0D;&#x54CD;&#x5E94;ARP&#x8BE2;&#x95EE;&#xFF0C;&#x53EA;&#x6709;&#x4E3B;&#x673A;B&#x63A5;&#x6536;&#x5230;&#x8FD9;&#x4E2A;&#x5E27;&#x65F6;&#xFF0C;&#x624D;&#x5411;&#x4E3B;&#x673A;A&#x505A;&#x51FA;&#x8FD9;&#x6837;&#x7684;&#x56DE;&#x5E94;&#xFF1A;&#x201C;192.168.30.2&#x7684;MAC&#x5730;&#x5740;&#x662F;34-12-65-ae-c9-0a&#x201D;&#x3002;</p>
+<li><p>当发送数据时，主机A会在自己的ARP缓存表中寻找是否有目标IP地址：</p>
+<p>​        ①如果找到了，也就知道了目标MAC地址，直接把目标MAC地址写入帧里面发送就可以了；</p>
+<p>​        ②如果在ARP缓存表中没有找到相对应的IP地址，主机A就会在网络上发送一个广播，目标MAC地址是“FF.FF.FF.FF.FF.FF”，<strong>这表示向同一网段内的所有主机发出这样的询问：“192.168.30.2的MAC地址是什么？”</strong>网络上其他主机并不响应ARP询问，只有主机B接收到这个帧时，才向主机A做出这样的回应：“192.168.30.2的MAC地址是34-12-65-ae-c9-0a”。</p>
 </li>
-<li><p>Unix&#x7684;&#x6587;&#x4EF6;&#x7CFB;&#x7EDF;&#x662F;&#x7D22;&#x5F15;&#x6587;&#x4EF6;&#x7ED3;&#x6784;&#xFF0C;MS-DOS&#x7684;&#x5219;&#x662F;&#x663E;&#x5F0F;&#x94FE;&#x63A5;&#x6587;&#x4EF6;&#x7ED3;&#x6784; </p>
+<li><p>Unix的文件系统是索引文件结构，MS-DOS的则是显式链接文件结构 </p>
 </li>
-<li><p>&#x4E00;&#x4E2A;&#x9996;&#x6B21;&#x88C5;&#x5165;&#x5185;&#x5B58;&#x7684;&#x9875;&#x9762;&#x4E0D;&#x53EF;&#x80FD;&#x6765;&#x81EA;&#x78C1;&#x76D8;&#x5BF9;&#x6362;&#x533A;&#xFF0C;&#x56E0;&#x4E3A;&#x78C1;&#x76D8;&#x5BF9;&#x6362;&#x533A;&#x7684;&#x53EA;&#x4F1A;&#x5B58;&#x5728;&#x88AB;&#x5BF9;&#x6362;&#x51FA;&#x6765;&#x7684;&#x9875;&#x9762;</p>
+<li><p>一个首次装入内存的页面不可能来自磁盘对换区，因为磁盘对换区的只会存在被对换出来的页面</p>
 </li>
 </ol>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -580,7 +562,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

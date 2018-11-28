@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x4F7F;&amp;#x7528;&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A;  &amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x65B9;&amp;#x6CD5;&amp;#x53EF;&amp;#x4EE5;&amp;#x8BBF;&amp;#x95EE;&amp;#x8BE5;&amp;#x7C7B;&amp;#x5B9">
+  <meta name="description" content="内部类使用内部类的原因：  内部类的方法可以访问该类定义所在的作用域中的数据，包括私有的数据； 内部类可以对同一个包中的其他类隐藏依赖； 当想要定义一个回调函数且不想编写大量代码的时候，使用匿名内部类比较便捷   使用内部类访问对象的状态 就是内部类隐式的含有一个外部类的指针，所以可以访问创建她的外围类对象的数据域  内部类的特殊语法规则  引用外围对象的变量 虽然我们在内部类可以直接使用变量名来">
 <meta name="keywords" content="内部类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内部类">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/26/java/内部类/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x4F7F;&amp;#x7528;&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A;  &amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x65B9;&amp;#x6CD5;&amp;#x53EF;&amp;#x4EE5;&amp;#x8BBF;&amp;#x95EE;&amp;#x8BE5;&amp;#x7C7B;&amp;#x5B9">
+<meta property="og:description" content="内部类使用内部类的原因：  内部类的方法可以访问该类定义所在的作用域中的数据，包括私有的数据； 内部类可以对同一个包中的其他类隐藏依赖； 当想要定义一个回调函数且不想编写大量代码的时候，使用匿名内部类比较便捷   使用内部类访问对象的状态 就是内部类隐式的含有一个外部类的指针，所以可以访问创建她的外围类对象的数据域  内部类的特殊语法规则  引用外围对象的变量 虽然我们在内部类可以直接使用变量名来">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-05-26T09:27:55.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内部类">
-<meta name="twitter:description" content="&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x4F7F;&amp;#x7528;&amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x539F;&amp;#x56E0;&amp;#xFF1A;  &amp;#x5185;&amp;#x90E8;&amp;#x7C7B;&amp;#x7684;&amp;#x65B9;&amp;#x6CD5;&amp;#x53EF;&amp;#x4EE5;&amp;#x8BBF;&amp;#x95EE;&amp;#x8BE5;&amp;#x7C7B;&amp;#x5B9">
+<meta name="twitter:description" content="内部类使用内部类的原因：  内部类的方法可以访问该类定义所在的作用域中的数据，包括私有的数据； 内部类可以对同一个包中的其他类隐藏依赖； 当想要定义一个回调函数且不想编写大量代码的时候，使用匿名内部类比较便捷   使用内部类访问对象的状态 就是内部类隐式的含有一个外部类的指针，所以可以访问创建她的外围类对象的数据域  内部类的特殊语法规则  引用外围对象的变量 虽然我们在内部类可以直接使用变量名来">
 
 
 
@@ -421,64 +421,46 @@
       
 
       
-        <h4 id="&#x5185;&#x90E8;&#x7C7B;"><a href="#&#x5185;&#x90E8;&#x7C7B;" class="headerlink" title="&#x5185;&#x90E8;&#x7C7B;"></a>&#x5185;&#x90E8;&#x7C7B;</h4><p>&#x4F7F;&#x7528;&#x5185;&#x90E8;&#x7C7B;&#x7684;&#x539F;&#x56E0;&#xFF1A;</p>
+        <h4 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h4><p>使用内部类的原因：</p>
 <ol>
-<li>&#x5185;&#x90E8;&#x7C7B;&#x7684;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x8BBF;&#x95EE;&#x8BE5;&#x7C7B;&#x5B9A;&#x4E49;&#x6240;&#x5728;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x4E2D;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5305;&#x62EC;&#x79C1;&#x6709;&#x7684;&#x6570;&#x636E;&#xFF1B;</li>
-<li>&#x5185;&#x90E8;&#x7C7B;&#x53EF;&#x4EE5;&#x5BF9;&#x540C;&#x4E00;&#x4E2A;&#x5305;&#x4E2D;&#x7684;&#x5176;&#x4ED6;&#x7C7B;&#x9690;&#x85CF;&#x4F9D;&#x8D56;&#xFF1B;</li>
-<li>&#x5F53;&#x60F3;&#x8981;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x56DE;&#x8C03;&#x51FD;&#x6570;&#x4E14;&#x4E0D;&#x60F3;&#x7F16;&#x5199;&#x5927;&#x91CF;&#x4EE3;&#x7801;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F7F;&#x7528;&#x533F;&#x540D;&#x5185;&#x90E8;&#x7C7B;&#x6BD4;&#x8F83;&#x4FBF;&#x6377;</li>
+<li>内部类的方法可以访问该类定义所在的作用域中的数据，包括私有的数据；</li>
+<li>内部类可以对同一个包中的其他类隐藏依赖；</li>
+<li>当想要定义一个回调函数且不想编写大量代码的时候，使用匿名内部类比较便捷</li>
 </ol>
 <ul>
-<li><p>&#x4F7F;&#x7528;&#x5185;&#x90E8;&#x7C7B;&#x8BBF;&#x95EE;&#x5BF9;&#x8C61;&#x7684;&#x72B6;&#x6001;</p>
-<p>&#x5C31;&#x662F;&#x5185;&#x90E8;&#x7C7B;&#x9690;&#x5F0F;&#x7684;&#x542B;&#x6709;&#x4E00;&#x4E2A;&#x5916;&#x90E8;&#x7C7B;&#x7684;&#x6307;&#x9488;&#xFF0C;&#x6240;&#x4EE5;&#x53EF;&#x4EE5;&#x8BBF;&#x95EE;&#x521B;&#x5EFA;&#x5979;&#x7684;&#x5916;&#x56F4;&#x7C7B;&#x5BF9;&#x8C61;&#x7684;&#x6570;&#x636E;&#x57DF;</p>
+<li><p>使用内部类访问对象的状态</p>
+<p>就是内部类隐式的含有一个外部类的指针，所以可以访问创建她的外围类对象的数据域</p>
 </li>
-<li><p>&#x5185;&#x90E8;&#x7C7B;&#x7684;&#x7279;&#x6B8A;&#x8BED;&#x6CD5;&#x89C4;&#x5219;</p>
+<li><p>内部类的特殊语法规则</p>
 <ol>
-<li><p>&#x5F15;&#x7528;&#x5916;&#x56F4;&#x5BF9;&#x8C61;&#x7684;&#x53D8;&#x91CF;</p>
-<p>&#x867D;&#x7136;&#x6211;&#x4EEC;&#x5728;&#x5185;&#x90E8;&#x7C7B;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x53D8;&#x91CF;&#x540D;&#x6765;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#xFF0C;&#x4F46;&#x662F;&#x6B63;&#x89C4;&#x8BED;&#x6CD5;&#x8981;&#x590D;&#x6742;&#x4E00;&#x4E9B;&#xFF1A;</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OuterClass.this.&#x53D8;&#x91CF;&#x540D;  &#x6BD4;&#x5982;&#xFF1A;TalkingClock.this.beep</span><br></pre></td></tr></tbody></table></figure>
+<li><p>引用外围对象的变量</p>
+<p>虽然我们在内部类可以直接使用变量名来直接使用，但是正规语法要复杂一些：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OuterClass.this.变量名  比如：TalkingClock.this.beep</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>&#x6784;&#x9020;&#x5185;&#x90E8;&#x7C7B;</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TalkingClock jabberer = new TalkingClock(...);</span><br><span class="line">TalkingClock.TimePrinter listener = jabber.new TimePrinter();</span><br></pre></td></tr></tbody></table></figure>
+<li><p>构造内部类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TalkingClock jabberer = new TalkingClock(...);</span><br><span class="line">TalkingClock.TimePrinter listener = jabber.new TimePrinter();</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>&#x5185;&#x90E8;&#x7C7B;&#x4E2D;&#x58F0;&#x660E;&#x7684;&#x6240;&#x6709;&#x9759;&#x6001;&#x57DF;&#x90FD;&#x5FC5;&#x987B;&#x662F;final&#x7684;&#xFF0C;&#x539F;&#x56E0;&#x5C31;&#x662F;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x4E00;&#x4E2A;&#x9759;&#x6001;&#x57DF;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x5B9E;&#x4F8B;&#xFF0C;&#x4E0D;&#x8FC7;&#x5BF9;&#x4E8E;&#x6BCF;&#x4E2A;&#x5916;&#x90E8;&#x5BF9;&#x8C61;&#xFF0C;&#x4F1A;&#x5206;&#x522B;&#x6709;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x5185;&#x90E8;&#x7C7B;&#x5B9E;&#x4F8B;&#xFF1B;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x6BCF;&#x4E2A;&#x5916;&#x56F4;&#x5BF9;&#x8C61;&#x90FD;&#x6709;&#x4E00;&#x4E2A;&#x7279;&#x5B9A;&#x7684;&#x5185;&#x90E8;&#x7C7B;&#x5B9E;&#x4F8B;&#x3002;</p>
+<li><p>内部类中声明的所有静态域都必须是final的，原因就是我们希望一个静态域只有一个实例，不过对于每个外部对象，会分别有一个单独的内部类实例；也就是说我们希望每个外围对象都有一个特定的内部类实例。</p>
 </li>
 </ol>
 </li>
-<li><p>&#x5173;&#x4E8E;&#x5185;&#x90E8;&#x7C7B;&#x7684;&#x4E00;&#x4E9B;&#x8BA8;&#x8BBA;</p>
-<p>&#x5185;&#x90E8;&#x7C7B;&#x662F;&#x4E00;&#x4E2A;&#x7F16;&#x8BD1;&#x5668;&#x73B0;&#x8C61;&#xFF0C;&#x4E0E;&#x865A;&#x62DF;&#x673A;&#x65E0;&#x5173;&#xFF0C;&#x7F16;&#x8BD1;&#x5668;&#x4F1A;&#x628A;&#x6240;&#x6709;&#x5185;&#x90E8;&#x7C7B;&#x7FFB;&#x8BD1;&#x6210;&#x7528;$&#x5206;&#x9694;&#x5F00;&#x5916;&#x90E8;&#x7C7B;&#x540D;&#x4E0E;&#x5185;&#x90E8;&#x7C7B;&#x578B;&#x7684;&#x5E38;&#x89C4;&#x6587;&#x4EF6;&#xFF0C;&#x800C;&#x865A;&#x62DF;&#x673A;&#x5BF9;&#x6B64;&#x4E00;&#x65E0;&#x6240;&#x77E5;&#xFF1B;&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x4E2A;Demo</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class TalkingClock$TimePrinter{</span><br><span class="line">  public TalkingClock$TImePrinter(TalkingClock);</span><br><span class="line">  </span><br><span class="line">  public void actionPerformed(ActionEvent);</span><br><span class="line">  </span><br><span class="line">  final TalkingClock this$0;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-<p>&#x4E0A;&#x9762;&#x7684;Demo&#x5C31;&#x8BF4;&#x660E; &#x5185;&#x90E8;&#x7C7B;&#x53EA;&#x662F;&#x901A;&#x8FC7;&#x6784;&#x9020;&#x5668;&#x521D;&#x59CB;&#x5316;&#x4E86;&#x4E00;&#x4E2A;&#x5916;&#x56F4;&#x7C7B;&#xFF1B;&#x7136;&#x540E;&#x901A;&#x8FC7;this$0&#x6307;&#x5411;&#x5916;&#x56F4;&#x7C7B;&#xFF1B;</p>
+<li><p>关于内部类的一些讨论</p>
+<p>内部类是一个编译器现象，与虚拟机无关，编译器会把所有内部类翻译成用$分隔开外部类名与内部类型的常规文件，而虚拟机对此一无所知；下面是一个Demo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class TalkingClock$TimePrinter&#123;</span><br><span class="line">  public TalkingClock$TImePrinter(TalkingClock);</span><br><span class="line">  </span><br><span class="line">  public void actionPerformed(ActionEvent);</span><br><span class="line">  </span><br><span class="line">  final TalkingClock this$0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的Demo就说明 内部类只是通过构造器初始化了一个外围类；然后通过this$0指向外围类；</p>
 </li>
-<li><p>&#x53EF;&#x4EE5;&#x5728;&#x65B9;&#x6CD5;&#x4E2D;&#x4F7F;&#x7528;&#x5C40;&#x90E8;&#x5185;&#x90E8;&#x7C7B;</p>
+<li><p>可以在方法中使用局部内部类</p>
 </li>
-<li><p>&#x533F;&#x540D;&#x5185;&#x90E8;&#x7C7B;: &#x5728;&#x73B0;&#x5728;&#x6211;&#x7684;&#x7406;&#x89E3;&#x5C31;&#x662F;&#x5B9E;&#x4F8B;&#x5316;&#x4E00;&#x4E2A;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#x7684;&#x63A5;&#x53E3;&#xFF1B;&#x73B0;&#x5728;&#x5B8C;&#x5168;&#x53EF;&#x4EE5;&#x7528;lambda&#x8868;&#x8FBE;&#x5F0F;&#x66FF;&#x4EE3;&#xFF1B;</p>
+<li><p>匿名内部类: 在现在我的理解就是实例化一个只有一个方法的接口；现在完全可以用lambda表达式替代；</p>
 </li>
-<li><p>&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#xFF1A;</p>
+<li><p>静态内部类：</p>
 <ul>
-<li>&#x4F7F;&#x7528;&#x539F;&#x56E0;&#xFF1A;&#x6709;&#x65F6;&#x5019;&#x5185;&#x90E8;&#x7C7B;&#x53EA;&#x662F;&#x4E3A;&#x4E86;&#x628A;&#x4E00;&#x4E2A;&#x7C7B;&#x9690;&#x85CF;&#x5728;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x7C7B;&#x7684;&#x5185;&#x90E8;&#xFF0C;&#x5E76;&#x4E0D;&#x9700;&#x8981;&#x5185;&#x90E8;&#x7C7B;&#x5F15;&#x7528;&#x5916;&#x56F4;&#x7C7B;&#x7684;&#x5BF9;&#x8C61;&#x3002;</li>
-<li>&#x4E5F;&#x5C31;&#x662F;&#x4F60;&#x53EA;&#x662F;&#x4E34;&#x65F6;&#x60F3;&#x7ED9;&#x5916;&#x56F4;&#x7C7B;&#x63D0;&#x4F9B;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x7528;&#x4E8E;&#x5B58;&#x50A8;&#x4E00;&#x4E9B;&#x53D8;&#x91CF;&#x7684;&#x65F6;&#x5019;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#xFF1B;</li>
+<li>使用原因：有时候内部类只是为了把一个类隐藏在另外一个类的内部，并不需要内部类引用外围类的对象。</li>
+<li>也就是你只是临时想给外围类提供一个对象用于存储一些变量的时候可以使用静态内部类；</li>
 </ul>
 </li>
 </ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -595,7 +577,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

@@ -108,12 +108,12 @@
 
 
 
-  <meta name="description" content="Schema&amp;#x4E0E;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x4F18;&amp;#x5316; &amp;#x9009;&amp;#x62E9;&amp;#x4F18;&amp;#x5316;&amp;#x5F97;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x539F;&amp;#x5219;&amp;#xFF1A;  &amp;#x66F4;&amp;#x5C0F;&amp;#x7684;&amp;#x901A;&amp;#x5E38">
+  <meta name="description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/08/05/reading/高性能Mysql知识点总结/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="Schema&amp;#x4E0E;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x4F18;&amp;#x5316; &amp;#x9009;&amp;#x62E9;&amp;#x4F18;&amp;#x5316;&amp;#x5F97;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x539F;&amp;#x5219;&amp;#xFF1A;  &amp;#x66F4;&amp;#x5C0F;&amp;#x7684;&amp;#x901A;&amp;#x5E38">
+<meta property="og:description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15edzuarj20kd0b9t9t.jpg">
@@ -125,7 +125,7 @@
 <meta property="og:updated_time" content="2018-08-09T13:21:13.045Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="Schema&amp;#x4E0E;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x4F18;&amp;#x5316; &amp;#x9009;&amp;#x62E9;&amp;#x4F18;&amp;#x5316;&amp;#x5F97;&amp;#x6570;&amp;#x636E;&amp;#x7C7B;&amp;#x578B;&amp;#x539F;&amp;#x5219;&amp;#xFF1A;  &amp;#x66F4;&amp;#x5C0F;&amp;#x7684;&amp;#x901A;&amp;#x5E38">
+<meta name="twitter:description" content="Schema与数据类型优化 选择优化得数据类型原则：  更小的通常更好 简单就好 尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂   尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据  关于VARCHAR和CHAR VARCHAR 它比定长更节省空间，因为它仅使用必要的空间；所以在一下">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg">
 
 
@@ -410,331 +410,313 @@
       
 
       
-        <h4 id="Schema&#x4E0E;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x4F18;&#x5316;"><a href="#Schema&#x4E0E;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x4F18;&#x5316;" class="headerlink" title="Schema&#x4E0E;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x4F18;&#x5316;"></a>Schema&#x4E0E;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x4F18;&#x5316;</h4><ol>
-<li><p>&#x9009;&#x62E9;&#x4F18;&#x5316;&#x5F97;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x539F;&#x5219;&#xFF1A;</p>
+        <h4 id="Schema与数据类型优化"><a href="#Schema与数据类型优化" class="headerlink" title="Schema与数据类型优化"></a>Schema与数据类型优化</h4><ol>
+<li><p>选择优化得数据类型原则：</p>
 <ul>
-<li>&#x66F4;&#x5C0F;&#x7684;&#x901A;&#x5E38;&#x66F4;&#x597D;</li>
-<li>&#x7B80;&#x5355;&#x5C31;&#x597D;</li>
-<li>&#x5C3D;&#x91CF;&#x907F;&#x514D;NULL&#xFF0C;&#x56E0;&#x4E3A;&#x53EF;&#x4E3A;NULL&#x7684;&#x5217;&#x4F7F;&#x5F97;&#x7D22;&#x5F15;&#xFF0C;&#x7D22;&#x5F15;&#x7EDF;&#x8BA1;&#x548C;&#x503C;&#x6BD4;&#x8F83;&#x90FD;&#x66F4;&#x4E3A;&#x590D;&#x6742;</li>
+<li>更小的通常更好</li>
+<li>简单就好</li>
+<li>尽量避免NULL，因为可为NULL的列使得索引，索引统计和值比较都更为复杂</li>
 </ul>
 </li>
-<li><p>&#x5C3D;&#x91CF;&#x4E0D;&#x8981;&#x4F7F;&#x7528;Decimal&#xFF0C;&#x56E0;&#x4E3A;&#x5176;&#x4F1A;&#x6BD4;DOUBLE&#x6216;&#x8005;FLOAT&#x5360;&#x7528;&#x66F4;&#x5927;&#x7684;&#x7A7A;&#x95F4;&#x4E14;&#x8BA1;&#x7B97;&#x5F00;&#x9500;&#xFF0C;&#x9664;&#x975E;&#x4F60;&#x771F;&#x7684;&#x9700;&#x8981;&#x7CBE;&#x786E;&#x7684;&#x5C0F;&#x6570;&#x8BA1;&#x7B97;&#x6BD4;&#x5982;&#x5B58;&#x50A8;&#x8D22;&#x52A1;&#x6570;&#x636E;</p>
+<li><p>尽量不要使用Decimal，因为其会比DOUBLE或者FLOAT占用更大的空间且计算开销，除非你真的需要精确的小数计算比如存储财务数据</p>
 </li>
-<li><p>&#x5173;&#x4E8E;VARCHAR&#x548C;CHAR</p>
+<li><p>关于VARCHAR和CHAR</p>
 <p><strong>VARCHAR</strong></p>
-<p>&#x5B83;&#x6BD4;&#x5B9A;&#x957F;&#x66F4;&#x8282;&#x7701;&#x7A7A;&#x95F4;&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x4EC5;&#x4F7F;&#x7528;&#x5FC5;&#x8981;&#x7684;&#x7A7A;&#x95F4;&#xFF1B;&#x6240;&#x4EE5;&#x5728;&#x4E00;&#x4E0B;&#x60C5;&#x51B5;&#x4E0B;&#x6700;&#x597D;&#x4F7F;&#x7528;&#x8BE5;&#x7C7B;&#x578B;&#xFF1A;</p>
+<p>它比定长更节省空间，因为它仅使用必要的空间；所以在一下情况下最好使用该类型：</p>
 <ul>
-<li>&#x5B57;&#x7B26;&#x4E32;&#x5217;&#x7684;&#x957F;&#x5EA6;&#x6BD4;&#x5E73;&#x5747;&#x957F;&#x5EA6;&#x5927;&#x5F88;&#x591A;</li>
-<li>&#x5217;&#x7684;&#x66F4;&#x65B0;&#x5F88;&#x5C11;&#xFF0C;&#x6240;&#x4EE5;&#x788E;&#x7247;&#x4E0D;&#x662F;&#x95EE;&#x9898;(&#x56E0;&#x4E3A;VARCHAR&#x7684;&#x66F4;&#x65B0;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;&#x539F;&#x6765;&#x7684;&#x9875;&#x5269;&#x4F59;&#x7684;&#x7A7A;&#x95F4;&#x4E0D;&#x591F;&#x800C;&#x9700;&#x8981;&#x91C7;&#x53D6;&#x5176;&#x5B83;&#x7684;&#x6280;&#x672F;&#x624B;&#x6BB5;)</li>
-<li>&#x4F7F;&#x7528;&#x4E86;UTF-8&#x8FD9;&#x6837;&#x590D;&#x6742;&#x7684;&#x5B57;&#x7B26;&#x96C6;&#xFF0C;&#x6BCF;&#x4E2A;&#x5B57;&#x7B26;&#x4F7F;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x5B57;&#x8282;&#x6570;&#x8FDB;&#x884C;&#x5B58;&#x50A8;</li>
+<li>字符串列的长度比平均长度大很多</li>
+<li>列的更新很少，所以碎片不是问题(因为VARCHAR的更新可能会导致原来的页剩余的空间不够而需要采取其它的技术手段)</li>
+<li>使用了UTF-8这样复杂的字符集，每个字符使用不同的字节数进行存储</li>
 </ul>
 <p><strong>CHAR</strong></p>
-<p>Mysql&#x603B;&#x662F;&#x4F1A;&#x6839;&#x636E;&#x5B9A;&#x4E49;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x957F;&#x5EA6;&#x5206;&#x914D;&#x8DB3;&#x591F;&#x7684;&#x7A7A;&#x95F4;&#xFF0C;&#x5B83;&#x4F1A;&#x5220;&#x9664;&#x672B;&#x5C3E;&#x7684;&#x7A7A;&#x683C;</p>
-<p>&#x4F7F;&#x7528;&#x60C5;&#x51B5;&#xFF1A;</p>
+<p>Mysql总是会根据定义的字符串长度分配足够的空间，它会删除末尾的空格</p>
+<p>使用情况：</p>
 <ul>
-<li>&#x5F88;&#x77ED;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x4E14;&#x5B9A;&#x957F;</li>
-<li>&#x7ECF;&#x5E38;&#x53D8;&#x66F4;&#x7684;&#x6570;&#x636E;</li>
+<li>很短的字符串且定长</li>
+<li>经常变更的数据</li>
 </ul>
 </li>
-<li><p>&#x5173;&#x4E8E;DATETIME&#x548C;TIMESTAMP</p>
-<p>TIMESTAMP&#x4F1A;&#x6BD4;DATETIME&#x662F;&#x66F4;&#x597D;&#x7684;&#x9009;&#x62E9;&#xFF0C;&#x56E0;&#x4E3A;&#x524D;&#x8005;&#x4F1A;&#x4F7F;&#x7528;&#x6BD4;&#x540E;&#x8005;&#x4E00;&#x534A;&#x5BF9;&#x7684;&#x5B58;&#x50A8;&#x7A7A;&#x95F4;&#x4F46;&#x662F;&#x5B83;&#x524D;&#x8005;&#x80FD;&#x591F;&#x5B58;&#x50A8;&#x7684;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#x6BD4;&#x540E;&#x8005;&#x5C0F;</p>
+<li><p>关于DATETIME和TIMESTAMP</p>
+<p>TIMESTAMP会比DATETIME是更好的选择，因为前者会使用比后者一半对的存储空间但是它前者能够存储的时间范围比后者小</p>
 </li>
 </ol>
-<h4 id="&#x521B;&#x5EFA;&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;"><a href="#&#x521B;&#x5EFA;&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;" class="headerlink" title="&#x521B;&#x5EFA;&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;"></a>&#x521B;&#x5EFA;&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;</h4><h5 id="B-Tree&#x7D22;&#x5F15;"><a href="#B-Tree&#x7D22;&#x5F15;" class="headerlink" title="B-Tree&#x7D22;&#x5F15;"></a>B-Tree&#x7D22;&#x5F15;</h5><ul>
-<li><p>&#x53EF;&#x4EE5;&#x4F7F;&#x7528;B-tree&#x7D22;&#x5F15;&#x7684;&#x67E5;&#x8BE2;&#x7C7B;&#x578B;</p>
+<h4 id="创建高性能的索引"><a href="#创建高性能的索引" class="headerlink" title="创建高性能的索引"></a>创建高性能的索引</h4><h5 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B-Tree索引"></a>B-Tree索引</h5><ul>
+<li><p>可以使用B-tree索引的查询类型</p>
 <ol>
-<li>&#x5168;&#x503C;&#x5339;&#x914D;&#xFF1A;&#x6307;&#x7684;&#x662F;&#x548C;&#x7D22;&#x5F15;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x5217;&#x8FDB;&#x884C;&#x5339;&#x914D;</li>
-<li>&#x5339;&#x914D;&#x6700;&#x5DE6;&#x524D;&#x7F00;</li>
-<li>&#x5339;&#x914D;&#x5217;&#x524D;&#x7F00;</li>
-<li>&#x5339;&#x914D;&#x8303;&#x56F4;&#x503C;</li>
-<li>&#x7CBE;&#x786E;&#x5339;&#x914D;&#x67D0;&#x4E00;&#x5217;&#x5E76;&#x8303;&#x56F4;&#x5339;&#x914D;&#x53E6;&#x5916;&#x4E00;&#x5217;</li>
-<li>&#x53EA;&#x8BBF;&#x95EE;&#x7D22;&#x5F15;&#x7684;&#x67E5;&#x8BE2;</li>
+<li>全值匹配：指的是和索引中的所有列进行匹配</li>
+<li>匹配最左前缀</li>
+<li>匹配列前缀</li>
+<li>匹配范围值</li>
+<li>精确匹配某一列并范围匹配另外一列</li>
+<li>只访问索引的查询</li>
 </ol>
 </li>
-<li><p>B-TREE&#x7D22;&#x5F15;&#x7684;&#x9650;&#x5236;</p>
+<li><p>B-TREE索引的限制</p>
 <ol>
-<li>&#x5982;&#x679C;&#x4E0D;&#x662F;&#x6309;&#x7167;&#x7D22;&#x5F15;&#x7684;&#x6700;&#x5DE6;&#x5217;&#x5F00;&#x59CB;&#x67E5;&#x627E;&#xFF0C;&#x5219;&#x65E0;&#x6CD5;&#x4F7F;&#x7528;&#x7D22;&#x5F15;</li>
-<li>&#x4E0D;&#x80FD;&#x8DF3;&#x8FC7;&#x7D22;&#x5F15;&#x4E2D;&#x7684;&#x5217;</li>
-<li>&#x5982;&#x679C;&#x67E5;&#x8BE2;&#x4E2D;&#x6709;&#x67D0;&#x4E2A;&#x5217;&#x7684;&#x8303;&#x56F4;&#x67E5;&#x8BE2;&#xFF0C;&#x5219;&#x53F3;&#x8FB9;&#x6240;&#x6709;&#x5217;&#x90FD;&#x65E0;&#x6CD5;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x4F18;&#x5316;&#x67E5;&#x627E;</li>
+<li>如果不是按照索引的最左列开始查找，则无法使用索引</li>
+<li>不能跳过索引中的列</li>
+<li>如果查询中有某个列的范围查询，则右边所有列都无法使用索引优化查找</li>
 </ol>
 </li>
 </ul>
-<h5 id="&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x70B9;"><a href="#&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x70B9;" class="headerlink" title="&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x70B9;"></a>&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x70B9;</h5><ol>
-<li><p>&#x7D22;&#x5F15;&#x5927;&#x5927;&#x51CF;&#x5C11;&#x4E86;&#x670D;&#x52A1;&#x5668;&#x9700;&#x8981;&#x626B;&#x63CF;&#x7684;&#x6570;&#x636E;&#x91CF;</p>
-<p>&#x5FEB;&#x901F;&#x5B9A;&#x4F4D;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x9700;&#x8981;&#x5BFC;&#x5165;&#x5168;&#x90E8;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x987A;&#x5E8F;&#x67E5;&#x627E;</p>
+<h5 id="索引的优点"><a href="#索引的优点" class="headerlink" title="索引的优点"></a>索引的优点</h5><ol>
+<li><p>索引大大减少了服务器需要扫描的数据量</p>
+<p>快速定位，所以不需要导入全部数据进行顺序查找</p>
 </li>
-<li><p>&#x7D22;&#x5F15;&#x53EF;&#x4EE5;&#x5E2E;&#x52A9;&#x670D;&#x52A1;&#x5668;&#x907F;&#x514D;&#x6392;&#x5E8F;&#x548C;&#x4E34;&#x65F6;&#x8868;</p>
-<p>&#x987A;&#x5E8F;&#x5B58;&#x50A8;&#xFF0C;&#x4FBF;&#x4E8E;ORDER BY&#x3001;GROUP BY &#xFF1B;&#x5F53;&#x9700;&#x8981;&#x6392;&#x5E8F;&#x65F6;&#xFF0C;&#x4E0D;&#x662F;&#x987A;&#x5E8F;&#x5B58;&#x50A8;&#x7684;&#x5982;&#x679C;&#x6570;&#x636E;&#x8868;&#x5C0F;&#x7684;&#x8BDD;&#x5C31;&#x628A;&#x6570;&#x636E;&#x5BFC;&#x5165;&#x5185;&#x5B58;&#x4E0D;&#x7136;&#x5C31;&#x7528;&#x78C1;&#x76D8;&#x7136;&#x540E;&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A;&#x4E34;&#x65F6;&#x8868;&#x8FDB;&#x884C;&#x6392;&#x5E8F;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x8017;&#x65F6;&#x95F4;&#x7684;&#x8FC7;&#x7A0B;</p>
+<li><p>索引可以帮助服务器避免排序和临时表</p>
+<p>顺序存储，便于ORDER BY、GROUP BY ；当需要排序时，不是顺序存储的如果数据表小的话就把数据导入内存不然就用磁盘然后建立一个临时表进行排序这是一个非常耗时间的过程</p>
 </li>
-<li><p>&#x7D22;&#x5F15;&#x53EF;&#x4EE5;&#x5C06;&#x968F;&#x673A;IO&#x53D8;&#x4E3A;&#x987A;&#x5E8F;IO</p>
-<p>&#x56E0;&#x4E3A;&#x6570;&#x636E;&#x5728;&#x7D22;&#x5F15;&#x4E2D;&#x987A;&#x5E8F;&#x5B58;&#x653E;&#x7684;</p>
+<li><p>索引可以将随机IO变为顺序IO</p>
+<p>因为数据在索引中顺序存放的</p>
 </li>
 </ol>
-<h4 id="Innodb-&#x9875;&#x7ED3;&#x6784;"><a href="#Innodb-&#x9875;&#x7ED3;&#x6784;" class="headerlink" title="Innodb &#x9875;&#x7ED3;&#x6784;"></a>Innodb &#x9875;&#x7ED3;&#x6784;</h4><p>InnoDB&#x6570;&#x636E;&#x9875;&#x7531;&#x4EE5;&#x4E0B;&#x4E03;&#x4E2A;&#x90E8;&#x5206;&#x7EC4;&#x6210;&#xFF0C;&#x5982;&#x56FE;&#x6240;&#x793A;&#xFF1A; </p>
+<h4 id="Innodb-页结构"><a href="#Innodb-页结构" class="headerlink" title="Innodb 页结构"></a>Innodb 页结构</h4><p>InnoDB数据页由以下七个部分组成，如图所示： </p>
 <ol>
-<li><p>File Header&#xFF08;&#x6587;&#x4EF6;&#x5934;&#xFF09;&#x3002;</p>
+<li><p>File Header（文件头）。</p>
 </li>
-<li><p>Page Header&#xFF08;&#x9875;&#x5934;&#xFF09;&#x3002;</p>
+<li><p>Page Header（页头）。</p>
 </li>
-<li><p>Infimun+Supremum Records&#x3002;</p>
+<li><p>Infimun+Supremum Records。</p>
 </li>
-<li><p>User Records&#xFF08;&#x7528;&#x6237;&#x8BB0;&#x5F55;&#xFF0C;&#x5373;&#x884C;&#x8BB0;&#x5F55;&#xFF09;&#x3002;</p>
+<li><p>User Records（用户记录，即行记录）。</p>
 </li>
-<li><p>Free Space&#xFF08;&#x7A7A;&#x95F2;&#x7A7A;&#x95F4;&#xFF09;&#x3002;</p>
+<li><p>Free Space（空闲空间）。</p>
 </li>
-<li><p>Page Directory&#xFF08;&#x9875;&#x76EE;&#x5F55;&#xFF09;&#x3002;</p>
+<li><p>Page Directory（页目录）。</p>
 </li>
-<li><p>File Trailer&#xFF08;&#x6587;&#x4EF6;&#x7ED3;&#x5C3E;&#x4FE1;&#x606F;&#xFF09;&#x3002;</p>
+<li><p>File Trailer（文件结尾信息）。</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15d0d32kj20dx0f4ab8.jpg" alt=""></p>
 </li>
 </ol>
-<p>&#x6211;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x60F3;&#x8BF4;&#x4E09;&#x56DB;&#x70B9;&#xFF1A;</p>
+<p>我这里主要想说三四点：</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu15edzuarj20kd0b9t9t.jpg" alt=""></p>
-<p>&#x975E;&#x805A;&#x9910;&#x7D22;&#x5F15;&#x5C31;&#x662F;&#x8FD9;&#x79CD;&#x5F62;&#x5F0F;&#x5B58;&#x50A8;&#x6240;&#x6709;&#x8BB0;&#x5F55;&#x7684;&#xFF1B;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x6BCF;&#x4E2A;B+-Tree&#x53F6;&#x5B50;&#x7ED3;&#x70B9;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x9875;&#xFF0C;&#x5B58;&#x50A8;&#x4E86;&#x5177;&#x4F53;&#x7684;&#x8BB0;&#x5F55;&#xFF1B;B+&#x6811;&#x7D22;&#x5F15;&#x672C;&#x8EAB;&#x5E76;&#x4E0D;&#x80FD;&#x627E;&#x5230;&#x5177;&#x4F53;&#x7684;&#x4E00;&#x6761;&#x8BB0;&#x5F55;&#xFF0C;B+&#x6811;&#x7D22;&#x5F15;&#x80FD;&#x627E;&#x5230;&#x53EA;&#x662F;&#x8BE5;&#x8BB0;&#x5F55;&#x6240;&#x5728;&#x7684;&#x9875;&#x3002;&#x6570;&#x636E;&#x5E93;&#x628A;&#x9875;&#x8F7D;&#x5165;&#x5185;&#x5B58;&#xFF0C;&#x7136;&#x540E;&#x901A;&#x8FC7;Page Directory&#x518D;&#x8FDB;&#x884C;&#x4E8C;&#x53C9;&#x67E5;&#x627E;&#x3002;&#x53EA;&#x4E0D;&#x8FC7;&#x4E8C;&#x53C9;&#x67E5;&#x627E;&#x7684;&#x65F6;&#x95F4;&#x590D;&#x6742;&#x5EA6;&#x5F88;&#x4F4E;&#xFF0C;&#x540C;&#x65F6;&#x5185;&#x5B58;&#x4E2D;&#x7684;&#x67E5;&#x627E;&#x5F88;&#x5FEB;&#xFF0C;&#x56E0;&#x6B64;&#x901A;&#x5E38;&#x6211;&#x4EEC;&#x5FFD;&#x7565;&#x4E86;&#x8FD9;&#x90E8;&#x5206;&#x67E5;&#x627E;&#x6240;&#x7528;&#x7684;&#x65F6;&#x95F4;&#x3002; </p>
-<h4 id="&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;&#x7B56;&#x7565;"><a href="#&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;&#x7B56;&#x7565;" class="headerlink" title="&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;&#x7B56;&#x7565;"></a>&#x9AD8;&#x6027;&#x80FD;&#x7684;&#x7D22;&#x5F15;&#x7B56;&#x7565;</h4><h5 id="&#x72EC;&#x7ACB;&#x7684;&#x5217;"><a href="#&#x72EC;&#x7ACB;&#x7684;&#x5217;" class="headerlink" title="&#x72EC;&#x7ACB;&#x7684;&#x5217;"></a>&#x72EC;&#x7ACB;&#x7684;&#x5217;</h5><p>&#x5982;&#x679C;&#x67E5;&#x8BE2;&#x4E2D;&#x7684;&#x5217;&#x4E0D;&#x662F;&#x72EC;&#x7ACB;&#x7684;&#xFF0C;&#x5219;Mysql&#x5C31;&#x4E0D;&#x4F1A;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#xFF1B;&#x201D;&#x72EC;&#x7ACB;&#x7684;&#x5217;&#x201D;&#x662F;&#x6307;&#x7D22;&#x5F15;&#x5217;&#x4E0D;&#x80FD;&#x662F;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x4E00;&#x90E8;&#x5206;&#xFF0C;&#x4E5F;&#x4E0D;&#x80FD;&#x662F;&#x51FD;&#x6570;&#x7684;&#x4E00;&#x90E8;&#x5206;</p>
-<p>ex&#xFF1A;select actor_id from actor where actor_id + 1 = 5</p>
-<h5 id="&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x548C;&#x7D22;&#x5F15;&#x9009;&#x62E9;&#x6027;"><a href="#&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x548C;&#x7D22;&#x5F15;&#x9009;&#x62E9;&#x6027;" class="headerlink" title="&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x548C;&#x7D22;&#x5F15;&#x9009;&#x62E9;&#x6027;"></a>&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x548C;&#x7D22;&#x5F15;&#x9009;&#x62E9;&#x6027;</h5><p>&#x524D;&#x7F00;&#x7D22;&#x5F15;&#xFF1A;&#x7D22;&#x5F15;&#x5F00;&#x59CB;&#x7684;&#x90E8;&#x5206;&#x5B57;&#x7B26;&#xFF0C;&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x5927;&#x5927;&#x8282;&#x7EA6;&#x7D22;&#x5F15;&#x7A7A;&#x95F4;&#xFF0C;&#x4ECE;&#x800C;&#x63D0;&#x9AD8;&#x7D22;&#x5F15;&#x6548;&#x7387;&#x3002;&#x4F46;&#x662F;&#x8FD9;&#x6837;&#x4E5F;&#x4F1A;&#x964D;&#x4F4E;&#x7D22;&#x5F15;&#x7684;&#x9009;&#x62E9;&#x6027;</p>
-<p>&#x7D22;&#x5F15;&#x7684;&#x9009;&#x62E9;&#x6027;&#xFF1A;&#x4E0D;&#x91CD;&#x590D;&#x7684;&#x7D22;&#x5F15;&#x503C;&#x548C;&#x6570;&#x636E;&#x8868;&#x7684;&#x8BB0;&#x5F55;&#x603B;&#x6570;(#T)&#x7684;&#x6BD4;&#x503C;</p>
-<p>&#x600E;&#x6837;&#x786E;&#x5B9A;&#x7D22;&#x5F15;&#x524D;&#x591A;&#x5C11;&#x4E2A;&#x5B57;&#x7B26;?</p>
-<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">3</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel3,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">4</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel4,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">5</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel5,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">6</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel6,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">7</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel7</span><br></pre></td></tr></tbody></table></figure>
-<p>&#x9009;&#x62E9;&#x9009;&#x62E9;&#x6027;&#x589E;&#x52A0;&#x5E45;&#x5EA6;&#x5F88;&#x5C0F;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x4F46;&#x662F;&#x4E5F;&#x8981;&#x6CE8;&#x610F;&#x6570;&#x636E;&#x5206;&#x5E03;&#x4E0D;&#x5747;&#x5300;&#x7684;&#x60C5;&#x51B5;&#xFF0C;&#x5373;&#x6700;&#x5E38;&#x51FA;&#x73B0;&#x7684;&#x524D;&#x7F00;&#x6B21;&#x6570;&#x6BD4;&#x6700;&#x5E38;&#x51FA;&#x73B0;&#x7684;&#x57CE;&#x5E02;&#x6B21;&#x6570;&#x5927;&#x5F88;&#x591A;&#x7684;&#x60C5;&#x51B5;</p>
-<p>&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x7684;&#x7F3A;&#x70B9;&#xFF1A;&#x65E0;&#x6CD5;&#x4F7F;&#x7528;&#x524D;&#x7F00;&#x7D22;&#x5F15;&#x505A;ORDER BY &#x548C; GROUP BY</p>
-<h5 id="&#x591A;&#x5217;&#x7D22;&#x5F15;"><a href="#&#x591A;&#x5217;&#x7D22;&#x5F15;" class="headerlink" title="&#x591A;&#x5217;&#x7D22;&#x5F15;"></a>&#x591A;&#x5217;&#x7D22;&#x5F15;</h5><p>&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;select film_id,actor_id from actor where actor_id=&#x2019;1&#x2019; and film_id=&#x2019;1&#x2019;&#xFF1B;&#x4F46;&#x662F;&#x53EA;&#x6709;&#x4E24;&#x4E2A;&#x72EC;&#x7ACB;&#x7684;&#x5206;&#x522B;&#x662F;film_id&#x7684;&#x548C;actor_id&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x90A3;&#x4E48;mysql&#x5728;&#x67E5;&#x8BE2;&#x65F6;&#x4F1A;&#x4F7F;&#x7528;&#x201D;&#x7D22;&#x5F15;&#x8054;&#x5408;&#x201D;&#x7B56;&#x7565;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x4E2A;&#x4F1A;&#x6709;&#x6027;&#x80FD;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x9700;&#x8981;&#x8017;&#x8D39;&#x5927;&#x91CF;CPU&#x548C;&#x5185;&#x5B58;&#x8D44;&#x6E90;&#x5728;&#x7B97;&#x6CD5;&#x7684;&#x7F13;&#x5B58;&#x3001;&#x6392;&#x5E8F;&#x548C;&#x5408;&#x5E76;&#x64CD;&#x4F5C;&#x4E0A;&#xFF1B;&#x7D22;&#x5F15;&#x5728;EXPLAIN&#x4E2D;&#x6709;&#x7D22;&#x5F15;&#x5408;&#x5E76;&#x5E94;&#x8BE5;&#x597D;&#x597D;&#x68C0;&#x67E5;&#x4E00;&#x4E0B;&#x67E5;&#x8BE2;&#x548C;&#x8868;&#x7ED3;&#x6784;</p>
-<h5 id="&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x7D22;&#x5F15;&#x5217;&#x987A;&#x5E8F;"><a href="#&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x7D22;&#x5F15;&#x5217;&#x987A;&#x5E8F;" class="headerlink" title="&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x7D22;&#x5F15;&#x5217;&#x987A;&#x5E8F;"></a>&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x7D22;&#x5F15;&#x5217;&#x987A;&#x5E8F;</h5><ol>
-<li>&#x5C06;&#x9009;&#x62E9;&#x6027;&#x6700;&#x9AD8;&#x7684;&#x5217;&#x7D22;&#x5F15;&#x653E;&#x5230;&#x6700;&#x524D;&#x5217;</li>
-<li>&#x6839;&#x636E;&#x90A3;&#x4E9B;&#x8FD0;&#x884C;&#x9891;&#x7387;&#x6700;&#x9AD8;&#x7684;&#x63D2;&#x53D9;&#x6765;&#x8C03;&#x6574;&#x7D22;&#x5F15;&#x5217;&#x7684;&#x987A;&#x5E8F;</li>
+<p>非聚餐索引就是这种形式存储所有记录的；也就是说每个B+-Tree叶子结点都是一个页，存储了具体的记录；B+树索引本身并不能找到具体的一条记录，B+树索引能找到只是该记录所在的页。数据库把页载入内存，然后通过Page Directory再进行二叉查找。只不过二叉查找的时间复杂度很低，同时内存中的查找很快，因此通常我们忽略了这部分查找所用的时间。 </p>
+<h4 id="高性能的索引策略"><a href="#高性能的索引策略" class="headerlink" title="高性能的索引策略"></a>高性能的索引策略</h4><h5 id="独立的列"><a href="#独立的列" class="headerlink" title="独立的列"></a>独立的列</h5><p>如果查询中的列不是独立的，则Mysql就不会使用索引；”独立的列”是指索引列不能是表达式的一部分，也不能是函数的一部分</p>
+<p>ex：select actor_id from actor where actor_id + 1 = 5</p>
+<h5 id="前缀索引和索引选择性"><a href="#前缀索引和索引选择性" class="headerlink" title="前缀索引和索引选择性"></a>前缀索引和索引选择性</h5><p>前缀索引：索引开始的部分字符，这样可以大大节约索引空间，从而提高索引效率。但是这样也会降低索引的选择性</p>
+<p>索引的选择性：不重复的索引值和数据表的记录总数(#T)的比值</p>
+<p>怎样确定索引前多少个字符?</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">3</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel3,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">4</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel4,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">5</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel5,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">6</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel6,</span><br><span class="line"><span class="keyword">count</span>(<span class="keyword">distinct</span> <span class="keyword">left</span>(city,<span class="number">7</span>))/<span class="keyword">count</span>(*) <span class="keyword">as</span> sel7</span><br></pre></td></tr></table></figure>
+<p>选择选择性增加幅度很小的情况，但是也要注意数据分布不均匀的情况，即最常出现的前缀次数比最常出现的城市次数大很多的情况</p>
+<p>前缀索引的缺点：无法使用前缀索引做ORDER BY 和 GROUP BY</p>
+<h5 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h5><p>举个例子：select film_id,actor_id from actor where actor_id=’1’ and film_id=’1’；但是只有两个独立的分别是film_id的和actor_id的索引，那么mysql在查询时会使用”索引联合”策略，但是这个会有性能的问题，需要耗费大量CPU和内存资源在算法的缓存、排序和合并操作上；索引在EXPLAIN中有索引合并应该好好检查一下查询和表结构</p>
+<h5 id="选择合适的索引列顺序"><a href="#选择合适的索引列顺序" class="headerlink" title="选择合适的索引列顺序"></a>选择合适的索引列顺序</h5><ol>
+<li>将选择性最高的列索引放到最前列</li>
+<li>根据那些运行频率最高的插叙来调整索引列的顺序</li>
 </ol>
-<h5 id="&#x805A;&#x7C07;&#x7D22;&#x5F15;"><a href="#&#x805A;&#x7C07;&#x7D22;&#x5F15;" class="headerlink" title="&#x805A;&#x7C07;&#x7D22;&#x5F15;"></a>&#x805A;&#x7C07;&#x7D22;&#x5F15;</h5><p>&#x805A;&#x7C07;&#xFF1A;&#x8868;&#x793A;&#x6570;&#x636E;&#x884C;&#x548C;&#x76F8;&#x90BB;&#x7684;&#x952E;&#x503C;&#x7D27;&#x51D1;&#x5730;&#x5B58;&#x50A8;&#x5728;&#x4E00;&#x8D77;</p>
-<p>&#x805A;&#x7C07;&#x7D22;&#x5F15;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x5F20;&#x8868;&#x7684;&#x5168;&#x90E8;&#x6570;&#x636E;&#xFF0C;&#x4E00;&#x5F20;&#x8868;&#x53EA;&#x80FD;&#x4E00;&#x4E2A;&#x805A;&#x7C07;&#x7D22;&#x5F15;</p>
-<p>&#x4F18;&#x70B9;&#xFF1A;</p>
+<h5 id="聚簇索引"><a href="#聚簇索引" class="headerlink" title="聚簇索引"></a>聚簇索引</h5><p>聚簇：表示数据行和相邻的键值紧凑地存储在一起</p>
+<p>聚簇索引包含了一张表的全部数据，一张表只能一个聚簇索引</p>
+<p>优点：</p>
 <ol>
-<li>&#x53EF;&#x4EE5;&#x628A;&#x76F8;&#x5173;&#x6570;&#x636E;&#x4FDD;&#x5B58;&#x5728;&#x4E00;&#x8D77;(&#x901A;&#x8FC7;&#x7D22;&#x5F15;&#x6211;&#x4EEC;&#x53EA;&#x9700;&#x8BFB;&#x53D6;&#x5C11;&#x91CF;&#x6709;&#x6211;&#x4EEC;&#x60F3;&#x8981;&#x6570;&#x636E;&#x7684;&#x6570;&#x636E;&#x9875;&#xFF0C;&#x800C;&#x5982;&#x679C;&#x662F;MYISAM&#xFF0C;&#x5C31;&#x662F;&#x901A;&#x8FC7;&#x7D22;&#x5F15;&#x5F97;&#x5230;&#x60F3;&#x8981;&#x6570;&#x636E;&#x7684;&#x7269;&#x7406;&#x5730;&#x5740;&#xFF0C;&#x8BFB;&#x53D6;&#x4E00;&#x884C;&#x5C31;&#x662F;&#x4E00;&#x6B21;&#x78C1;&#x76D8;IO)</li>
-<li>&#x6570;&#x636E;&#x8BBF;&#x95EE;&#x5F88;&#x5FEB;</li>
-<li>&#x4F7F;&#x7528;&#x8986;&#x76D6;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#x7684;&#x67E5;&#x8BE2;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x9875;&#x7ED3;&#x70B9;&#x4E2D;&#x7684;&#x4E3B;&#x952E;&#x503C;</li>
+<li>可以把相关数据保存在一起(通过索引我们只需读取少量有我们想要数据的数据页，而如果是MYISAM，就是通过索引得到想要数据的物理地址，读取一行就是一次磁盘IO)</li>
+<li>数据访问很快</li>
+<li>使用覆盖索引扫描的查询可以直接使用页结点中的主键值</li>
 </ol>
-<p>&#x7F3A;&#x70B9;&#xFF1A;</p>
+<p>缺点：</p>
 <ol>
-<li>&#x6700;&#x5927;&#x9650;&#x5EA6;&#x63D0;&#x9AD8;&#x4E86;IO&#x5BC6;&#x96C6;&#x578B;&#x5E94;&#x7528;&#x7684;&#x6027;&#x80FD;&#xFF0C;&#x4F46;&#x5982;&#x679C;&#x6570;&#x636E;&#x5728;&#x5185;&#x5B58;&#x4E2D;&#x5C31;&#x6CA1;&#x6709;&#x7528;&#x4E86;</li>
-<li>&#x63D2;&#x5165;&#x901F;&#x5EA6;&#x4E25;&#x91CD;&#x4F9D;&#x8D56;&#x4E8E;&#x63D2;&#x5165;&#x987A;&#x5E8F;</li>
-<li>&#x66F4;&#x65B0;&#x805A;&#x7C07;&#x7D22;&#x5F15;&#x4EE3;&#x4EF7;&#x5F88;&#x9AD8;</li>
-<li>&#x63D2;&#x5165;&#x884C;&#x53EF;&#x80FD;&#x6709;&#x9875;&#x5206;&#x88C2;&#x7684;&#x95EE;&#x9898;</li>
-<li>&#x805A;&#x7C07;&#x7D22;&#x5F15;&#x53EF;&#x80FD;&#x5BFC;&#x81F4;&#x5168;&#x8868;&#x626B;&#x63CF;&#x53D8;&#x6162;</li>
-<li>&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#x53EF;&#x80FD;&#x6BD4;&#x60F3;&#x8C61;&#x7684;&#x8981;&#x66F4;&#x5927;&#xFF0C;&#x56E0;&#x4E3A;&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#x7684;&#x53F6;&#x5B50;&#x7ED3;&#x70B9;&#x5305;&#x542B;&#x4E86;&#x5F15;&#x7528;&#x884C;&#x7684;&#x4E3B;&#x952E;</li>
-<li>&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#x8BBF;&#x95EE;&#x9700;&#x8981;&#x4E8C;&#x6B21;&#x7D22;&#x5F15;&#x67E5;&#x627E;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x4E00;&#x6B21;(&#x5982;&#x679C;&#x4F60;select &#x7684;&#x5B57;&#x6BB5;&#x6BD4;&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#x591A;&#xFF0C;&#x7136;&#x540E;&#x8FC7;&#x6EE4;&#x6761;&#x4EF6;&#x80FD;&#x4F7F;&#x7528;&#x6B64;&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#xFF0C;&#x7B2C;&#x4E00;&#x6B21;&#x5148;&#x7528;&#x4E8C;&#x7EA7;&#x7D22;&#x5F15;&#x8FDB;&#x884C;&#x67E5;&#x627E;&#x627E;&#x5230;&#x5BF9;&#x5E94;&#x7684;&#x4E3B;&#x952E;&#xFF0C;&#x7136;&#x540E;&#x901A;&#x8FC7;&#x4E3B;&#x952E;&#x5728;&#x805A;&#x7C07;&#x7D22;&#x5F15;&#x4E2D;&#x627E;&#x5230;&#x60F3;&#x8981;&#x7684;&#x6570;&#x636E;)</li>
+<li>最大限度提高了IO密集型应用的性能，但如果数据在内存中就没有用了</li>
+<li>插入速度严重依赖于插入顺序</li>
+<li>更新聚簇索引代价很高</li>
+<li>插入行可能有页分裂的问题</li>
+<li>聚簇索引可能导致全表扫描变慢</li>
+<li>二级索引可能比想象的要更大，因为二级索引的叶子结点包含了引用行的主键</li>
+<li>二级索引访问需要二次索引查找，而不是一次(如果你select 的字段比二级索引多，然后过滤条件能使用此二级索引，第一次先用二级索引进行查找找到对应的主键，然后通过主键在聚簇索引中找到想要的数据)</li>
 </ol>
-<h5 id="Innodb&#x548C;MyISAM&#x6570;&#x636E;&#x5206;&#x5E03;&#x5DEE;&#x5F02;"><a href="#Innodb&#x548C;MyISAM&#x6570;&#x636E;&#x5206;&#x5E03;&#x5DEE;&#x5F02;" class="headerlink" title="Innodb&#x548C;MyISAM&#x6570;&#x636E;&#x5206;&#x5E03;&#x5DEE;&#x5F02;"></a>Innodb&#x548C;MyISAM&#x6570;&#x636E;&#x5206;&#x5E03;&#x5DEE;&#x5F02;</h5><ul>
-<li>MyISAM&#x6570;&#x636E;&#x5206;&#x5E03;</li>
+<h5 id="Innodb和MyISAM数据分布差异"><a href="#Innodb和MyISAM数据分布差异" class="headerlink" title="Innodb和MyISAM数据分布差异"></a>Innodb和MyISAM数据分布差异</h5><ul>
+<li>MyISAM数据分布</li>
 </ul>
 <ol>
-<li><p>&#x4E3B;&#x952E;&#x7D22;&#x5F15;&#x548C;&#x666E;&#x901A;&#x7D22;&#x5F15;&#x6CA1;&#x6709;&#x533A;&#x522B;&#xFF1B;</p>
+<li><p>主键索引和普通索引没有区别；</p>
 </li>
-<li><p>&#x6309;&#x7167;&#x6570;&#x636E;&#x63D2;&#x5165;&#x7684;&#x987A;&#x5E8F;&#x63D2;&#x5165;&#x7684;&#x987A;&#x5E8F;&#x5B58;&#x50A8;&#x5728;&#x78C1;&#x76D8;&#x4E0A;&#xFF0C;&#x5728;&#x7D22;&#x5F15;&#x6570;&#x636E;&#x884C;&#x7684;&#x65C1;&#x8FB9;&#x663E;&#x793A;&#x884C;&#x53F7;&#xFF0C;&#x4ECE;0&#x5F00;&#x59CB;&#x9012;&#x589E;&#xFF0C;&#x7D22;&#x5F15;&#x5F62;&#x5F0F;&#x5982;&#x56FE;&#xFF1A;</p>
+<li><p>按照数据插入的顺序插入的顺序存储在磁盘上，在索引数据行的旁边显示行号，从0开始递增，索引形式如图：</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17m1cy9yj20ru09uq6f.jpg" alt=""></p>
-<p>&#x5373;&#x53F6;&#x5B50;&#x7ED3;</p>
+<p>即叶子结</p>
 </li>
 </ol>
 <ul>
-<li><p>Innodb&#x6570;&#x636E;&#x5206;&#x5E03;</p>
-<p>&#x5C31;&#x7528;&#x4E0B;&#x9762;&#x7684;&#x56FE;&#x6765;&#x6807;&#x8BC6;&#x5427;&#xFF0C;&#x5F88;&#x6E05;&#x6670;&#x4E86;</p>
+<li><p>Innodb数据分布</p>
+<p>就用下面的图来标识吧，很清晰了</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu17roy983j20kv0fy7b1.jpg" alt=""></p>
 </li>
 </ul>
-<h5 id="&#x8986;&#x76D6;&#x7D22;&#x5F15;"><a href="#&#x8986;&#x76D6;&#x7D22;&#x5F15;" class="headerlink" title="&#x8986;&#x76D6;&#x7D22;&#x5F15;"></a>&#x8986;&#x76D6;&#x7D22;&#x5F15;</h5><ul>
-<li>&#x5B9A;&#x4E49;&#xFF1A;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x7D22;&#x5F15;&#x5305;&#x542B;&#x6240;&#x6709;&#x9700;&#x8981;&#x67E5;&#x8BE2;&#x7684;&#x5B57;&#x6BB5;&#x503C;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x79F0;&#x4E4B;&#x4E3A;&#x201D;&#x8986;&#x76D6;&#x7D22;&#x5F15;&#x201D;</li>
+<h5 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h5><ul>
+<li>定义：如果一个索引包含所有需要查询的字段值，我们就称之为”覆盖索引”</li>
 </ul>
-<h5 id="&#x5168;&#x8868;&#x626B;&#x63CF;&#x548C;&#x5168;&#x7D22;&#x5F15;&#x626B;&#x63CF;"><a href="#&#x5168;&#x8868;&#x626B;&#x63CF;&#x548C;&#x5168;&#x7D22;&#x5F15;&#x626B;&#x63CF;" class="headerlink" title="&#x5168;&#x8868;&#x626B;&#x63CF;&#x548C;&#x5168;&#x7D22;&#x5F15;&#x626B;&#x63CF;"></a>&#x5168;&#x8868;&#x626B;&#x63CF;&#x548C;&#x5168;&#x7D22;&#x5F15;&#x626B;&#x63CF;</h5><p>&#x5168;&#x8868;&#x626B;&#x63CF;&#xFF1A;&#x662F;&#x6307;&#x901A;&#x8FC7;&#x7269;&#x7406;&#x8868;&#x83B7;&#x53D6;&#x6570;&#x636E;&#xFF0C;&#x987A;&#x5E8F;&#x8BFB;&#x78C1;&#x76D8;&#x4E0A;&#x7684;&#x6570;&#x636E;</p>
-<p>&#x5168;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#xFF1A;&#x67E5;&#x8BE2;&#x65F6;&#xFF0C;&#x904D;&#x5386;&#x7D22;&#x5F15;&#x6811;&#x6765;&#x83B7;&#x53D6;&#x6570;&#x636E;&#x884C;</p>
-<h5 id="&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#x6765;&#x505A;&#x6392;&#x5E8F;"><a href="#&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#x6765;&#x505A;&#x6392;&#x5E8F;" class="headerlink" title="&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#x6765;&#x505A;&#x6392;&#x5E8F;"></a>&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x626B;&#x63CF;&#x6765;&#x505A;&#x6392;&#x5E8F;</h5><p>Mysql&#x6709;&#x4E24;&#x79CD;&#x65B9;&#x5F0F;&#x751F;&#x6210;&#x6709;&#x5E8F;&#x7ED3;&#x679C;&#xFF1A;&#x901A;&#x8FC7;&#x6392;&#x5E8F;&#x64CD;&#x4F5C;&#x6216;&#x8005;&#x6309;&#x7D22;&#x5F15;&#x987A;&#x5E8F;&#x626B;&#x63CF;&#xFF1B;&#x6240;&#x4EE5;&#x5982;&#x679C;&#x76F4;&#x63A5;&#x901A;&#x8FC7;&#x6392;&#x5E8F;&#x64CD;&#x4F5C;&#xFF0C;&#x5C31;&#x53EF;&#x80FD;&#x7528;&#x5230;&#x4E2D;&#x95F4;&#x8868;&#x7528;&#x6765;&#x5B58;&#x50A8;&#x83B7;&#x53D6;&#x7684;&#x6570;&#x636E;&#x7136;&#x540E;&#x901A;&#x8FC7;&#x7B97;&#x6CD5;&#x6392;&#x5E8F;&#xFF0C;&#x8FD9;&#x6837;&#x6548;&#x7387;&#x6BD4;&#x8F83;&#x4F4E;</p>
-<p>&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x6392;&#x5E8F;&#x7684;&#x8981;&#x6C42;&#xFF1A;</p>
+<h5 id="全表扫描和全索引扫描"><a href="#全表扫描和全索引扫描" class="headerlink" title="全表扫描和全索引扫描"></a>全表扫描和全索引扫描</h5><p>全表扫描：是指通过物理表获取数据，顺序读磁盘上的数据</p>
+<p>全索引扫描：查询时，遍历索引树来获取数据行</p>
+<h5 id="使用索引扫描来做排序"><a href="#使用索引扫描来做排序" class="headerlink" title="使用索引扫描来做排序"></a>使用索引扫描来做排序</h5><p>Mysql有两种方式生成有序结果：通过排序操作或者按索引顺序扫描；所以如果直接通过排序操作，就可能用到中间表用来存储获取的数据然后通过算法排序，这样效率比较低</p>
+<p>使用索引排序的要求：</p>
 <ol>
-<li>&#x7D22;&#x5F15;&#x7684;&#x5217;&#x987A;&#x5E8F;&#x548C;ORDER BY&#x5B57;&#x53E5;&#x7684;&#x987A;&#x5E8F;&#x5B8C;&#x5168;&#x4E00;&#x81F4;&#xFF0C;&#x5E76;&#x4E14;&#x6240;&#x6709;&#x5217;&#x7684;&#x6392;&#x5E8F;&#x65B9;&#x5411;&#x90FD;&#x4E00;&#x6837;&#x65F6;&#x3002;&#x5982;&#x679C;&#x67E5;&#x8BE2;&#x9700;&#x8981;&#x5173;&#x8054;&#x591A;&#x5F20;&#x8868;&#xFF0C;&#x5219;&#x53EA;&#x6709;&#x5F53;ORDER BY&#x5B57;&#x53E5;&#x5F15;&#x7528;&#x7684;&#x5B57;&#x6BB5;&#x5168;&#x90E8;&#x4E3A;&#x7B2C;&#x4E00;&#x4E2A;&#x8868;&#x65F6;&#xFF0C;&#x624D;&#x80FD;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x505A;&#x6392;&#x5E8F;</li>
-<li>&#x7D22;&#x5F15;&#x7684;&#x7B2C;&#x4E00;&#x5217;&#x88AB;&#x53EA;&#x80FD;&#x4E3A;&#x4E00;&#x4E2A;&#x5E38;&#x6570;&#xFF0C;&#x4E5F;&#x80FD;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x6392;&#x5E8F;</li>
+<li>索引的列顺序和ORDER BY字句的顺序完全一致，并且所有列的排序方向都一样时。如果查询需要关联多张表，则只有当ORDER BY字句引用的字段全部为第一个表时，才能使用索引做排序</li>
+<li>索引的第一列被只能为一个常数，也能使用索引排序</li>
 </ol>
-<h5 id="&#x5197;&#x4F59;&#x548C;&#x91CD;&#x590D;&#x7D22;&#x5F15;"><a href="#&#x5197;&#x4F59;&#x548C;&#x91CD;&#x590D;&#x7D22;&#x5F15;" class="headerlink" title="&#x5197;&#x4F59;&#x548C;&#x91CD;&#x590D;&#x7D22;&#x5F15;"></a>&#x5197;&#x4F59;&#x548C;&#x91CD;&#x590D;&#x7D22;&#x5F15;</h5><p>Mysql &#x9700;&#x8981;&#x5355;&#x72EC;&#x7EF4;&#x62A4;&#x91CD;&#x590D;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x5E76;&#x4E14;&#x4F18;&#x5316;&#x5668;&#x5728;&#x4F18;&#x5316;&#x67E5;&#x8BE2;&#x7684;&#x65F6;&#x5019;&#x4E5F;&#x9700;&#x8981;&#x9010;&#x4E2A;&#x7684;&#x8FDB;&#x884C;&#x8003;&#x8651;&#xFF0C;&#x8FD9;&#x4F1A;&#x5F71;&#x54CD;&#x6027;&#x80FD;</p>
-<h5 id="&#x672A;&#x4F7F;&#x7528;&#x7684;&#x7D22;&#x5F15;"><a href="#&#x672A;&#x4F7F;&#x7528;&#x7684;&#x7D22;&#x5F15;" class="headerlink" title="&#x672A;&#x4F7F;&#x7528;&#x7684;&#x7D22;&#x5F15;"></a>&#x672A;&#x4F7F;&#x7528;&#x7684;&#x7D22;&#x5F15;</h5><h5 id="&#x7D22;&#x5F15;&#x548C;&#x9501;"><a href="#&#x7D22;&#x5F15;&#x548C;&#x9501;" class="headerlink" title="&#x7D22;&#x5F15;&#x548C;&#x9501;"></a>&#x7D22;&#x5F15;&#x548C;&#x9501;</h5><p>Innodb&#x53EA;&#x6709;&#x5728;&#x8BBF;&#x95EE;&#x884C;&#x7684;&#x65F6;&#x5019;&#x624D;&#x4F1A;&#x5BF9;&#x5176;&#x52A0;&#x9501;&#xFF0C;&#x800C;&#x7D22;&#x5F15;&#x80FD;&#x591F;&#x51CF;&#x5C11;Innodb&#x8BBF;&#x95EE;&#x7684;&#x884C;&#x6570;&#xFF0C;&#x4ECE;&#x800C;&#x51CF;&#x5C11;&#x9501;&#x7684;&#x6570;&#x91CF;</p>
-<h4 id="&#x67E5;&#x8BE2;&#x6027;&#x80FD;&#x4F18;&#x5316;"><a href="#&#x67E5;&#x8BE2;&#x6027;&#x80FD;&#x4F18;&#x5316;" class="headerlink" title="&#x67E5;&#x8BE2;&#x6027;&#x80FD;&#x4F18;&#x5316;"></a>&#x67E5;&#x8BE2;&#x6027;&#x80FD;&#x4F18;&#x5316;</h4><h5 id="&#x4E3A;&#x4EC0;&#x4E48;&#x67E5;&#x8BE2;&#x901F;&#x5EA6;&#x6162;"><a href="#&#x4E3A;&#x4EC0;&#x4E48;&#x67E5;&#x8BE2;&#x901F;&#x5EA6;&#x6162;" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48;&#x67E5;&#x8BE2;&#x901F;&#x5EA6;&#x6162;"></a>&#x4E3A;&#x4EC0;&#x4E48;&#x67E5;&#x8BE2;&#x901F;&#x5EA6;&#x6162;</h5><p>&#x5728;&#x6BCF;&#x4E00;&#x4E2A;&#x6D88;&#x8017;&#x5927;&#x91CF;&#x65F6;&#x95F4;&#x7684;&#x67E5;&#x8BE2;&#x6848;&#x4F8B;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x90FD;&#x80FD;&#x770B;&#x5230;&#x4E00;&#x4E9B;&#x4E0D;&#x5FC5;&#x8981;&#x7684;&#x989D;&#x5916;&#x64CD;&#x4F5C;&#xFF0C;&#x67D0;&#x4E9B;&#x64CD;&#x4F5C;&#x88AB;&#x989D;&#x5916;&#x7684;&#x91CD;&#x590D;&#x4E86;&#x5F88;&#x591A;&#x6B21;&#x3001;&#x67D0;&#x4E9B;&#x64CD;&#x4F5C;&#x6267;&#x884C;&#x5F97;&#x592A;&#x6162;&#x7B49;&#x3002;&#x4F18;&#x5316;&#x67E5;&#x8BE2;&#x7684;&#x76EE;&#x7684;&#x5C31;&#x662F;&#x51CF;&#x5C11;&#x548C;&#x6D88;&#x9664;&#x8FD9;&#x4E9B;&#x64CD;&#x4F5C;&#x6240;&#x82B1;&#x8D39;&#x7684;&#x65F6;&#x95F4;</p>
-<h5 id="&#x6162;&#x67E5;&#x8BE2;&#x57FA;&#x7840;&#xFF1A;&#x4F18;&#x5316;&#x6570;&#x636E;&#x8BBF;&#x95EE;"><a href="#&#x6162;&#x67E5;&#x8BE2;&#x57FA;&#x7840;&#xFF1A;&#x4F18;&#x5316;&#x6570;&#x636E;&#x8BBF;&#x95EE;" class="headerlink" title="&#x6162;&#x67E5;&#x8BE2;&#x57FA;&#x7840;&#xFF1A;&#x4F18;&#x5316;&#x6570;&#x636E;&#x8BBF;&#x95EE;"></a>&#x6162;&#x67E5;&#x8BE2;&#x57FA;&#x7840;&#xFF1A;&#x4F18;&#x5316;&#x6570;&#x636E;&#x8BBF;&#x95EE;</h5><p>&#x67E5;&#x8BE2;&#x6027;&#x80FD;&#x4F4E;&#x4E0B;&#x7684;&#x6700;&#x57FA;&#x672C;&#x539F;&#x56E0;&#x662F;&#x8BBF;&#x95EE;&#x7684;&#x6570;&#x636E;&#x592A;&#x591A;</p>
+<h5 id="冗余和重复索引"><a href="#冗余和重复索引" class="headerlink" title="冗余和重复索引"></a>冗余和重复索引</h5><p>Mysql 需要单独维护重复的索引，并且优化器在优化查询的时候也需要逐个的进行考虑，这会影响性能</p>
+<h5 id="未使用的索引"><a href="#未使用的索引" class="headerlink" title="未使用的索引"></a>未使用的索引</h5><h5 id="索引和锁"><a href="#索引和锁" class="headerlink" title="索引和锁"></a>索引和锁</h5><p>Innodb只有在访问行的时候才会对其加锁，而索引能够减少Innodb访问的行数，从而减少锁的数量</p>
+<h4 id="查询性能优化"><a href="#查询性能优化" class="headerlink" title="查询性能优化"></a>查询性能优化</h4><h5 id="为什么查询速度慢"><a href="#为什么查询速度慢" class="headerlink" title="为什么查询速度慢"></a>为什么查询速度慢</h5><p>在每一个消耗大量时间的查询案例中，我们都能看到一些不必要的额外操作，某些操作被额外的重复了很多次、某些操作执行得太慢等。优化查询的目的就是减少和消除这些操作所花费的时间</p>
+<h5 id="慢查询基础：优化数据访问"><a href="#慢查询基础：优化数据访问" class="headerlink" title="慢查询基础：优化数据访问"></a>慢查询基础：优化数据访问</h5><p>查询性能低下的最基本原因是访问的数据太多</p>
 <ul>
-<li>&#x786E;&#x8BA4;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x662F;&#x5426;&#x5728;&#x68C0;&#x7D22;&#x5927;&#x91CF;&#x8D85;&#x8FC7;&#x9700;&#x8981;&#x7684;&#x6570;&#x636E;</li>
-<li>&#x786E;&#x8BA4;Mysql&#x670D;&#x52A1;&#x5668;&#x5C42;&#x662F;&#x5426;&#x5728;&#x5206;&#x6790;&#x5927;&#x91CF;&#x8D85;&#x8FC7;&#x9700;&#x8981;&#x7684;&#x884C;</li>
+<li>确认应用程序是否在检索大量超过需要的数据</li>
+<li>确认Mysql服务器层是否在分析大量超过需要的行</li>
 </ul>
 <ol>
-<li><p>&#x662F;&#x5426;&#x5411;&#x6570;&#x636E;&#x5E93;&#x8BF7;&#x6C42;&#x4E86;&#x4E0D;&#x9700;&#x8981;&#x7684;&#x6570;&#x636E;</p>
+<li><p>是否向数据库请求了不需要的数据</p>
 <ul>
-<li>&#x67E5;&#x8BE2;&#x4E0D;&#x9700;&#x8981;&#x7684;&#x8BB0;&#x5F55;</li>
-<li>&#x591A;&#x8868;&#x5173;&#x8054;&#x65F6;&#x8FD4;&#x56DE;&#x5168;&#x90E8;&#x5217;</li>
-<li>&#x603B;&#x662F;&#x53D6;&#x51FA;&#x5168;&#x90E8;&#x5217;</li>
-<li>&#x91CD;&#x590D;&#x67E5;&#x8BE2;&#x76F8;&#x540C;&#x7684;&#x6570;&#x636E;</li>
+<li>查询不需要的记录</li>
+<li>多表关联时返回全部列</li>
+<li>总是取出全部列</li>
+<li>重复查询相同的数据</li>
 </ul>
 </li>
-<li><p>Mysql&#x662F;&#x5426;&#x5728;&#x626B;&#x63CF;&#x989D;&#x5916;&#x7684;&#x8BB0;&#x5F55;</p>
-<p>&#x8861;&#x91CF;&#x67E5;&#x8BE2;&#x5F00;&#x9500;&#x7684;&#x4E09;&#x4E2A;&#x6307;&#x6807;&#x5982;&#x4E0B;&#xFF1A;</p>
+<li><p>Mysql是否在扫描额外的记录</p>
+<p>衡量查询开销的三个指标如下：</p>
 <ol>
-<li><p>&#x54CD;&#x5E94;&#x65F6;&#x95F4;</p>
+<li><p>响应时间</p>
 </li>
-<li><p>&#x626B;&#x63CF;&#x7684;&#x884C;&#x6570;</p>
+<li><p>扫描的行数</p>
 </li>
-<li><p>&#x8FD4;&#x56DE;&#x7684;&#x884C;&#x6570;</p>
-</li>
-</ol>
+<li><p>返回的行数</p>
 </li>
 </ol>
-<ul>
-<li><p>&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#xFF1A;&#x7B49;&#x5F85;&#x65F6;&#x95F4;&#x548C;&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#x7684;&#x603B;&#x548C;</p>
 </li>
-<li><p>&#x626B;&#x63CF;&#x7684;&#x884C;&#x6570;&#x548C;&#x8FD4;&#x56DE;&#x7684;&#x884C;&#x6570;&#xFF1A;&#x7406;&#x60F3;&#x60C5;&#x51B5;&#x4E0B;&#x626B;&#x63CF;&#x7684;&#x884C;&#x6570;&#x548C;&#x8FD4;&#x56DE;&#x7684;&#x884C;&#x6570;&#x76F8;&#x540C;</p>
-</li>
-<li><p>&#x626B;&#x63CF;&#x7684;&#x884C;&#x6570;&#x548C;&#x8BBF;&#x95EE;&#x7C7B;&#x578B;(type)</p>
-<p>&#x8BBF;&#x95EE;&#x7C7B;&#x578B;&#xFF1A;&#x626B;&#x63CF;&#x8868;&#x3001;&#x626B;&#x63CF;&#x7D22;&#x5F15;&#x3001;&#x8303;&#x56F4;&#x8BBF;&#x95EE;&#x548C;&#x5355;&#x503C;&#x8BBF;&#x95EE;</p>
-<p>&#x7D22;&#x5F15;&#x8BA9;Mysql&#x4EE5;&#x6700;&#x9AD8;&#x6548;&#x3001;&#x626B;&#x63CF;&#x884C;&#x6570;&#x6700;&#x5C11;&#x7684;&#x65B9;&#x5F0F;&#x627E;&#x5230;&#x9700;&#x8981;&#x7684;&#x8BB0;&#x5F55;</p>
-</li>
-</ul>
-<h5 id="&#x91CD;&#x6784;&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;"><a href="#&#x91CD;&#x6784;&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;" class="headerlink" title="&#x91CD;&#x6784;&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;"></a>&#x91CD;&#x6784;&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;</h5><ol>
-<li>&#x4E00;&#x4E2A;&#x590D;&#x6742;&#x67E5;&#x8BE2;&#x8FD8;&#x662F;&#x591A;&#x4E2A;&#x7B80;&#x5355;&#x67E5;&#x8BE2;</li>
-<li>&#x5207;&#x5206;&#x67E5;&#x8BE2;</li>
-<li>&#x5206;&#x89E3;&#x5173;&#x8054;&#x67E5;&#x8BE2;</li>
-</ol>
-<h5 id="&#x67E5;&#x8BE2;&#x6267;&#x884C;&#x7684;&#x57FA;&#x7840;"><a href="#&#x67E5;&#x8BE2;&#x6267;&#x884C;&#x7684;&#x57FA;&#x7840;" class="headerlink" title="&#x67E5;&#x8BE2;&#x6267;&#x884C;&#x7684;&#x57FA;&#x7840;"></a>&#x67E5;&#x8BE2;&#x6267;&#x884C;&#x7684;&#x57FA;&#x7840;</h5><p>Mysql&#x53D1;&#x9001;&#x4E00;&#x4E2A;&#x8BF7;&#x6C42;&#x7684;&#x65F6;&#x5019;&#xFF0C;Mysql&#x5230;&#x5E95;&#x505A;&#x4E86;&#x4E9B;&#x4EC0;&#x4E48;&#xFF1A;</p>
-<ol>
-<li>&#x5BA2;&#x6237;&#x7AEF;&#x53D1;&#x9001; &#x4E00;&#x6761;&#x67E5;&#x8BE2;&#x7ED9;&#x670D;&#x52A1;&#x5668;</li>
-<li>&#x670D;&#x52A1;&#x5668;&#x5148;&#x68C0;&#x67E5;&#x67E5;&#x8BE2;&#x7F13;&#x5B58;&#xFF0C;&#x5982;&#x679C;&#x547D;&#x4E2D;&#x4E86;&#x7F13;&#x5B58;&#xFF0C;&#x5219;&#x7ACB;&#x523B;&#x8FD4;&#x56DE;&#x5B58;&#x50A8;&#x5728;&#x7F13;&#x5B58;&#x4E2D;&#x7684;&#x7ED3;&#x679C;&#x3002;&#x4F5B;&#x6B27;&#x6CFD;&#x8FDB;&#x5165;&#x4E0B;&#x4E00;&#x9636;&#x6BB5;</li>
-<li>&#x670D;&#x52A1;&#x5668;&#x8FDB;&#x884C;SQL&#x89E3;&#x6790;&#x3001;&#x9884;&#x5904;&#x7406;&#xFF0C;&#x518D;&#x7531;&#x4F18;&#x5316;&#x5668;&#x751F;&#x6210;&#x5BF9;&#x5E94;&#x7684;&#x6267;&#x884C;&#x8BA1;&#x5212;</li>
-<li>Mysql&#x6839;&#x636E;&#x4F18;&#x5316;&#x5668;&#x751F;&#x4EA7;&#x7684;&#x6267;&#x884C;&#x8BA1;&#x5212;&#x3001;&#x8C03;&#x7528;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x7684;API&#x6765;&#x6267;&#x884C;&#x67E5;&#x8BE2;</li>
-<li>&#x5C06;&#x7ED3;&#x679C;&#x8FD4;&#x56DE;&#x7ED9;&#x5BA2;&#x6237;&#x7AEF;</li>
 </ol>
 <ul>
-<li><p>Mysql&#x5BA2;&#x6237;&#x7AEF;/&#x670D;&#x52A1;&#x5668;&#x901A;&#x4FE1;&#x534F;&#x8BAE;</p>
+<li><p>响应时间：等待时间和响应时间的总和</p>
 </li>
-<li><p>&#x67E5;&#x8BE2;&#x72B6;&#x6001;</p>
+<li><p>扫描的行数和返回的行数：理想情况下扫描的行数和返回的行数相同</p>
+</li>
+<li><p>扫描的行数和访问类型(type)</p>
+<p>访问类型：扫描表、扫描索引、范围访问和单值访问</p>
+<p>索引让Mysql以最高效、扫描行数最少的方式找到需要的记录</p>
+</li>
+</ul>
+<h5 id="重构查询方式"><a href="#重构查询方式" class="headerlink" title="重构查询方式"></a>重构查询方式</h5><ol>
+<li>一个复杂查询还是多个简单查询</li>
+<li>切分查询</li>
+<li>分解关联查询</li>
+</ol>
+<h5 id="查询执行的基础"><a href="#查询执行的基础" class="headerlink" title="查询执行的基础"></a>查询执行的基础</h5><p>Mysql发送一个请求的时候，Mysql到底做了些什么：</p>
+<ol>
+<li>客户端发送 一条查询给服务器</li>
+<li>服务器先检查查询缓存，如果命中了缓存，则立刻返回存储在缓存中的结果。佛欧泽进入下一阶段</li>
+<li>服务器进行SQL解析、预处理，再由优化器生成对应的执行计划</li>
+<li>Mysql根据优化器生产的执行计划、调用存储引擎的API来执行查询</li>
+<li>将结果返回给客户端</li>
+</ol>
+<ul>
+<li><p>Mysql客户端/服务器通信协议</p>
+</li>
+<li><p>查询状态</p>
 <ol>
 <li><p>Sleep</p>
-<p>&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x7B49;&#x5F85;&#x5BA2;&#x6237;&#x7AEF;</p>
+<p>线程正在等待客户端</p>
 </li>
 <li><p>Query</p>
-<p>&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x6267;&#x884C;&#x67E5;&#x8BE2;&#x6216;&#x8005;&#x6B63;&#x5728;&#x5C06;&#x7ED3;&#x679C;&#x53D1;&#x9001;&#x7ED9;&#x5BA2;&#x6237;&#x7AEF;</p>
+<p>线程正在执行查询或者正在将结果发送给客户端</p>
 </li>
 <li><p>Locked</p>
-<p>&#x5728;Mysql&#x670D;&#x52A1;&#x5668;&#x5C42;&#xFF0C;&#x8BE5;&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x7B49;&#x5F85;&#x8868;&#x9501;</p>
+<p>在Mysql服务器层，该线程正在等待表锁</p>
 </li>
 <li><p>Analyzing and statistics</p>
-<p>&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x6536;&#x96C6;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x7684;&#x7EDF;&#x8BA1;&#x4FE1;&#x606F;&#xFF0C;&#x5E76;&#x751F;&#x6210;&#x67E5;&#x8BE2;&#x7684;&#x6267;&#x884C;&#x8BA1;&#x5212;</p>
+<p>线程正在收集存储引擎的统计信息，并生成查询的执行计划</p>
 </li>
 <li><p>Copying to tem table</p>
-<p>&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x6267;&#x884C;&#x67E5;&#x8BE2;&#xFF0C;&#x5E76;&#x4E14;&#x5C06;&#x5176;&#x7ED3;&#x679C;&#x96C6;&#x6536;&#x96C6;&#x90FD;&#x590D;&#x5236;&#x5230;&#x4E00;&#x4E2A;&#x4E34;&#x65F6;&#x8868;&#x4E2D;</p>
+<p>线程正在执行查询，并且将其结果集收集都复制到一个临时表中</p>
 </li>
 <li><p>Storing result</p>
-<p>&#x7EBF;&#x7A0B;&#x6B63;&#x5728;&#x5BF9;&#x7ED3;&#x679C;&#x96C6;&#x8FDB;&#x884C;&#x6392;&#x5E8F;</p>
+<p>线程正在对结果集进行排序</p>
 </li>
 <li><p>Sending data</p>
-<p>&#x7EBF;&#x7A0B;&#x53EF;&#x80FD;&#x5728;&#x591A;&#x4E2A;&#x72B6;&#x6001;&#x4E4B;&#x95F4;&#x4F20;&#x9012;&#x6570;&#x636E;&#xFF0C;&#x6216;&#x8005;&#x5728;&#x751F;&#x6210;&#x7ED3;&#x679C;&#x96C6;&#xFF0C;&#x6216;&#x8005;&#x5728;&#x5411;&#x5BA2;&#x6237;&#x7AEF;&#x8FD4;&#x56DE;&#x6570;&#x636E;</p>
+<p>线程可能在多个状态之间传递数据，或者在生成结果集，或者在向客户端返回数据</p>
 </li>
 </ol>
 </li>
 </ul>
-<h5 id="&#x4F18;&#x5316;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x67E5;&#x8BE2;"><a href="#&#x4F18;&#x5316;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x67E5;&#x8BE2;" class="headerlink" title="&#x4F18;&#x5316;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x67E5;&#x8BE2;"></a>&#x4F18;&#x5316;&#x7279;&#x5B9A;&#x7C7B;&#x578B;&#x7684;&#x67E5;&#x8BE2;</h5><ol>
-<li><p>&#x4F18;&#x5316;COUNT()&#x67E5;&#x8BE2;</p>
+<h5 id="优化特定类型的查询"><a href="#优化特定类型的查询" class="headerlink" title="优化特定类型的查询"></a>优化特定类型的查询</h5><ol>
+<li><p>优化COUNT()查询</p>
 <ul>
-<li>COUNT()&#x7684;&#x4F5C;&#x7528;&#xFF1A;&#x662F;&#x5B83;&#x53EF;&#x4EE5;&#x7EDF;&#x8BA1;&#x67D0;&#x4E2A;&#x5217;&#x503C;&#x7684;&#x6570;&#x91CF;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x7EDF;&#x8BA1;&#x884C;&#x6570;&#xFF0C;&#x5728;&#x7EDF;&#x8BA1;&#x503C;&#x65F6;&#x8981;&#x6C42;&#x5217;&#x503C;&#x662F;&#x975E;&#x7A7A;&#x7684;</li>
-<li>&#x5173;&#x4E8E;MyISAM&#x7684;&#x795E;&#x8BDD;&#xFF1A; MyISAM&#x7684;COUNT()&#x51FD;&#x6570;&#x603B;&#x662F;&#x975E;&#x5E38;&#x5FEB;&#xFF0C;&#x8FD9;&#x662F;&#x4E2A;&#x8BEF;&#x89E3;&#xFF0C;&#x53EA;&#x6709;&#x5728;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;WHERE&#x6761;&#x4EF6;&#x7684;COUNT(*)&#x624D;&#x975E;&#x5E38;&#x5FEB;</li>
-<li>&#x7B80;&#x5355;&#x7684;&#x4F18;&#x5316;</li>
+<li>COUNT()的作用：是它可以统计某个列值的数量，也可以统计行数，在统计值时要求列值是非空的</li>
+<li>关于MyISAM的神话： MyISAM的COUNT()函数总是非常快，这是个误解，只有在没有任何WHERE条件的COUNT(*)才非常快</li>
+<li>简单的优化</li>
 </ul>
 </li>
-<li><p>&#x4F18;&#x5316;LIMIT&#x5206;&#x9875;</p>
-<p>&#x4E3A;&#x4EC0;&#x4E48;&#x5355;&#x7EAF;&#x7684;LIMIT&#x6027;&#x80FD;&#x4E0D;&#x597D;&#xFF0C;&#x56E0;&#x4E3A;mysql&#x4F1A;&#x626B;&#x63CF;&#x5168;&#x90E8;&#x6570;&#x636E;&#xFF0C;&#x4E22;&#x5F03;&#x524D;&#x9762;&#x65E0;&#x7528;&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x53EA;&#x8FD4;&#x56DE;LIMIT&#x7684;&#x6570;&#x636E;&#x91CF;</p>
+<li><p>优化LIMIT分页</p>
+<p>为什么单纯的LIMIT性能不好，因为mysql会扫描全部数据，丢弃前面无用数据，然后只返回LIMIT的数据量</p>
 <ul>
-<li><p>&#x628A;LIMIT&#x66F4;&#x6539;&#x4E3A;&#x4F7F;&#x7528; BETWEEN &#x2026; AND</p>
+<li><p>把LIMIT更改为使用 BETWEEN … AND</p>
 </li>
-<li><p>&#x8BB0;&#x5F55;&#x4E0A;&#x4E00;&#x6B21;&#x67E5;&#x8BE2;&#x8FD4;&#x56DE;&#x7684;id&#xFF0C;&#x4E0B;&#x4E00;&#x6B21;&#x4ECE;&#x8BE5;id&#x5F00;&#x59CB;&#x67E5;&#x8BE2;</p>
-<p>ex&#xFF1A;select * from rental where rental_id &lt; 16030 order by rental_id limit 201</p>
+<li><p>记录上一次查询返回的id，下一次从该id开始查询</p>
+<p>ex：select * from rental where rental_id &lt; 16030 order by rental_id limit 201</p>
 </li>
 </ul>
 </li>
 </ol>
-<h4 id="EXPLAIN-&#x5B57;&#x6BB5;&#x8BF4;&#x660E;"><a href="#EXPLAIN-&#x5B57;&#x6BB5;&#x8BF4;&#x660E;" class="headerlink" title="EXPLAIN &#x5B57;&#x6BB5;&#x8BF4;&#x660E;"></a>EXPLAIN &#x5B57;&#x6BB5;&#x8BF4;&#x660E;</h4><ul>
+<h4 id="EXPLAIN-字段说明"><a href="#EXPLAIN-字段说明" class="headerlink" title="EXPLAIN 字段说明"></a>EXPLAIN 字段说明</h4><ul>
 <li><p>type</p>
 <ol>
-<li><p>system&#xFF1A;&#x8868;&#x4E2D;&#x53EA;&#x6709;&#x4E00;&#x884C;&#x6570;&#x636E;&#x6216;&#x8005;&#x662F;&#x7A7A;&#x8868;&#xFF0C;&#x4E14;&#x53EA;&#x80FD;&#x7528;&#x4E8E;myisam&#x548C;memory&#x8868;&#x3002;&#x5982;&#x679C;&#x662F;Innodb&#x5F15;&#x64CE;&#x8868;&#xFF0C;type&#x5217;&#x5728;&#x8FD9;&#x4E2A;&#x60C5;&#x51B5;&#x901A;&#x5E38;&#x90FD;&#x662F;all&#x6216;&#x8005;index</p>
+<li><p>system：表中只有一行数据或者是空表，且只能用于myisam和memory表。如果是Innodb引擎表，type列在这个情况通常都是all或者index</p>
 </li>
-<li><p>const&#xFF1A;&#x4F7F;&#x7528;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#x6216;&#x8005;&#x4E3B;&#x952E;&#xFF0C;&#x8FD4;&#x56DE;&#x8BB0;&#x5F55;&#x4E00;&#x5B9A;&#x662F;1&#x884C;&#x8BB0;&#x5F55;&#x7684;&#x7B49;&#x503C;where&#x6761;&#x4EF6;&#x65F6;&#xFF0C;&#x901A;&#x5E38;type&#x662F;const&#x3002; </p>
-<p>ex&#xFF1A;select * from student where student_id = 1;</p>
+<li><p>const：使用唯一索引或者主键，返回记录一定是1行记录的等值where条件时，通常type是const。 </p>
+<p>ex：select * from student where student_id = 1;</p>
 </li>
-<li><p>eq_ref&#xFF1A;&#x51FA;&#x73B0;&#x5728;&#x8981;&#x8FDE;&#x63A5;&#x8FC7;&#x4E2A;&#x8868;&#x7684;&#x67E5;&#x8BE2;&#x8BA1;&#x5212;&#x4E2D;&#xFF0C;&#x9A71;&#x52A8;&#x8868;&#x53EA;&#x8FD4;&#x56DE;&#x4E00;&#x884C;&#x6570;&#x636E;&#xFF0C;&#x4E14;&#x8FD9;&#x884C;&#x6570;&#x636E;&#x662F;&#x7B2C;&#x4E8C;&#x4E2A;&#x8868;&#x7684;&#x4E3B;&#x952E;&#x6216;&#x8005;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#xFF0C;&#x4E14;&#x5FC5;&#x987B;&#x4E3A;not null&#xFF0C;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#x548C;&#x4E3B;&#x952E;&#x662F;&#x591A;&#x5217;&#x65F6;&#xFF0C;&#x53EA;&#x6709;&#x6240;&#x6709;&#x7684;&#x5217;&#x90FD;&#x7528;&#x4F5C;&#x6BD4;&#x8F83;&#x65F6;&#x624D;&#x4F1A;&#x51FA;&#x73B0;eq_ref </p>
-<p>ex&#xFF1A;explain select * from book,student where student.id = book.id;</p>
+<li><p>eq_ref：出现在要连接过个表的查询计划中，驱动表只返回一行数据，且这行数据是第二个表的主键或者唯一索引，且必须为not null，唯一索引和主键是多列时，只有所有的列都用作比较时才会出现eq_ref </p>
+<p>ex：explain select * from book,student where student.id = book.id;</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0b5mr61nj20wj026mx8.jpg" alt=""></p>
 </li>
-<li><p>ref&#xFF1A;&#x4E0D;&#x50CF;eq_ref&#x90A3;&#x6837;&#x8981;&#x6C42;&#x8FDE;&#x63A5;&#x987A;&#x5E8F;&#xFF0C;&#x4E5F;&#x6CA1;&#x6709;&#x4E3B;&#x952E;&#x548C;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#x7684;&#x8981;&#x6C42;&#xFF0C;&#x53EA;&#x8981;&#x4F7F;&#x7528;&#x76F8;&#x7B49;&#x6761;&#x4EF6;&#x68C0;&#x7D22;&#x65F6;&#x5C31;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#xFF0C;&#x5E38;&#x89C1;&#x4E0E;&#x8F85;&#x52A9;&#x7D22;&#x5F15;&#x7684;&#x7B49;&#x503C;&#x67E5;&#x627E;&#x3002;&#x6216;&#x8005;&#x591A;&#x5217;&#x4E3B;&#x952E;&#x3001;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;&#x7B2C;&#x4E00;&#x4E2A;&#x5217;&#x4E4B;&#x5916;&#x7684;&#x5217;&#x4F5C;&#x4E3A;&#x7B49;&#x503C;&#x67E5;&#x627E;&#x4E5F;&#x4F1A;&#x51FA;&#x73B0;&#xFF0C;&#x603B;&#x4E4B;&#xFF0C;&#x8FD4;&#x56DE;&#x6570;&#x636E;&#x4E0D;&#x552F;&#x4E00;&#x7684;&#x7B49;&#x503C;&#x67E5;&#x627E;&#x5C31;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x3002; </p>
-<p>ex&#xFF1A;select * from student where name=&#x201D;&#x6885;&#x52C7;&#x6770;&#x201D; and sex=&#x201D;&#x7537;&#x201D;</p>
-<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0bhiq21cj20y503hglq.jpg" alt="">&#x4E8C;&#x79CD;&#x60C5;&#x51B5;&#xFF1A;&#x8FC7;&#x6EE4;&#x6761;&#x4EF6;&#x90FD;&#x6709;&#x7D22;&#x5F15;&#xFF1B;&#x591A;&#x5217;&#x4E3B;&#x952E;&#x3001;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#xFF0C;&#x4F7F;&#x7528;&#x7B2C;&#x4E00;&#x4E2A;&#x5217;&#x4E4B;&#x5916;&#x7684;&#x5217;&#x4F5C;&#x4E3A;&#x7B49;&#x503C;&#x67E5;&#x627E;&#xFF1B;</p>
+<li><p>ref：不像eq_ref那样要求连接顺序，也没有主键和唯一索引的要求，只要使用相等条件检索时就可能出现，常见与辅助索引的等值查找。或者多列主键、唯一索引中，使用第一个列之外的列作为等值查找也会出现，总之，返回数据不唯一的等值查找就可能出现。 </p>
+<p>ex：select * from student where name=”梅勇杰” and sex=”男”</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0bhiq21cj20y503hglq.jpg" alt="">二种情况：过滤条件都有索引；多列主键、唯一索引，使用第一个列之外的列作为等值查找；</p>
 </li>
-<li><p>fulltext&#xFF1A;&#x5168;&#x6587;&#x7D22;&#x5F15;&#x68C0;&#x7D22;&#xFF0C;&#x8981;&#x6CE8;&#x610F;&#xFF0C;&#x5168;&#x6587;&#x7D22;&#x5F15;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x5F88;&#x9AD8;&#xFF0C;&#x82E5;&#x5168;&#x6587;&#x7D22;&#x5F15;&#x548C;&#x666E;&#x901A;&#x7D22;&#x5F15;&#x540C;&#x65F6;&#x5B58;&#x5728;&#x65F6;&#xFF0C;mysql&#x4E0D;&#x7BA1;&#x4EE3;&#x4EF7;&#xFF0C;&#x4F18;&#x5148;&#x9009;&#x62E9;&#x4F7F;&#x7528;&#x5168;&#x6587;&#x7D22;&#x5F15; </p>
+<li><p>fulltext：全文索引检索，要注意，全文索引的优先级很高，若全文索引和普通索引同时存在时，mysql不管代价，优先选择使用全文索引 </p>
 </li>
-<li><p>index_merge&#xFF1A;&#x8868;&#x793A;&#x67E5;&#x8BE2;&#x4F7F;&#x7528;&#x4E86;&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x6700;&#x540E;&#x53D6;&#x4EA4;&#x96C6;&#x6216;&#x8005;&#x5E76;&#x96C6;&#xFF0C;&#x5E38;&#x89C1;and &#xFF0C;or&#x7684;&#x6761;&#x4EF6;&#x4F7F;&#x7528;&#x4E86;&#x4E0D;&#x540C;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x5B98;&#x65B9;&#x6392;&#x5E8F;&#x8FD9;&#x4E2A;&#x5728;ref_or_null&#x4E4B;&#x540E;&#xFF0C;&#x4F46;&#x662F;&#x5B9E;&#x9645;&#x4E0A;&#x7531;&#x4E8E;&#x8981;&#x8BFB;&#x53D6;&#x6240;&#x6709;&#x7D22;&#x5F15;&#xFF0C;&#x6027;&#x80FD;&#x53EF;&#x80FD;&#x5927;&#x90E8;&#x5206;&#x65F6;&#x95F4;&#x90FD;&#x4E0D;&#x5982;range </p>
-<p>ex&#xFF1A;select * from student where name=&#x201D;&#x6885;&#x52C7;&#x6770;&#x201D; and sex=&#x201D;&#x7537;&#x201D;</p>
+<li><p>index_merge：表示查询使用了两个以上的索引，最后取交集或者并集，常见and ，or的条件使用了不同的索引，官方排序这个在ref_or_null之后，但是实际上由于要读取所有索引，性能可能大部分时间都不如range </p>
+<p>ex：select * from student where name=”梅勇杰” and sex=”男”</p>
 <p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fu0cdvfh6oj210102ft8w.jpg" alt=""></p>
 </li>
-<li><p>unique_subquery&#xFF1A;&#x7528;&#x4E8E;where&#x4E2D;&#x7684;in&#x5F62;&#x5F0F;&#x5B50;&#x67E5;&#x8BE2;&#xFF0C;&#x5B50;&#x67E5;&#x8BE2;&#x8FD4;&#x56DE;&#x4E0D;&#x91CD;&#x590D;&#x503C;&#x552F;&#x4E00;&#x503C; </p>
+<li><p>unique_subquery：用于where中的in形式子查询，子查询返回不重复值唯一值 </p>
 </li>
-<li><p>index_subquery&#xFF1A;&#x7528;&#x4E8E;in&#x5F62;&#x5F0F;&#x5B50;&#x67E5;&#x8BE2;&#x4F7F;&#x7528;&#x5230;&#x4E86;&#x8F85;&#x52A9;&#x7D22;&#x5F15;&#x6216;&#x8005;in&#x5E38;&#x6570;&#x5217;&#x8868;&#xFF0C;&#x5B50;&#x67E5;&#x8BE2;&#x53EF;&#x80FD;&#x8FD4;&#x56DE;&#x91CD;&#x590D;&#x503C;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x5C06;&#x5B50;&#x67E5;&#x8BE2;&#x53BB;&#x91CD;</p>
+<li><p>index_subquery：用于in形式子查询使用到了辅助索引或者in常数列表，子查询可能返回重复值，可以使用索引将子查询去重</p>
 </li>
-<li><p>range&#xFF1A;&#x7D22;&#x5F15;&#x8303;&#x56F4;&#x626B;&#x63CF;&#xFF0C;&#x5E38;&#x89C1;&#x4E8E;&#x4F7F;&#x7528; =, &lt;&gt;, &gt;, &gt;=, &lt;, &lt;=, IS NULL, &lt;=&gt;, BETWEEN, IN()&#x6216;&#x8005;like&#x7B49;&#x8FD0;&#x7B97;&#x7B26;&#x7684;&#x67E5;&#x8BE2;&#x4E2D;</p>
+<li><p>range：索引范围扫描，常见于使用 =, &lt;&gt;, &gt;, &gt;=, &lt;, &lt;=, IS NULL, &lt;=&gt;, BETWEEN, IN()或者like等运算符的查询中</p>
 </li>
-<li><p>index&#xFF1A;&#x7D22;&#x5F15;&#x5168;&#x8868;&#x626B;&#x63CF;&#xFF0C;&#x628A;&#x7D22;&#x5F15;&#x4ECE;&#x5934;&#x5230;&#x5C3E;&#x626B;&#x4E00;&#x904D;&#xFF0C;&#x5E38;&#x89C1;&#x4E8E;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x5217;&#x5C31;&#x53EF;&#x4EE5;&#x5904;&#x7406;&#x4E0D;&#x9700;&#x8981;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#x6587;&#x4EF6;&#x7684;&#x67E5;&#x8BE2;&#x3001;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x6392;&#x5E8F;&#x6216;&#x8005;&#x5206;&#x7EC4;&#x7684;&#x67E5;&#x8BE2;</p>
+<li><p>index：索引全表扫描，把索引从头到尾扫一遍，常见于使用索引列就可以处理不需要读取数据文件的查询、可以使用索引排序或者分组的查询</p>
 </li>
-<li><p>all&#xFF1A;&#x8FD9;&#x4E2A;&#x5C31;&#x662F;&#x5168;&#x8868;&#x626B;&#x63CF;&#x6570;&#x636E;&#x6587;&#x4EF6;&#xFF0C;&#x7136;&#x540E;&#x518D;&#x5728;server&#x5C42;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x8FD4;&#x56DE;&#x7B26;&#x5408;&#x8981;&#x6C42;&#x7684;&#x8BB0;&#x5F55;</p>
+<li><p>all：这个就是全表扫描数据文件，然后再在server层进行过滤返回符合要求的记录</p>
 </li>
 </ol>
 </li>
 <li><p>partitions</p>
-<p>&#x8BE5;&#x5217;&#x663E;&#x793A;&#x7684;&#x4E3A;&#x5206;&#x533A;&#x8868;&#x547D;&#x4E2D;&#x7684;&#x5206;&#x533A;&#x60C5;&#x51B5;&#x3002; </p>
+<p>该列显示的为分区表命中的分区情况。 </p>
 </li>
 <li><p>possible_keys</p>
-<p>&#x67E5;&#x8BE2;&#x53EF;&#x80FD;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x7D22;&#x5F15;&#x90FD;&#x4F1A;&#x5728;&#x8FD9;&#x91CC;&#x5217;&#x51FA;&#x6765; </p>
+<p>查询可能使用到的索引都会在这里列出来 </p>
 </li>
 <li><p>key</p>
-<p>&#x67E5;&#x8BE2;&#x771F;&#x6B63;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x7D22;&#x5F15;&#xFF0C;select_type&#x4E3A;index_merge&#x65F6;&#xFF0C;&#x8FD9;&#x91CC;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x4E24;&#x4E2A;&#x4EE5;&#x4E0A;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x5176;&#x4ED6;&#x7684;select_type&#x8FD9;&#x91CC;&#x53EA;&#x4F1A;&#x51FA;&#x73B0;&#x4E00;&#x4E2A; </p>
+<p>查询真正使用到的索引，select_type为index_merge时，这里可能出现两个以上的索引，其他的select_type这里只会出现一个 </p>
 </li>
 <li><p>key_len</p>
-<p>&#x7528;&#x4E8E;&#x5904;&#x7406;&#x67E5;&#x8BE2;&#x7684;&#x7D22;&#x5F15;&#x957F;&#x5EA6;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x5355;&#x5217;&#x7D22;&#x5F15;&#xFF0C;&#x90A3;&#x5C31;&#x6574;&#x4E2A;&#x7D22;&#x5F15;&#x957F;&#x5EA6;&#x7B97;&#x8FDB;&#x53BB;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x591A;&#x5217;&#x7D22;&#x5F15;&#xFF0C;&#x90A3;&#x4E48;&#x67E5;&#x8BE2;&#x4E0D;&#x4E00;&#x5B9A;&#x90FD;&#x80FD;&#x4F7F;&#x7528;&#x5230;&#x6240;&#x6709;&#x7684;&#x5217;&#xFF0C;&#x5177;&#x4F53;&#x4F7F;&#x7528;&#x5230;&#x4E86;&#x591A;&#x5C11;&#x4E2A;&#x5217;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x8FD9;&#x91CC;&#x5C31;&#x4F1A;&#x8BA1;&#x7B97;&#x8FDB;&#x53BB;&#xFF0C;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x5217;&#xFF0C;&#x8FD9;&#x91CC;&#x4E0D;&#x4F1A;&#x8BA1;&#x7B97;&#x8FDB;&#x53BB;&#x3002;&#x7559;&#x610F;&#x4E0B;&#x8FD9;&#x4E2A;&#x5217;&#x7684;&#x503C;&#xFF0C;&#x7B97;&#x4E00;&#x4E0B;&#x4F60;&#x7684;&#x591A;&#x5217;&#x7D22;&#x5F15;&#x603B;&#x957F;&#x5EA6;&#x5C31;&#x77E5;&#x9053;&#x6709;&#x6CA1;&#x6709;&#x4F7F;&#x7528;&#x5230;&#x6240;&#x6709;&#x7684;&#x5217;&#x4E86;&#x3002;&#x8981;&#x6CE8;&#x610F;&#xFF0C;mysql&#x7684;ICP&#x7279;&#x6027;&#x4F7F;&#x7528;&#x5230;&#x7684;&#x7D22;&#x5F15;&#x4E0D;&#x4F1A;&#x8BA1;&#x5165;&#x5176;&#x4E2D;&#x3002;&#x53E6;&#x5916;&#xFF0C;key_len&#x53EA;&#x8BA1;&#x7B97;where&#x6761;&#x4EF6;&#x7528;&#x5230;&#x7684;&#x7D22;&#x5F15;&#x957F;&#x5EA6;&#xFF0C;&#x800C;&#x6392;&#x5E8F;&#x548C;&#x5206;&#x7EC4;&#x5C31;&#x7B97;&#x7528;&#x5230;&#x4E86;&#x7D22;&#x5F15;&#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x8BA1;&#x7B97;&#x5230;key_len&#x4E2D;&#x3002;</p>
+<p>用于处理查询的索引长度，如果是单列索引，那就整个索引长度算进去，如果是多列索引，那么查询不一定都能使用到所有的列，具体使用到了多少个列的索引，这里就会计算进去，没有使用到的列，这里不会计算进去。留意下这个列的值，算一下你的多列索引总长度就知道有没有使用到所有的列了。要注意，mysql的ICP特性使用到的索引不会计入其中。另外，key_len只计算where条件用到的索引长度，而排序和分组就算用到了索引，也不会计算到key_len中。</p>
 </li>
 <li><p>ref</p>
-<p>&#x5982;&#x679C;&#x662F;&#x4F7F;&#x7528;&#x7684;&#x5E38;&#x6570;&#x7B49;&#x503C;&#x67E5;&#x8BE2;&#xFF0C;&#x8FD9;&#x91CC;&#x4F1A;&#x663E;&#x793A;const&#xFF0C;&#x5982;&#x679C;&#x662F;&#x8FDE;&#x63A5;&#x67E5;&#x8BE2;&#xFF0C;&#x88AB;&#x9A71;&#x52A8;&#x8868;&#x7684;&#x6267;&#x884C;&#x8BA1;&#x5212;&#x8FD9;&#x91CC;&#x4F1A;&#x663E;&#x793A;&#x9A71;&#x52A8;&#x8868;&#x7684;&#x5173;&#x8054;&#x5B57;&#x6BB5;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x6761;&#x4EF6;&#x4F7F;&#x7528;&#x4E86;&#x8868;&#x8FBE;&#x5F0F;&#x6216;&#x8005;&#x51FD;&#x6570;&#xFF0C;&#x6216;&#x8005;&#x6761;&#x4EF6;&#x5217;&#x53D1;&#x751F;&#x4E86;&#x5185;&#x90E8;&#x9690;&#x5F0F;&#x8F6C;&#x6362;&#xFF0C;&#x8FD9;&#x91CC;&#x53EF;&#x80FD;&#x663E;&#x793A;&#x4E3A;func </p>
+<p>如果是使用的常数等值查询，这里会显示const，如果是连接查询，被驱动表的执行计划这里会显示驱动表的关联字段，如果是条件使用了表达式或者函数，或者条件列发生了内部隐式转换，这里可能显示为func </p>
 </li>
 <li><p>rows</p>
-<p>&#x8FD9;&#x91CC;&#x662F;&#x6267;&#x884C;&#x8BA1;&#x5212;&#x4E2D;&#x4F30;&#x7B97;&#x7684;&#x626B;&#x63CF;&#x884C;&#x6570;&#xFF0C;&#x4E0D;&#x662F;&#x7CBE;&#x786E;&#x503C; </p>
+<p>这里是执行计划中估算的扫描行数，不是精确值 </p>
 </li>
 <li><p>extra</p>
-<p>&#x5BF9;&#x4E8E;extra&#x5217;&#xFF0C;&#x5B98;&#x7F51;&#x4E0A;&#x6709;&#x8FD9;&#x6837;&#x4E00;&#x6BB5;&#x8BDD;&#xFF1A;</p>
+<p>对于extra列，官网上有这样一段话：</p>
 <blockquote>
 <p>If you want to make your queries as fast as possible, look out for Extra column values of Using filesort and Using temporary, or, in JSON-formatted EXPLAINoutput, for using_filesort and using_temporary_table properties equal to true.</p>
 </blockquote>
-<p>&#x5927;&#x6982;&#x7684;&#x610F;&#x601D;&#x5C31;&#x662F;&#x8BF4;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x60F3;&#x8981;&#x4F18;&#x5316;&#x4F60;&#x7684;&#x67E5;&#x8BE2;&#xFF0C;&#x90A3;&#x5C31;&#x8981;&#x6CE8;&#x610F;extra&#x8F85;&#x52A9;&#x4FE1;&#x606F;&#x4E2D;&#x7684;using filesort&#x548C;using temporary&#xFF0C;&#x8FD9;&#x4E24;&#x9879;&#x975E;&#x5E38;&#x6D88;&#x8017;&#x6027;&#x80FD;&#xFF0C;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x3002;</p>
-<p>&#x8FD9;&#x4E2A;&#x5217;&#x53EF;&#x4EE5;&#x663E;&#x793A;&#x7684;&#x4FE1;&#x606F;&#x975E;&#x5E38;&#x591A;&#xFF0C;&#x6709;&#x51E0;&#x5341;&#x79CD;&#xFF0C;&#x5E38;&#x7528;&#x7684;&#x6709;&#xFF1A;<br> A&#xFF1A;distinct&#xFF1A;&#x5728;select&#x90E8;&#x5206;&#x4F7F;&#x7528;&#x4E86;distinc&#x5173;&#x952E;&#x5B57;<br> B&#xFF1A;no tables used&#xFF1A;&#x4E0D;&#x5E26;from&#x5B57;&#x53E5;&#x7684;&#x67E5;&#x8BE2;&#x6216;&#x8005;From dual&#x67E5;&#x8BE2;<br> C&#xFF1A;&#x4F7F;&#x7528;not in()&#x5F62;&#x5F0F;&#x5B50;&#x67E5;&#x8BE2;&#x6216;not exists&#x8FD0;&#x7B97;&#x7B26;&#x7684;&#x8FDE;&#x63A5;&#x67E5;&#x8BE2;&#xFF0C;&#x8FD9;&#x79CD;&#x53EB;&#x505A;&#x53CD;&#x8FDE;&#x63A5;&#x3002;&#x5373;&#xFF0C;&#x4E00;&#x822C;&#x8FDE;&#x63A5;&#x67E5;&#x8BE2;&#x662F;&#x5148;&#x67E5;&#x8BE2;&#x5185;&#x8868;&#xFF0C;&#x518D;&#x67E5;&#x8BE2;&#x5916;&#x8868;&#xFF0C;&#x53CD;&#x8FDE;&#x63A5;&#x5C31;&#x662F;&#x5148;&#x67E5;&#x8BE2;&#x5916;&#x8868;&#xFF0C;&#x518D;&#x67E5;&#x8BE2;&#x5185;&#x8868;&#x3002;<br> D&#xFF1A;using filesort&#xFF1A;&#x6392;&#x5E8F;&#x65F6;&#x65E0;&#x6CD5;&#x4F7F;&#x7528;&#x5230;&#x7D22;&#x5F15;&#x65F6;&#xFF0C;&#x5C31;&#x4F1A;&#x51FA;&#x73B0;&#x8FD9;&#x4E2A;&#x3002;&#x5E38;&#x89C1;&#x4E8E;order by&#x548C;group by&#x8BED;&#x53E5;&#x4E2D;<br> E&#xFF1A;using index&#xFF1A;&#x67E5;&#x8BE2;&#x65F6;&#x4E0D;&#x9700;&#x8981;&#x56DE;&#x8868;&#x67E5;&#x8BE2;&#xFF0C;&#x76F4;&#x63A5;&#x901A;&#x8FC7;&#x7D22;&#x5F15;&#x5C31;&#x53EF;&#x4EE5;&#x83B7;&#x53D6;&#x67E5;&#x8BE2;&#x7684;&#x6570;&#x636E;&#x3002;<br> F&#xFF1A;using join buffer&#xFF08;block nested loop&#xFF09;&#xFF0C;using join buffer&#xFF08;batched key accss&#xFF09;&#xFF1A;5.6.x&#x4E4B;&#x540E;&#x7684;&#x7248;&#x672C;&#x4F18;&#x5316;&#x5173;&#x8054;&#x67E5;&#x8BE2;&#x7684;BNL&#xFF0C;BKA&#x7279;&#x6027;&#x3002;&#x4E3B;&#x8981;&#x662F;&#x51CF;&#x5C11;&#x5185;&#x8868;&#x7684;&#x5FAA;&#x73AF;&#x6570;&#x91CF;&#x4EE5;&#x53CA;&#x6BD4;&#x8F83;&#x987A;&#x5E8F;&#x5730;&#x626B;&#x63CF;&#x67E5;&#x8BE2;&#x3002;<br> G&#xFF1A;using sort_union&#xFF0C;using_union&#xFF0C;using intersect&#xFF0C;using sort_intersection&#xFF1A;<br> using intersect&#xFF1A;&#x8868;&#x793A;&#x4F7F;&#x7528;and&#x7684;&#x5404;&#x4E2A;&#x7D22;&#x5F15;&#x7684;&#x6761;&#x4EF6;&#x65F6;&#xFF0C;&#x8BE5;&#x4FE1;&#x606F;&#x8868;&#x793A;&#x662F;&#x4ECE;&#x5904;&#x7406;&#x7ED3;&#x679C;&#x83B7;&#x53D6;&#x4EA4;&#x96C6;<br> using union&#xFF1A;&#x8868;&#x793A;&#x4F7F;&#x7528;or&#x8FDE;&#x63A5;&#x5404;&#x4E2A;&#x4F7F;&#x7528;&#x7D22;&#x5F15;&#x7684;&#x6761;&#x4EF6;&#x65F6;&#xFF0C;&#x8BE5;&#x4FE1;&#x606F;&#x8868;&#x793A;&#x4ECE;&#x5904;&#x7406;&#x7ED3;&#x679C;&#x83B7;&#x53D6;&#x5E76;&#x96C6;<br> using sort_union&#x548C;using sort_intersection&#xFF1A;&#x4E0E;&#x524D;&#x9762;&#x4E24;&#x4E2A;&#x5BF9;&#x5E94;&#x7684;&#x7C7B;&#x4F3C;&#xFF0C;&#x53EA;&#x662F;&#x4ED6;&#x4EEC;&#x662F;&#x51FA;&#x73B0;&#x5728;&#x7528;and&#x548C;or&#x67E5;&#x8BE2;&#x4FE1;&#x606F;&#x91CF;&#x5927;&#x65F6;&#xFF0C;&#x5148;&#x67E5;&#x8BE2;&#x4E3B;&#x952E;&#xFF0C;&#x7136;&#x540E;&#x8FDB;&#x884C;&#x6392;&#x5E8F;&#x5408;&#x5E76;&#x540E;&#xFF0C;&#x624D;&#x80FD;&#x8BFB;&#x53D6;&#x8BB0;&#x5F55;&#x5E76;&#x8FD4;&#x56DE;&#x3002;<br> H&#xFF1A;using temporary&#xFF1A;&#x8868;&#x793A;&#x4F7F;&#x7528;&#x4E86;&#x4E34;&#x65F6;&#x8868;&#x5B58;&#x50A8;&#x4E2D;&#x95F4;&#x7ED3;&#x679C;&#x3002;&#x4E34;&#x65F6;&#x8868;&#x53EF;&#x4EE5;&#x662F;&#x5185;&#x5B58;&#x4E34;&#x65F6;&#x8868;&#x548C;&#x78C1;&#x76D8;&#x4E34;&#x65F6;&#x8868;&#xFF0C;&#x6267;&#x884C;&#x8BA1;&#x5212;&#x4E2D;&#x770B;&#x4E0D;&#x51FA;&#x6765;&#xFF0C;&#x9700;&#x8981;&#x67E5;&#x770B;status&#x53D8;&#x91CF;&#xFF0C;used_tmp_table&#xFF0C;used_tmp_disk_table&#x624D;&#x80FD;&#x770B;&#x51FA;&#x6765;&#x3002;<br> I&#xFF1A;using where&#xFF1A;&#x8868;&#x793A;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x8FD4;&#x56DE;&#x7684;&#x8BB0;&#x5F55;&#x5E76;&#x4E0D;&#x662F;&#x6240;&#x6709;&#x7684;&#x90FD;&#x6EE1;&#x8DB3;&#x67E5;&#x8BE2;&#x6761;&#x4EF6;&#xFF0C;&#x9700;&#x8981;&#x5728;server&#x5C42;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x3002;&#x67E5;&#x8BE2;&#x6761;&#x4EF6;&#x4E2D;&#x5206;&#x4E3A;&#x9650;&#x5236;&#x6761;&#x4EF6;&#x548C;&#x68C0;&#x67E5;&#x6761;&#x4EF6;&#xFF0C;5.6&#x4E4B;&#x524D;&#xFF0C;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x53EA;&#x80FD;&#x6839;&#x636E;&#x9650;&#x5236;&#x6761;&#x4EF6;&#x626B;&#x63CF;&#x6570;&#x636E;&#x5E76;&#x8FD4;&#x56DE;&#xFF0C;&#x7136;&#x540E;server&#x5C42;&#x6839;&#x636E;&#x68C0;&#x67E5;&#x6761;&#x4EF6;&#x8FDB;&#x884C;&#x8FC7;&#x6EE4;&#x518D;&#x8FD4;&#x56DE;&#x771F;&#x6B63;&#x7B26;&#x5408;&#x67E5;&#x8BE2;&#x7684;&#x6570;&#x636E;&#x3002;5.6.x&#x4E4B;&#x540E;&#x652F;&#x6301;ICP&#x7279;&#x6027;&#xFF0C;&#x53EF;&#x4EE5;&#x628A;&#x68C0;&#x67E5;&#x6761;&#x4EF6;&#x4E5F;&#x4E0B;&#x63A8;&#x5230;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x5C42;&#xFF0C;&#x4E0D;&#x7B26;&#x5408;&#x68C0;&#x67E5;&#x6761;&#x4EF6;&#x548C;&#x9650;&#x5236;&#x6761;&#x4EF6;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x76F4;&#x63A5;&#x4E0D;&#x8BFB;&#x53D6;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x5927;&#x5927;&#x51CF;&#x5C11;&#x4E86;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x626B;&#x63CF;&#x7684;&#x8BB0;&#x5F55;&#x6570;&#x91CF;&#x3002;extra&#x5217;&#x663E;&#x793A;using index condition<br> J&#xFF1A;firstmatch(tb_name)&#xFF1A;5.6.x&#x5F00;&#x59CB;&#x5F15;&#x5165;&#x7684;&#x4F18;&#x5316;&#x5B50;&#x67E5;&#x8BE2;&#x7684;&#x65B0;&#x7279;&#x6027;&#x4E4B;&#x4E00;&#xFF0C;&#x5E38;&#x89C1;&#x4E8E;where&#x5B57;&#x53E5;&#x542B;&#x6709;in()&#x7C7B;&#x578B;&#x7684;&#x5B50;&#x67E5;&#x8BE2;&#x3002;&#x5982;&#x679C;&#x5185;&#x8868;&#x7684;&#x6570;&#x636E;&#x91CF;&#x6BD4;&#x8F83;&#x5927;&#xFF0C;&#x5C31;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x8FD9;&#x4E2A;<br> K&#xFF1A;loosescan(m..n)&#xFF1A;5.6.x&#x4E4B;&#x540E;&#x5F15;&#x5165;&#x7684;&#x4F18;&#x5316;&#x5B50;&#x67E5;&#x8BE2;&#x7684;&#x65B0;&#x7279;&#x6027;&#x4E4B;&#x4E00;&#xFF0C;&#x5728;in()&#x7C7B;&#x578B;&#x7684;&#x5B50;&#x67E5;&#x8BE2;&#x4E2D;&#xFF0C;&#x5B50;&#x67E5;&#x8BE2;&#x8FD4;&#x56DE;&#x7684;&#x53EF;&#x80FD;&#x6709;&#x91CD;&#x590D;&#x8BB0;&#x5F55;&#x65F6;&#xFF0C;&#x5C31;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x8FD9;&#x4E2A;</p>
-<p>&#x9664;&#x4E86;&#x8FD9;&#x4E9B;&#x4E4B;&#x5916;&#xFF0C;&#x8FD8;&#x6709;&#x5F88;&#x591A;&#x67E5;&#x8BE2;&#x6570;&#x636E;&#x5B57;&#x5178;&#x5E93;&#xFF0C;&#x6267;&#x884C;&#x8BA1;&#x5212;&#x8FC7;&#x7A0B;&#x4E2D;&#x5C31;&#x53D1;&#x73B0;&#x4E0D;&#x53EF;&#x80FD;&#x5B58;&#x5728;&#x7ED3;&#x679C;&#x7684;&#x4E00;&#x4E9B;&#x63D0;&#x793A;&#x4FE1;&#x606F;</p>
+<p>大概的意思就是说，如果你想要优化你的查询，那就要注意extra辅助信息中的using filesort和using temporary，这两项非常消耗性能，需要注意。</p>
+<p>这个列可以显示的信息非常多，有几十种，常用的有：<br> A：distinct：在select部分使用了distinc关键字<br> B：no tables used：不带from字句的查询或者From dual查询<br> C：使用not in()形式子查询或not exists运算符的连接查询，这种叫做反连接。即，一般连接查询是先查询内表，再查询外表，反连接就是先查询外表，再查询内表。<br> D：using filesort：排序时无法使用到索引时，就会出现这个。常见于order by和group by语句中<br> E：using index：查询时不需要回表查询，直接通过索引就可以获取查询的数据。<br> F：using join buffer（block nested loop），using join buffer（batched key accss）：5.6.x之后的版本优化关联查询的BNL，BKA特性。主要是减少内表的循环数量以及比较顺序地扫描查询。<br> G：using sort_union，using_union，using intersect，using sort_intersection：<br> using intersect：表示使用and的各个索引的条件时，该信息表示是从处理结果获取交集<br> using union：表示使用or连接各个使用索引的条件时，该信息表示从处理结果获取并集<br> using sort_union和using sort_intersection：与前面两个对应的类似，只是他们是出现在用and和or查询信息量大时，先查询主键，然后进行排序合并后，才能读取记录并返回。<br> H：using temporary：表示使用了临时表存储中间结果。临时表可以是内存临时表和磁盘临时表，执行计划中看不出来，需要查看status变量，used_tmp_table，used_tmp_disk_table才能看出来。<br> I：using where：表示存储引擎返回的记录并不是所有的都满足查询条件，需要在server层进行过滤。查询条件中分为限制条件和检查条件，5.6之前，存储引擎只能根据限制条件扫描数据并返回，然后server层根据检查条件进行过滤再返回真正符合查询的数据。5.6.x之后支持ICP特性，可以把检查条件也下推到存储引擎层，不符合检查条件和限制条件的数据，直接不读取，这样就大大减少了存储引擎扫描的记录数量。extra列显示using index condition<br> J：firstmatch(tb_name)：5.6.x开始引入的优化子查询的新特性之一，常见于where字句含有in()类型的子查询。如果内表的数据量比较大，就可能出现这个<br> K：loosescan(m..n)：5.6.x之后引入的优化子查询的新特性之一，在in()类型的子查询中，子查询返回的可能有重复记录时，就可能出现这个</p>
+<p>除了这些之外，还有很多查询数据字典库，执行计划过程中就发现不可能存在结果的一些提示信息</p>
 </li>
 <li><p>filtered</p>
-<p>&#x4F7F;&#x7528;explain extended&#x65F6;&#x4F1A;&#x51FA;&#x73B0;&#x8FD9;&#x4E2A;&#x5217;&#xFF0C;5.7&#x4E4B;&#x540E;&#x7684;&#x7248;&#x672C;&#x9ED8;&#x8BA4;&#x5C31;&#x6709;&#x8FD9;&#x4E2A;&#x5B57;&#x6BB5;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x4F7F;&#x7528;explain extended&#x4E86;&#x3002;&#x8FD9;&#x4E2A;&#x5B57;&#x6BB5;&#x8868;&#x793A;&#x5B58;&#x50A8;&#x5F15;&#x64CE;&#x8FD4;&#x56DE;&#x7684;&#x6570;&#x636E;&#x5728;server&#x5C42;&#x8FC7;&#x6EE4;&#x540E;&#xFF0C;&#x5269;&#x4E0B;&#x591A;&#x5C11;&#x6EE1;&#x8DB3;&#x67E5;&#x8BE2;&#x7684;&#x8BB0;&#x5F55;&#x6570;&#x91CF;&#x7684;&#x6BD4;&#x4F8B;&#xFF0C;&#x6CE8;&#x610F;&#x662F;&#x767E;&#x5206;&#x6BD4;&#xFF0C;&#x4E0D;&#x662F;&#x5177;&#x4F53;&#x8BB0;&#x5F55;&#x6570;&#x3002; </p>
+<p>使用explain extended时会出现这个列，5.7之后的版本默认就有这个字段，不需要使用explain extended了。这个字段表示存储引擎返回的数据在server层过滤后，剩下多少满足查询的记录数量的比例，注意是百分比，不是具体记录数。 </p>
 </li>
 </ul>
-<h4 id="&#x53C2;&#x8003;"><a href="#&#x53C2;&#x8003;" class="headerlink" title="&#x53C2;&#x8003;"></a>&#x53C2;&#x8003;</h4><p>explain&#x5B57;&#x6BB5;&#x8BF4;&#x660E;&#xFF1A;<br><a href="https://www.jianshu.com/p/73f2c8448722" target="_blank" rel="noopener">https://www.jianshu.com/p/73f2c8448722</a></p>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>explain字段说明：<br><a href="https://www.jianshu.com/p/73f2c8448722" target="_blank" rel="noopener">https://www.jianshu.com/p/73f2c8448722</a></p>
+
       
     </div>
 
@@ -845,7 +827,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

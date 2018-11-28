@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="&amp;#x66F4;&amp;#x6362;Docker&amp;#x955C;&amp;#x50CF;&amp;#x6E90;&amp;#x7F16;&amp;#x8F91; /etc/docker/daemon.json  &amp;#x7684;&amp;#x6587;&amp;#x4EF6;&amp;#xFF0C;&amp;#x5982;&amp;#x679C;&amp;#x6CA1;&amp;#x6709;&amp;#x5C31;&amp;#x6DFB;&amp;#x52A0;&amp;#xFF0C;docker&amp;#x7248;&amp;#">
+  <meta name="description" content="更换Docker镜像源编辑 /etc/docker/daemon.json  的文件，如果没有就添加，docker版本要大于1.12 1&amp;#123;&quot;registry-mirrors&quot;:[]&amp;#125; [] 里面可以填一下的镜像源：  Docker官方中国区：https://registry.docker-cn.com  网易： http://hub-mirror.c.163.com  ustc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/08/14/javaweb/Docker/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="&amp;#x66F4;&amp;#x6362;Docker&amp;#x955C;&amp;#x50CF;&amp;#x6E90;&amp;#x7F16;&amp;#x8F91; /etc/docker/daemon.json  &amp;#x7684;&amp;#x6587;&amp;#x4EF6;&amp;#xFF0C;&amp;#x5982;&amp;#x679C;&amp;#x6CA1;&amp;#x6709;&amp;#x5C31;&amp;#x6DFB;&amp;#x52A0;&amp;#xFF0C;docker&amp;#x7248;&amp;#">
+<meta property="og:description" content="更换Docker镜像源编辑 /etc/docker/daemon.json  的文件，如果没有就添加，docker版本要大于1.12 1&amp;#123;&quot;registry-mirrors&quot;:[]&amp;#125; [] 里面可以填一下的镜像源：  Docker官方中国区：https://registry.docker-cn.com  网易： http://hub-mirror.c.163.com  ustc">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-08-14T08:41:55.743Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="&amp;#x66F4;&amp;#x6362;Docker&amp;#x955C;&amp;#x50CF;&amp;#x6E90;&amp;#x7F16;&amp;#x8F91; /etc/docker/daemon.json  &amp;#x7684;&amp;#x6587;&amp;#x4EF6;&amp;#xFF0C;&amp;#x5982;&amp;#x679C;&amp;#x6CA1;&amp;#x6709;&amp;#x5C31;&amp;#x6DFB;&amp;#x52A0;&amp;#xFF0C;docker&amp;#x7248;&amp;#">
+<meta name="twitter:description" content="更换Docker镜像源编辑 /etc/docker/daemon.json  的文件，如果没有就添加，docker版本要大于1.12 1&amp;#123;&quot;registry-mirrors&quot;:[]&amp;#125; [] 里面可以填一下的镜像源：  Docker官方中国区：https://registry.docker-cn.com  网易： http://hub-mirror.c.163.com  ustc">
 
 
 
@@ -386,34 +386,16 @@
       
 
       
-        <h4 id="&#x66F4;&#x6362;Docker&#x955C;&#x50CF;&#x6E90;"><a href="#&#x66F4;&#x6362;Docker&#x955C;&#x50CF;&#x6E90;" class="headerlink" title="&#x66F4;&#x6362;Docker&#x955C;&#x50CF;&#x6E90;"></a>&#x66F4;&#x6362;Docker&#x955C;&#x50CF;&#x6E90;</h4><p>&#x7F16;&#x8F91; /etc/docker/daemon.json  &#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x5982;&#x679C;&#x6CA1;&#x6709;&#x5C31;&#x6DFB;&#x52A0;&#xFF0C;docker&#x7248;&#x672C;&#x8981;&#x5927;&#x4E8E;1.12</p>
-<figure class="highlight json"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">{<span class="attr">&quot;registry-mirrors&quot;</span>:[]}</span><br></pre></td></tr></tbody></table></figure>
-<p>[] &#x91CC;&#x9762;&#x53EF;&#x4EE5;&#x586B;&#x4E00;&#x4E0B;&#x7684;&#x955C;&#x50CF;&#x6E90;&#xFF1A;</p>
+        <h4 id="更换Docker镜像源"><a href="#更换Docker镜像源" class="headerlink" title="更换Docker镜像源"></a>更换Docker镜像源</h4><p>编辑 /etc/docker/daemon.json  的文件，如果没有就添加，docker版本要大于1.12</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"registry-mirrors"</span>:[]&#125;</span><br></pre></td></tr></table></figure>
+<p>[] 里面可以填一下的镜像源：</p>
 <ol>
-<li>Docker&#x5B98;&#x65B9;&#x4E2D;&#x56FD;&#x533A;&#xFF1A;<a href="https://registry.docker-cn.com" target="_blank" rel="noopener">https://registry.docker-cn.com</a> </li>
-<li>&#x7F51;&#x6613;&#xFF1A; <a href="http://hub-mirror.c.163.com" target="_blank" rel="noopener">http://hub-mirror.c.163.com</a> </li>
-<li>ustc&#xFF1A;<a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn</a> </li>
-<li>&#x533A;DaoCloud&#x83B7;&#x53D6;&#x5730;&#x5740;</li>
+<li>Docker官方中国区：<a href="https://registry.docker-cn.com" target="_blank" rel="noopener">https://registry.docker-cn.com</a> </li>
+<li>网易： <a href="http://hub-mirror.c.163.com" target="_blank" rel="noopener">http://hub-mirror.c.163.com</a> </li>
+<li>ustc：<a href="https://docker.mirrors.ustc.edu.cn" target="_blank" rel="noopener">https://docker.mirrors.ustc.edu.cn</a> </li>
+<li>区DaoCloud获取地址</li>
 </ol>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -524,7 +506,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

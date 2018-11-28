@@ -108,25 +108,24 @@
 
 
 
-  <meta name="description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
-<meta name="keywords" content="javaweb编码">
+  <meta name="description" content="求最小生成树的普里姆算法中边上的权可正可负  循环队列一般有两种形式，一种是对首前一位或者队尾后一位不存储元素，仅用来方便判断队列是空还是满另一种是队首队尾指向的位置存储元素，充分利用空间 对于第一种情况：元素个数为：(rear -front+maxsize)%maxsize 对于第二种情况：元素个数为：(rear-front+1+maxsize)%maxsize  StringBuffer是线">
 <meta property="og:type" content="article">
-<meta property="og:title" content="javaweb中的编码">
-<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/25/javaweb/javaweb中的编码/index.html">
+<meta property="og:title" content="2018-11-24">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/11/24/give_me_offer/2018-11-24/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
+<meta property="og:description" content="求最小生成树的普里姆算法中边上的权可正可负  循环队列一般有两种形式，一种是对首前一位或者队尾后一位不存储元素，仅用来方便判断队列是空还是满另一种是队首队尾指向的位置存储元素，充分利用空间 对于第一种情况：元素个数为：(rear -front+maxsize)%maxsize 对于第二种情况：元素个数为：(rear-front+1+maxsize)%maxsize  StringBuffer是线">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-27T07:15:22.819Z">
+<meta property="og:updated_time" content="2018-11-24T09:46:15.048Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="javaweb中的编码">
-<meta name="twitter:description" content="JavaWeb中的编码问题 编码的原因： 计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个 人类要表示的符号太多，无法用1个字节表示。     一些对于编码问题的总结 只要有IO流就必定有编码和解码 关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来  什么">
+<meta name="twitter:title" content="2018-11-24">
+<meta name="twitter:description" content="求最小生成树的普里姆算法中边上的权可正可负  循环队列一般有两种形式，一种是对首前一位或者队尾后一位不存储元素，仅用来方便判断队列是空还是满另一种是队首队尾指向的位置存储元素，充分利用空间 对于第一种情况：元素个数为：(rear -front+maxsize)%maxsize 对于第二种情况：元素个数为：(rear-front+1+maxsize)%maxsize  StringBuffer是线">
 
 
 
 
 
 
-  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/02/25/javaweb/javaweb中的编码/">
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/11/24/give_me_offer/2018-11-24/">
 
 
 
@@ -136,7 +135,7 @@
   };
 </script>
 
-  <title>javaweb中的编码 | May's Blog</title>
+  <title>2018-11-24 | May's Blog</title>
   
 
 
@@ -311,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/02/25/javaweb/javaweb中的编码/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/24/give_me_offer/2018-11-24/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -328,7 +327,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">javaweb中的编码
+          <h1 class="post-title" itemprop="name headline">2018-11-24
               
             
           </h1>
@@ -353,46 +352,16 @@
                 
               
 
-              <time title="创建时间：2018-02-25 23:51:13" itemprop="dateCreated datePublished" datetime="2018-02-25T23:51:13+08:00">2018-02-25</time>
+              <time title="创建时间：2018-11-24 12:50:36 / 修改时间：17:46:15" itemprop="dateCreated datePublished" datetime="2018-11-24T12:50:36+08:00">2018-11-24</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-10-27 15:15:22" itemprop="dateModified" datetime="2018-10-27T15:15:22+08:00">2018-10-27</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/javaweb/" itemprop="url" rel="index"><span itemprop="name">javaweb</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -421,48 +390,45 @@
       
 
       
-        <h3 id="JavaWeb中的编码问题"><a href="#JavaWeb中的编码问题" class="headerlink" title="JavaWeb中的编码问题"></a>JavaWeb中的编码问题</h3><ul>
-<li>编码的原因：<ol>
-<li>计算机中存储信息的最小单位是一个字节，所能表示的字符范围是0—255个</li>
-<li>人类要表示的符号太多，无法用1个字节表示。 </li>
-</ol>
+        <ol>
+<li><p>求最小生成树的普里姆算法中边上的权可正可负</p>
 </li>
-</ul>
-<h4 id="一些对于编码问题的总结"><a href="#一些对于编码问题的总结" class="headerlink" title="一些对于编码问题的总结"></a>一些对于编码问题的总结</h4><ol>
-<li>只要有IO流就必定有编码和解码</li>
-<li>关于IDEA平台下的System.out.println()，它是直接将我们的经过解码的字符串的字节数组进行打印，然后操作系统用这些字符数组与字符形状表进行对比，打印出来</li>
-</ol>
-<h4 id="什么是编码解码"><a href="#什么是编码解码" class="headerlink" title="什么是编码解码"></a>什么是编码解码</h4><ul>
-<li>编码：编码的原因是把我们人类所认识的字符编码为计算机认识的0,1代码，便于存储在计算机的磁盘中或者在网络中传输；<strong>又出现了一个问题，为什么不对解码的内容直接进行存储，而非要编码为计算机认识的0，1代码？</strong>又因为地区的不一样或者甚至说不同软件之间都可能采用不同的编码，比如说记事本一般采用GBK编码而IDEA我们可以设置为UTF-8进行存储，如果我们直接对字节集解码的内容进行存储，就会不具有通用性。</li>
-<li>解码：将计算机磁盘存储的数据或者网络IO流中的数据，按照字符集解码为对应的字节数组；有了这样的字节数组那么计算机就可以对应字符形状表显示在显示器上</li>
-</ul>
-<h4 id="常见的编码"><a href="#常见的编码" class="headerlink" title="常见的编码"></a>常见的编码</h4><ol>
-<li>ASCII</li>
-<li>ISO-8859-1:256个字符，涵盖大多数西欧字符；</li>
-<li>GB2312：双字节，中文编码；</li>
-<li>GBK： GB2312的扩展；</li>
-<li>GB18030：中文，单双四字节都有；</li>
-<li>UTF-16：两个字节表示一个字符；</li>
-<li>UTF-8：运用变长技术，ASCII用单字节表示，中文用三个字节表示。</li>
-</ol>
-<h4 id="Java中如何解编码"><a href="#Java中如何解编码" class="headerlink" title="Java中如何解编码"></a>Java中如何解编码</h4><ol>
-<li>首先会根据指定的charsetName也就是你指定的编码类型，通过Charset.forName(charsetName)找到Charset类，然后根据Charset创建CharsetEncoder对象，再调用CharsetEncoder.encode对字符串编码，不同的编码类型都会对应到一个类中 ，实际的编码过程就是在这些类中完成的。</li>
-</ol>
-<h4 id="几种编码方式的比较"><a href="#几种编码方式的比较" class="headerlink" title="几种编码方式的比较"></a>几种编码方式的比较</h4><p>对于中文字符由于GBK比GB2312范围更大，编码方式相同，所以GBK更好。UTf-16编码效率更高，只是把一个字节拆成两个字节就完成它的工作，所以在磁盘与内存上的操作它更适合，但是在字节容易损坏的网络上utf-8更适合，它不像utf-16顺序编码，一个字节的损坏会影响后面的字符。且编码效率上utf-8介于GBK和utf-16之间。</p>
-<h4 id="JavaWeb中涉及的编码"><a href="#JavaWeb中涉及的编码" class="headerlink" title="JavaWeb中涉及的编码"></a>JavaWeb中涉及的编码</h4><ol>
-<li><p>url的编解码</p>
-<p><a href="http://localhost:8080//examples/servlets/serlet/%E5%90%9B%E5%B1%B1?authod=%E5%90%9B%E5%B1%B1" target="_blank" rel="noopener">http://localhost:8080//examples/servlets/serlet/君山?authod=君山</a></p>
-<p>sheme domin port contextPath servletPath pathInfo queryString</p>
-<p>一般情况下pathInfo采用的是utf-8编码，然后浏览器会将非ASCII字符按照某种编码格式编码成16进制数字后将每个16进制数字表示的字节前加上%，Tomcat的设置上默认也是按照utf-8解码pathInfo；queryString是按照传输中在header中设置的contentType编码方式进行编码，然后在Tomcat中可以设置useBodyEncodingForURI=“true”将queryString的解码方式采用的也是contentType设置的编码方式。</p>
+<li><p>循环队列一般有两种形式，一种是对首前一位或者队尾后一位不存储元素，仅用来方便判断队列是空还是满另一种是队首队尾指向的位置存储元素，充分利用空间</p>
+<p>对于第一种情况：元素个数为：(rear -front+maxsize)%maxsize</p>
+<p>对于第二种情况：元素个数为：(rear-front+1+maxsize)%maxsize</p>
 </li>
-<li><p>HTTP Header 的编解码</p>
-<p>header中只能传输ASCII字符，不能采用其他编解码方式；如果一定要传递可以先将这些字符用URIEncoder编码再添加到Header中。</p>
+<li><p>StringBuffer是线程安全的，StringBuilder不是线程安全的</p>
 </li>
-<li><p>Post表单上的编解码</p>
-<p>在POST提交的时候会按照ContentType编码，tomcat也会按照ContentType解码；Tomcat在getParameter方法之前会获取contentType中的charset；但是这里有一种特殊情况，在 POST提交表单的时候默认情况下 ContentType是不会有值的就会采用默认的ISO-8859-1；而在jsp中设置的contentType中的Charset是告诉浏览器该页面该用什么解码。</p>
+<li><p>可以用卡特兰数来得到入栈序列的最大出栈序列数</p>
 </li>
-<li><p>HTTP body的编解码</p>
-<p>在服务器通过response返给浏览器的时候与request给服务器的编解码过程差不多；通过设置response的contentType然后服务器和浏览器就用这个charset对body进行编解码。</p>
+<li><p>次优查找树可以表示静态查找表</p>
+</li>
+<li><p>高度为h的满二叉树对应的森林由h棵树构成</p>
+</li>
+<li><p>带头结点的链栈指的是头结点不存储数据</p>
+</li>
+<li><p>最坏情况下，合并两个大小为n的已排序数组所需要的比较次数是2n-1</p>
+</li>
+<li><p>事务属性种类:传播行为，隔离级别，只读，事务超时</p>
+<p>传播行为：</p>
+<p>PROPAGATION_REQUIRED–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。<br>PROPAGATION_SUPPORTS–支持当前事务，如果当前没有事务，就以非事务方式执行。<br>PROPAGATION_MANDATORY–支持当前事务，如果当前没有事务，就抛出异常。<br>PROPAGATION_REQUIRES_NEW–新建事务，如果当前存在事务，把当前事务挂起。<br>PROPAGATION_NOT_SUPPORTED–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。 PROPAGATION_NEVER–以非事务方式执行，如果当前存在事务，则抛出异常</p>
+<p>隔离级别</p>
+<p>未提交读、比较读、可重复读、可序列化</p>
+</li>
+<li><p>String s = new String(“xyz”);</p>
+<p>创建了两个object 一个在堆，一个在常量池</p>
+</li>
+<li><p>页式虚拟存储系统形成内部碎片，段氏虚拟存储系统产生外部碎片，段页式虚拟存储系统不会产生内部碎片也不会产生外部碎片</p>
+</li>
+<li><p>分页式存储管理中，地址转换工作是由MMU完成的，MMU内存管理单元</p>
+</li>
+<li><p>UNIX系统中文件存储空间的管理常用空闲块成组链接法</p>
+</li>
+<li><p>在2n个结点的完全二叉树中，叶子结点数为n</p>
+</li>
+<li><p>细同轴电缆的传输距离理论上最大为185米</p>
+</li>
+<li><p>IPX地址网络地址有10个字节</p>
 </li>
 </ol>
 
@@ -483,12 +449,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/javaweb编码/" rel="tag"># javaweb编码</a>
-          
-        </div>
-      
 
       
       
@@ -498,8 +458,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/25/git/生成ssh秘钥/" rel="next" title="生成ssh秘钥">
-                <i class="fa fa-chevron-left"></i> 生成ssh秘钥
+              <a href="/2018/11/21/give_me_offer/2018-11-21/" rel="next" title="2018-11-21">
+                <i class="fa fa-chevron-left"></i> 2018-11-21
               </a>
             
           </div>
@@ -508,8 +468,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/25/java/voilatile引发的血案/" rel="prev" title="voilatile引发的血案">
-                voilatile引发的血案 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/26/give_me_offer/2018-11-28/" rel="prev" title="2018-11-24">
+                2018-11-24 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -555,17 +515,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -722,22 +673,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaWeb中的编码问题"><span class="nav-number">1.</span> <span class="nav-text">JavaWeb中的编码问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些对于编码问题的总结"><span class="nav-number">1.1.</span> <span class="nav-text">一些对于编码问题的总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是编码解码"><span class="nav-number">1.2.</span> <span class="nav-text">什么是编码解码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见的编码"><span class="nav-number">1.3.</span> <span class="nav-text">常见的编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java中如何解编码"><span class="nav-number">1.4.</span> <span class="nav-text">Java中如何解编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几种编码方式的比较"><span class="nav-number">1.5.</span> <span class="nav-text">几种编码方式的比较</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaWeb中涉及的编码"><span class="nav-number">1.6.</span> <span class="nav-text">JavaWeb中涉及的编码</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

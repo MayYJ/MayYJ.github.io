@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="Java &amp;#x865A;&amp;#x62DF;&amp;#x673A;&amp;#x53C2;&amp;#x6570;-Xms &amp;#x8BBE;&amp;#x7F6E;&amp;#x521D;&amp;#x59CB;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -Xmx &amp;#x8BBE;&amp;#x7F6E;&amp;#x6700;&amp;#x5927;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -XX:ReservedCodeCacheSize=240m">
+  <meta name="description" content="Java 虚拟机参数-Xms 设置初始堆大小 -Xmx 设置最大堆大小 -XX:ReservedCodeCacheSize=240m 这个参数主要用来设置codecache大小，比如我们jit编译的代码都是放在codecache里的，所以codecache如果满了的话，那带来的问题就是无法再jit编译了，而且还会去优化。 因此大家可能碰到这样的问题：cpu一直高，然后发现是编译线程一直高（系统运行">
 <meta name="keywords" content="java 虚拟机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java虚拟机参数">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/30/java/java虚拟机参数/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="Java &amp;#x865A;&amp;#x62DF;&amp;#x673A;&amp;#x53C2;&amp;#x6570;-Xms &amp;#x8BBE;&amp;#x7F6E;&amp;#x521D;&amp;#x59CB;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -Xmx &amp;#x8BBE;&amp;#x7F6E;&amp;#x6700;&amp;#x5927;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -XX:ReservedCodeCacheSize=240m">
+<meta property="og:description" content="Java 虚拟机参数-Xms 设置初始堆大小 -Xmx 设置最大堆大小 -XX:ReservedCodeCacheSize=240m 这个参数主要用来设置codecache大小，比如我们jit编译的代码都是放在codecache里的，所以codecache如果满了的话，那带来的问题就是无法再jit编译了，而且还会去优化。 因此大家可能碰到这样的问题：cpu一直高，然后发现是编译线程一直高（系统运行">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-10-30T12:02:05.938Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java虚拟机参数">
-<meta name="twitter:description" content="Java &amp;#x865A;&amp;#x62DF;&amp;#x673A;&amp;#x53C2;&amp;#x6570;-Xms &amp;#x8BBE;&amp;#x7F6E;&amp;#x521D;&amp;#x59CB;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -Xmx &amp;#x8BBE;&amp;#x7F6E;&amp;#x6700;&amp;#x5927;&amp;#x5806;&amp;#x5927;&amp;#x5C0F; -XX:ReservedCodeCacheSize=240m">
+<meta name="twitter:description" content="Java 虚拟机参数-Xms 设置初始堆大小 -Xmx 设置最大堆大小 -XX:ReservedCodeCacheSize=240m 这个参数主要用来设置codecache大小，比如我们jit编译的代码都是放在codecache里的，所以codecache如果满了的话，那带来的问题就是无法再jit编译了，而且还会去优化。 因此大家可能碰到这样的问题：cpu一直高，然后发现是编译线程一直高（系统运行">
 
 
 
@@ -409,35 +409,17 @@
       
 
       
-        <h4 id="Java-&#x865A;&#x62DF;&#x673A;&#x53C2;&#x6570;"><a href="#Java-&#x865A;&#x62DF;&#x673A;&#x53C2;&#x6570;" class="headerlink" title="Java &#x865A;&#x62DF;&#x673A;&#x53C2;&#x6570;"></a>Java &#x865A;&#x62DF;&#x673A;&#x53C2;&#x6570;</h4><p>-Xms &#x8BBE;&#x7F6E;&#x521D;&#x59CB;&#x5806;&#x5927;&#x5C0F;</p>
-<p>-Xmx &#x8BBE;&#x7F6E;&#x6700;&#x5927;&#x5806;&#x5927;&#x5C0F;</p>
-<p>-XX:ReservedCodeCacheSize=240m &#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x4E3B;&#x8981;&#x7528;&#x6765;&#x8BBE;&#x7F6E;codecache&#x5927;&#x5C0F;&#xFF0C;&#x6BD4;&#x5982;&#x6211;&#x4EEC;jit&#x7F16;&#x8BD1;&#x7684;&#x4EE3;&#x7801;&#x90FD;&#x662F;&#x653E;&#x5728;codecache&#x91CC;&#x7684;&#xFF0C;&#x6240;&#x4EE5;codecache&#x5982;&#x679C;&#x6EE1;&#x4E86;&#x7684;&#x8BDD;&#xFF0C;&#x90A3;&#x5E26;&#x6765;&#x7684;&#x95EE;&#x9898;&#x5C31;&#x662F;&#x65E0;&#x6CD5;&#x518D;jit&#x7F16;&#x8BD1;&#x4E86;&#xFF0C;&#x800C;&#x4E14;&#x8FD8;&#x4F1A;&#x53BB;&#x4F18;&#x5316;&#x3002; &#x56E0;&#x6B64;&#x5927;&#x5BB6;&#x53EF;&#x80FD;&#x78B0;&#x5230;&#x8FD9;&#x6837;&#x7684;&#x95EE;&#x9898;&#xFF1A;cpu&#x4E00;&#x76F4;&#x9AD8;&#xFF0C;&#x7136;&#x540E;&#x53D1;&#x73B0;&#x662F;&#x7F16;&#x8BD1;&#x7EBF;&#x7A0B;&#x4E00;&#x76F4;&#x9AD8;&#xFF08;&#x7CFB;&#x7EDF;&#x8FD0;&#x884C;&#x5230;&#x4E00;&#x5B9A;&#x65F6;&#x671F;&#xFF09;&#xFF0C;&#x8FD9;&#x4E2A;&#x5F88;&#x5927;&#x53EF;&#x80FD;&#x662F;codecache&#x6EE1;&#x4E86;&#xFF0C;&#x4E00;&#x76F4;&#x53BB;&#x505A;&#x4F18;&#x5316;&#x3002;  </p>
-<p>-XX:+PrintGCDetails &#x6253;&#x5370;GC&#x65E5;&#x5FD7;</p>
-<p>-Verbose:gc &#x7528;&#x4E8E;&#x5783;&#x573E;&#x6536;&#x96C6;&#x65F6;&#x7684;&#x4FE1;&#x606F;&#x6253;&#x5370;     </p>
-<p>-XX:+PrintGCDateStamps  &#x6253;&#x5370;GC&#x65F6;&#x95F4;&#x6233;</p>
-<p>-Xloggc:C:\Users\ligj\Downloads\gc.log GC &#x628A;GC&#x65E5;&#x5FD7;&#x8F93;&#x51FA;&#x7684;&#x5730;&#x65B9;</p>
-<h4 id="&#x865A;&#x62DF;&#x673A;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;"><a href="#&#x865A;&#x62DF;&#x673A;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;" class="headerlink" title="&#x865A;&#x62DF;&#x673A;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;"></a>&#x865A;&#x62DF;&#x673A;&#x9ED8;&#x8BA4;&#x53C2;&#x6570;</h4><p>&#x5728;&#x547D;&#x4EE4;&#x884C;&#x8F93;&#x5165;&#x4E00;&#x4E0B;&#x5185;&#x5BB9;&#x76F4;&#x63A5;&#x67E5;&#x770B;&#xFF1A;</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:+PrintFlagsInitail</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="&#x67E5;&#x770B;&#x865A;&#x62DF;&#x673A;&#x4F7F;&#x7528;&#x7684;&#x865A;&#x62DF;&#x673A;"><a href="#&#x67E5;&#x770B;&#x865A;&#x62DF;&#x673A;&#x4F7F;&#x7528;&#x7684;&#x865A;&#x62DF;&#x673A;" class="headerlink" title="&#x67E5;&#x770B;&#x865A;&#x62DF;&#x673A;&#x4F7F;&#x7528;&#x7684;&#x865A;&#x62DF;&#x673A;"></a>&#x67E5;&#x770B;&#x865A;&#x62DF;&#x673A;&#x4F7F;&#x7528;&#x7684;&#x865A;&#x62DF;&#x673A;</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args){</span><br><span class="line">        List&lt;GarbageCollectorMXBean&gt; l = ManagementFactory.getGarbageCollectorMXBeans();</span><br><span class="line">        l.forEach(b -&gt; System.out.println(b.getName()));</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+        <h4 id="Java-虚拟机参数"><a href="#Java-虚拟机参数" class="headerlink" title="Java 虚拟机参数"></a>Java 虚拟机参数</h4><p>-Xms 设置初始堆大小</p>
+<p>-Xmx 设置最大堆大小</p>
+<p>-XX:ReservedCodeCacheSize=240m 这个参数主要用来设置codecache大小，比如我们jit编译的代码都是放在codecache里的，所以codecache如果满了的话，那带来的问题就是无法再jit编译了，而且还会去优化。 因此大家可能碰到这样的问题：cpu一直高，然后发现是编译线程一直高（系统运行到一定时期），这个很大可能是codecache满了，一直去做优化。  </p>
+<p>-XX:+PrintGCDetails 打印GC日志</p>
+<p>-Verbose:gc 用于垃圾收集时的信息打印     </p>
+<p>-XX:+PrintGCDateStamps  打印GC时间戳</p>
+<p>-Xloggc:C:\Users\ligj\Downloads\gc.log GC 把GC日志输出的地方</p>
+<h4 id="虚拟机默认参数"><a href="#虚拟机默认参数" class="headerlink" title="虚拟机默认参数"></a>虚拟机默认参数</h4><p>在命令行输入一下内容直接查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:+PrintFlagsInitail</span><br></pre></td></tr></table></figure>
+<h4 id="查看虚拟机使用的虚拟机"><a href="#查看虚拟机使用的虚拟机" class="headerlink" title="查看虚拟机使用的虚拟机"></a>查看虚拟机使用的虚拟机</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">        List&lt;GarbageCollectorMXBean&gt; l = ManagementFactory.getGarbageCollectorMXBeans();</span><br><span class="line">        l.forEach(b -&gt; System.out.println(b.getName()));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -554,7 +536,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

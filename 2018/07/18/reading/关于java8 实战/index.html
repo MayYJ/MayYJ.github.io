@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="&amp;#x5173;&amp;#x4E8E;java8 &amp;#x5B9E;&amp;#x6218;&amp;#x5E76;&amp;#x884C;&amp;#x6570;&amp;#x636E;&amp;#x5904;&amp;#x7406;&amp;#x4E0E;&amp;#x6027;&amp;#x80FD; &amp;#x5728;&amp;#x4F7F;&amp;#x7528;&amp;#x524D;&amp;#x5FC5;&amp;#x987B;&amp;#x786E;&amp;#x4FDD;&amp;#xFF0C;&amp;#x9700;&amp;#x8981;&amp;">
+  <meta name="description" content="关于java8 实战并行数据处理与性能 在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作 留意装箱和拆箱，这个比较消耗性能 与流中元素顺序相关的操作比顺序无关的操作性能差 设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是这个对成本的一个粗略的定性估计。Q值较高就意味 着使用并行流时性能好的可能性比较大。  少量的数据不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="May&#39;s Blog">
 <meta property="og:url" content="https://github.com/MayYJ/hexo/2018/07/18/reading/关于java8 实战/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
-<meta property="og:description" content="&amp;#x5173;&amp;#x4E8E;java8 &amp;#x5B9E;&amp;#x6218;&amp;#x5E76;&amp;#x884C;&amp;#x6570;&amp;#x636E;&amp;#x5904;&amp;#x7406;&amp;#x4E0E;&amp;#x6027;&amp;#x80FD; &amp;#x5728;&amp;#x4F7F;&amp;#x7528;&amp;#x524D;&amp;#x5FC5;&amp;#x987B;&amp;#x786E;&amp;#x4FDD;&amp;#xFF0C;&amp;#x9700;&amp;#x8981;&amp;">
+<meta property="og:description" content="关于java8 实战并行数据处理与性能 在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作 留意装箱和拆箱，这个比较消耗性能 与流中元素顺序相关的操作比顺序无关的操作性能差 设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是这个对成本的一个粗略的定性估计。Q值较高就意味 着使用并行流时性能好的可能性比较大。  少量的数据不">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-07-18T07:11:45.839Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="May&#39;s Blog">
-<meta name="twitter:description" content="&amp;#x5173;&amp;#x4E8E;java8 &amp;#x5B9E;&amp;#x6218;&amp;#x5E76;&amp;#x884C;&amp;#x6570;&amp;#x636E;&amp;#x5904;&amp;#x7406;&amp;#x4E0E;&amp;#x6027;&amp;#x80FD; &amp;#x5728;&amp;#x4F7F;&amp;#x7528;&amp;#x524D;&amp;#x5FC5;&amp;#x987B;&amp;#x786E;&amp;#x4FDD;&amp;#xFF0C;&amp;#x9700;&amp;#x8981;&amp;">
+<meta name="twitter:description" content="关于java8 实战并行数据处理与性能 在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作 留意装箱和拆箱，这个比较消耗性能 与流中元素顺序相关的操作比顺序无关的操作性能差 设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是这个对成本的一个粗略的定性估计。Q值较高就意味 着使用并行流时性能好的可能性比较大。  少量的数据不">
 
 
 
@@ -390,28 +390,28 @@
       
 
       
-        <h3 id="&#x5173;&#x4E8E;java8-&#x5B9E;&#x6218;"><a href="#&#x5173;&#x4E8E;java8-&#x5B9E;&#x6218;" class="headerlink" title="&#x5173;&#x4E8E;java8 &#x5B9E;&#x6218;"></a>&#x5173;&#x4E8E;java8 &#x5B9E;&#x6218;</h3><h4 id="&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;"><a href="#&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;" class="headerlink" title="&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;"></a>&#x5E76;&#x884C;&#x6570;&#x636E;&#x5904;&#x7406;&#x4E0E;&#x6027;&#x80FD;</h4><ol>
-<li>&#x5728;&#x4F7F;&#x7528;&#x524D;&#x5FC5;&#x987B;&#x786E;&#x4FDD;&#xFF0C;&#x9700;&#x8981;&#x5E76;&#x884C;&#x5316;&#x7684;&#x6570;&#x636E;&#x6CA1;&#x6709;&#x6570;&#x636E;&#x76F8;&#x5173;&#x6027;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#xFF0C;&#x591A;&#x4E2A;&#x5E76;&#x884C;&#x6D41;&#x4E4B;&#x95F4;&#x4E0D;&#x5B58;&#x5728;&#x5BF9;&#x5171;&#x4EAB;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x64CD;&#x4F5C;</li>
-<li>&#x7559;&#x610F;&#x88C5;&#x7BB1;&#x548C;&#x62C6;&#x7BB1;&#xFF0C;&#x8FD9;&#x4E2A;&#x6BD4;&#x8F83;&#x6D88;&#x8017;&#x6027;&#x80FD;</li>
-<li>&#x4E0E;&#x6D41;&#x4E2D;&#x5143;&#x7D20;&#x987A;&#x5E8F;&#x76F8;&#x5173;&#x7684;&#x64CD;&#x4F5C;&#x6BD4;&#x987A;&#x5E8F;&#x65E0;&#x5173;&#x7684;&#x64CD;&#x4F5C;&#x6027;&#x80FD;&#x5DEE;</li>
-<li>&#x8BBE;N&#x662F;&#x8981;&#x5904;&#x7406;&#x7684;&#x5143;&#x7D20;&#x7684;&#x603B;&#x6570;&#xFF0C;Q&#x662F;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x901A;&#x8FC7; &#x6D41;&#x6C34;&#x7EBF;&#x7684;&#x5927;&#x81F4;&#x5904;&#x7406;&#x6210;&#x672C;&#xFF0C;&#x5219;N*Q&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x5BF9;&#x6210;&#x672C;&#x7684;&#x4E00;&#x4E2A;&#x7C97;&#x7565;&#x7684;&#x5B9A;&#x6027;&#x4F30;&#x8BA1;&#x3002;Q&#x503C;&#x8F83;&#x9AD8;&#x5C31;&#x610F;&#x5473; &#x7740;&#x4F7F;&#x7528;&#x5E76;&#x884C;&#x6D41;&#x65F6;&#x6027;&#x80FD;&#x597D;&#x7684;&#x53EF;&#x80FD;&#x6027;&#x6BD4;&#x8F83;&#x5927;&#x3002; </li>
-<li>&#x5C11;&#x91CF;&#x7684;&#x6570;&#x636E;&#x4E0D;&#x7528;&#x5E76;&#x884C;&#x6D41;</li>
-<li>&#x8981;&#x8003;&#x8651;&#x6D41;&#x80CC;&#x540E;&#x7684;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x662F;&#x5426;&#x6613;&#x4E8E;&#x5206;&#x89E3; &#xFF1B;&#x6839;&#x636E;ArrayList&#x548C;LinkedList&#x7684;&#x62C6;&#x5206;&#x5668;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x770B;&#x5F97;&#x51FA;&#x6765;&#xFF0C;ArrayList&#x7684;&#x62C6;&#x5206;&#x76F4;&#x63A5;&#x628A;&#x81EA;&#x5DF1;&#x62E5;&#x6709;&#x7684;&#x5143;&#x7D20;&#x6570;&#x7EC4;&#x8D4B;&#x503C;&#x7ED9;&#x62C6;&#x5206;&#x5668;&#x7684;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#xFF0C;&#x7136;&#x540E;&#x5BF9;&#x8FD9;&#x4E2A;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#x8FDB;&#x884C;&#x62C6;&#x5206;&#xFF1B;&#x4F46;&#x662F;LInkedList&#x662F;&#x628A;&#x81EA;&#x5DF1;&#x7684;&#x5F15;&#x7528;&#x4F20;&#x7ED9;&#x62C6;&#x5206;&#x5668;&#x7684;collection&#x5C5E;&#x6027;&#xFF0C;&#x62C6;&#x5206;&#x7684;&#x65F6;&#x5019;&#x662F;&#x901A;&#x8FC7;&#x904D;&#x5386;&#x6DFB;&#x52A0;&#x8FDB;&#x65B0;&#x5EFA;&#x7684;&#x6570;&#x7EC4;&#xFF0C;&#x7136;&#x540E;&#x53C8;&#x4F20;&#x7ED9;&#x65B0;&#x5EFA;&#x7684;&#x6570;&#x7EC4;&#x62C6;&#x5206;&#x5668;</li>
+        <h3 id="关于java8-实战"><a href="#关于java8-实战" class="headerlink" title="关于java8 实战"></a>关于java8 实战</h3><h4 id="并行数据处理与性能"><a href="#并行数据处理与性能" class="headerlink" title="并行数据处理与性能"></a>并行数据处理与性能</h4><ol>
+<li>在使用前必须确保，需要并行化的数据没有数据相关性，也就是说，多个并行流之间不存在对共享数据进行操作</li>
+<li>留意装箱和拆箱，这个比较消耗性能</li>
+<li>与流中元素顺序相关的操作比顺序无关的操作性能差</li>
+<li>设N是要处理的元素的总数，Q是一个元素通过 流水线的大致处理成本，则N*Q就是这个对成本的一个粗略的定性估计。Q值较高就意味 着使用并行流时性能好的可能性比较大。 </li>
+<li>少量的数据不用并行流</li>
+<li>要考虑流背后的数据结构是否易于分解 ；根据ArrayList和LinkedList的拆分器我们就可以看得出来，ArrayList的拆分直接把自己拥有的元素数组赋值给拆分器的数组元素，然后对这个数组元素进行拆分；但是LInkedList是把自己的引用传给拆分器的collection属性，拆分的时候是通过遍历添加进新建的数组，然后又传给新建的数组拆分器</li>
 </ol>
-<h4 id="&#x5173;&#x4E8E;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;"><a href="#&#x5173;&#x4E8E;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;" class="headerlink" title="&#x5173;&#x4E8E;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;"></a>&#x5173;&#x4E8E;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;</h4><ul>
-<li><p>&#x600E;&#x4E48;&#x4F7F;&#x7528;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<h4 id="关于默认方法"><a href="#关于默认方法" class="headerlink" title="关于默认方法"></a>关于默认方法</h4><ul>
+<li><p>怎么使用默认方法：</p>
 <ol>
-<li><p>&#x7531;&#x4E8E;API    &#x7248;&#x672C;&#x7684;&#x8FED;&#x4EE3;&#xFF0C;&#x6211;&#x4EEC;&#x53D1;&#x73B0;&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#x7F3A;&#x5C11;&#x4E86;&#x67D0;&#x4E9B;&#x5FC5;&#x8981;&#x7684;&#x65B9;&#x6CD5;&#xFF1B;&#x4F46;&#x662F;&#x5982;&#x679C;&#x76F4;&#x63A5;&#x5411;&#x63A5;&#x53E3;&#x4E2D;&#x6DFB;&#x52A0;&#x65B9;&#x6CD5;&#x5C31;&#x4F1A;&#x53D1;&#x73B0;&#x6CA1;&#x6709;&#x5B9E;&#x73B0;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x800C;&#x53D1;&#x751F;&#x7F16;&#x8BD1;&#x9519;&#x8BEF;&#xFF1B;&#x4F46;&#x662F;&#x4F7F;&#x7528;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x63A5;&#x53E3;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x9ED8;&#x8BA4;&#x5B9E;&#x73B0;&#xFF0C;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x8986;&#x76D6;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x800C;&#x6709;&#x81EA;&#x5DF1;&#x7684;&#x5B9E;&#x73B0;&#x3002;</p>
+<li><p>由于API    版本的迭代，我们发现实现一个接口缺少了某些必要的方法；但是如果直接向接口中添加方法就会发现没有实现这个方法而发生编译错误；但是使用默认方法，我们就可以避免这个问题，接口提供了一个默认实现，用户可以覆盖这个方法而有自己的实现。</p>
 </li>
-<li><p>&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#xFF0C;&#x4F46;&#x662F;&#x5E76;&#x4E0D;&#x662F;&#x6240;&#x6709;&#x5B9E;&#x73B0;&#x7684;&#x7C7B;&#x90FD;&#x9700;&#x8981;&#x5176;&#x4E2D;&#x7684;&#x6240;&#x6709;&#x65B9;&#x6CD5;&#xFF0C;&#x4EE5;&#x524D;&#x6211;&#x4EEC;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x5F0F;&#x662F;&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7A7A;&#x65B9;&#x6CD5;&#xFF0C;&#x6709;&#x4E86;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x5728;&#x63A5;&#x53E3;&#x4E2D;&#x4EE5;&#x4EE5;&#x4E0B;&#x65B9;&#x5F0F;&#x5B9E;&#x73B0;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;</p>
-<figure class="highlight java"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>{</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<li><p>实现一个接口，但是并不是所有实现的类都需要其中的所有方法，以前我们的解决方式是实现一个空方法，有了默认方法，我们就可以在接口中以以下方式实现这个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>&#x884C;&#x4E3A;&#x7684;&#x591A;&#x7EE7;&#x627F;</p>
+<li><p>行为的多继承</p>
 <ul>
-<li>&#x89E3;&#x51B3;&#x591A;&#x5B9E;&#x73B0;&#x51B2;&#x7A81;&#x7684;&#x89C4;&#x5219;&#xFF1A;<ol>
-<li>&#x7C7B;&#x6216;&#x7236;&#x7C7B;&#x4E2D;&#x58F0;&#x660E;&#x7684;&#x65B9;&#x6CD5;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;&#x4EFB;&#x4F55;&#x58F0;&#x660E;&#x4E3A;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#x7684;&#x4F18;&#x5148;&#x7EA7;(&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#x5982;&#x679C;&#x88AB;&#x8986;&#x76D6;&#x4E86;&#x5C31;&#x4EE5;&#x88AB;&#x8986;&#x76D6;&#x7684;&#x65B9;&#x6CD5;&#x4E3A;&#x51C6;)</li>
-<li>&#x5982;&#x679C;&#x65E0;&#x6CD5;&#x6839;&#x636E;&#x7B2C;&#x4E00;&#x6761;&#x8FDB;&#x884C;&#x5224;&#x65AD;&#xFF0C;&#x90A3;&#x4E48;&#x5B50;&#x63A5;&#x53E3;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x66F4;&#x9AD8;&#xFF1A;&#x51FD;&#x6570;&#x7B7E;&#x540D;&#x76F8;&#x540C;&#x65F6;&#xFF0C;&#x4F18;&#x5148;&#x9009;&#x62E9;&#x62E5;&#x6709;&#x6700;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x7684;&#x9ED8;&#x8BA4;&#x65B9;&#x6CD5;&#x7684;&#x63A5;&#x53E3;&#xFF0C;&#x5373;&#x5982;&#x679C;B&#x7EE7;&#x627F;&#x4E86;A&#xFF0C;&#x90A3;&#x4E48;B&#x5C31;&#x6BD4;A&#x5177;&#x4F53;<ol>
-<li>&#x6700;&#x540E;&#xFF0C;&#x5982;&#x679C;&#x8FD8;&#x65E0;&#x6CD5;&#x5224;&#x65AD;&#xFF0C;&#x7EE7;&#x627F;&#x4E86;&#x591A;&#x4E2A;&#x63A5;&#x53E3;&#x7684;&#x7C7B;&#x5FC5;&#x987B;&#x901A;&#x8FC7;&#x663E;&#x793A;&#x8986;&#x76D6;&#x548C;&#x8C03;&#x7528;&#x671F;&#x671B;&#x65B9;&#x6CD5;</li>
+<li>解决多实现冲突的规则：<ol>
+<li>类或父类中声明的方法优先级高于任何声明为默认方法的优先级(也就是说默认方法如果被覆盖了就以被覆盖的方法为准)</li>
+<li>如果无法根据第一条进行判断，那么子接口的优先级更高：函数签名相同时，优先选择拥有最具体实现的默认方法的接口，即如果B继承了A，那么B就比A具体<ol>
+<li>最后，如果还无法判断，继承了多个接口的类必须通过显示覆盖和调用期望方法</li>
 </ol>
 </li>
 </ol>
@@ -421,25 +421,7 @@
 </ol>
 </li>
 </ul>
-<script>
-        document.querySelectorAll('.github-emoji')
-          .forEach(el => {
-            if (!el.dataset.src) { return; }
-            const img = document.createElement('img');
-            img.style = 'display:none !important;';
-            img.src = el.dataset.src;
-            img.addEventListener('error', () => {
-              img.remove();
-              el.style.color = 'inherit';
-              el.style.backgroundImage = 'none';
-              el.style.background = 'none';
-            });
-            img.addEventListener('load', () => {
-              img.remove();
-            });
-            document.body.appendChild(img);
-          });
-      </script>
+
       
     </div>
 
@@ -550,7 +532,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-count">48</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
