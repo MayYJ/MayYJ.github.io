@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="java基础 集合框架 hashmap、linkedlist、arraylist  线程安全 vector、concurrenthash、hashtable  线程安全   关键字： syncronized、 violate 、reenterlock   jvm锁优化 自旋锁…..  String  常量池：运行时常量池、静态常量池 final —-&amp;gt; 并发 StringBUffer、Str">
+<meta name="keywords" content="学习路线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面向实习的java后台学习知识点（待完善）">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/03/12/面向实习的java后台学习知识点（待完善）/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="java基础 集合框架 hashmap、linkedlist、arraylist  线程安全 vector、concurrenthash、hashtable  线程安全   关键字： syncronized、 violate 、reenterlock   jvm锁优化 自旋锁…..  String  常量池：运行时常量池、静态常量池 final —-&amp;gt; 并发 StringBUffer、Str">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-26T09:27:55.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面向实习的java后台学习知识点（待完善）">
+<meta name="twitter:description" content="java基础 集合框架 hashmap、linkedlist、arraylist  线程安全 vector、concurrenthash、hashtable  线程安全   关键字： syncronized、 violate 、reenterlock   jvm锁优化 自旋锁…..  String  常量池：运行时常量池、静态常量池 final —-&amp;gt; 并发 StringBUffer、Str">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/03/12/面向实习的java后台学习知识点（待完善）/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>面向实习的java后台学习知识点（待完善） | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/03/12/面向实习的java后台学习知识点（待完善）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面向实习的java后台学习知识点（待完善）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-12 14:59:50" itemprop="dateCreated datePublished" datetime="2018-03-12T14:59:50+08:00">2018-03-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-05-26 17:27:55" itemprop="dateModified" datetime="2018-05-26T17:27:55+08:00">2018-05-26</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="java基础"><a href="#java基础" class="headerlink" title="java基础"></a>java基础</h4><ul>
+<li><p>集合框架 hashmap、linkedlist、arraylist</p>
+</li>
+<li><p>线程安全 vector、concurrenthash、hashtable</p>
+</li>
+<li><p>线程安全 </p>
+<ul>
+<li>关键字： syncronized、 violate 、reenterlock</li>
+</ul>
+</li>
+<li><p>jvm锁优化 自旋锁…..</p>
+</li>
+<li><p>String</p>
+<ul>
+<li>常量池：运行时常量池、静态常量池</li>
+<li>final —-&gt; 并发</li>
+<li>StringBUffer、StringBuilder</li>
+</ul>
+</li>
+<li><p>线程</p>
+<ul>
+<li>很杂（多线程面经）</li>
+<li>线程池<ul>
+<li>有哪些</li>
+<li>阻塞队列</li>
+<li>拒绝策略</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>io</p>
+<ul>
+<li><p>BIO</p>
+</li>
+<li><p>NIO</p>
+<p><strong>nio在RPC框架中的作用</strong></p>
+</li>
+</ul>
+</li>
+<li><p>object</p>
+<ul>
+<li>toString</li>
+<li>hushcode</li>
+<li>equals</li>
+<li>深克隆和浅克隆</li>
+<li>wait 和sleep()</li>
+<li>notify 和notifyall</li>
+</ul>
+</li>
+</ul>
+<h4 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h4><ul>
+<li>内存区域</li>
+<li>内存分配</li>
+<li>内存回收 (GC 和 GC算法)</li>
+<li>class文件结构</li>
+<li>内存模型(线程)<ul>
+<li>线程实现</li>
+<li>线程优化</li>
+<li>类加载器</li>
+</ul>
+</li>
+</ul>
+<h4 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h4><ul>
+<li><strong>IOC</strong>(很重要的点，需要了解底层)</li>
+<li><strong>AOP</strong>（很重要的点，需要了解底层）</li>
+<li>事务</li>
+</ul>
+<h4 id="mybaties"><a href="#mybaties" class="headerlink" title="mybaties"></a>mybaties</h4><ul>
+<li>怎么实现事务</li>
+</ul>
+<h4 id="spring-mvc"><a href="#spring-mvc" class="headerlink" title="spring mvc"></a>spring mvc</h4><ul>
+<li><p>SpringBeanFactory</p>
+</li>
+<li><p>spirngMVC处理流程</p>
+</li>
+<li><p>springmvc容器初始化</p>
+<p>mysql</p>
+</li>
+</ul>
+<ul>
+<li>事务（四个特性、隔离级别、读问题）</li>
+<li>并发处理(悲观锁、乐观锁)</li>
+<li>索引(betry，hash、全文、空间)</li>
+<li>优化(sql优化、分库分表(mycat) )</li>
+</ul>
+<h4 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h4><ul>
+<li>http：分层、https 数字含义</li>
+<li>tcp：三次握手、四次挥手</li>
+<li>udp</li>
+<li>cookie、session</li>
+</ul>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><ul>
+<li>调度算法</li>
+<li>cpu</li>
+<li>大文件的排序</li>
+</ul>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>数组(内存形式)—&gt;</li>
+</ul>
+<p>链表(栈(递归调用)、队列)—&gt;树(二叉树、完全二叉树、排序二叉树、平衡二叉树(B树)、遍历过程（中序、）)—&gt;图(因为现在还没有学习数据结构，学习过后再来总结这里的大的知识点)</p>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ul>
+<li>查找</li>
+<li>排序</li>
+</ul>
+<ul>
+<li>动态规划(贪婪算法)</li>
+</ul>
+<h4 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h4><ul>
+<li>RPC(三宗罪、nio)</li>
+<li>负载均衡(无状态服务)</li>
+<li>注册中心(nio、路由算法、缓存(雪崩、扩展、内存/jvm 缓存))</li>
+<li>数据库缓存集群（读写分离、分库分表、高可用高扩展）</li>
+</ul>
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><p>了解其基本实现</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习路线/" rel="tag"># 学习路线</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/09/Linux/linux上安装和部署/" rel="next" title="linux上安装和部署redis">
+                <i class="fa fa-chevron-left"></i> linux上安装和部署redis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/12/Java 基础/String源码解析/" rel="prev" title="String源码解析">
+                String源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#java基础"><span class="nav-number">1.</span> <span class="nav-text">java基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM"><span class="nav-number">2.</span> <span class="nav-text">JVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring"><span class="nav-number">3.</span> <span class="nav-text">Spring</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mybaties"><span class="nav-number">4.</span> <span class="nav-text">mybaties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-mvc"><span class="nav-number">5.</span> <span class="nav-text">spring mvc</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算机网络"><span class="nav-number">6.</span> <span class="nav-text">计算机网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#操作系统"><span class="nav-number">7.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据结构"><span class="nav-number">8.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法"><span class="nav-number">9.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#项目"><span class="nav-number">10.</span> <span class="nav-text">项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis"><span class="nav-number">11.</span> <span class="nav-text">Redis</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

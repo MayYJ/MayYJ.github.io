@@ -112,7 +112,7 @@
 <meta name="keywords" content="git命令">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git命令">
-<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/27/git/git命令/index.html">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/02/27/Git/git命令/index.html">
 <meta property="og:site_name" content="May&#39;s Blog">
 <meta property="og:description" content="git reset–soft: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout –mixed: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变 –hard：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除) git rebase 和">
 <meta property="og:locale" content="zh-CN">
@@ -120,7 +120,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/305877-c4ddfcf679821e2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/305877-467ba180733adca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/305877-8845daa6b5fd004e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp">
-<meta property="og:updated_time" content="2018-10-27T06:01:23.582Z">
+<meta property="og:updated_time" content="2019-03-14T16:42:58.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git命令">
 <meta name="twitter:description" content="git reset–soft: 将Head引用指向给定提交，索引和工作目录的内容都不会表，这个功能就类似于git checkout –mixed: 将HEAD 引用指向给定提交，索引内容跟着改变，但是工作目录内容不会改变 –hard：将HEAD引用指向给定提交，索引内容和工作目录内容都跟着改变(所以这个需要慎用，因为一旦使用这个命令两个commit之间所有文件都会被删除) git rebase 和">
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/02/27/git/git命令/">
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/02/27/Git/git命令/">
 
 
 
@@ -316,7 +316,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/02/27/git/git命令/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/02/27/Git/git命令/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-27 14:01:23" itemprop="dateModified" datetime="2018-10-27T14:01:23+08:00">2018-10-27</time>
+                <time title="修改时间：2019-03-15 00:42:58" itemprop="dateModified" datetime="2019-03-15T00:42:58+08:00">2019-03-15</time>
               
             
           </span>
@@ -433,10 +433,10 @@
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-c4ddfcf679821e2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-467ba180733adca1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
 <p><strong>解释</strong></p>
-<p>从上面的三张图就可以大致看出rebase和merge的区别：merge是在自己的分支新建一个commit而这个commit里面包含了master的所有新的提交；rebase是直接将master 的新的commit链接在当前分支的尾部或者首部</p>
+<p>从上面的三张图就可以大致看出rebase和merge的区别：merge是在自己的分支新建一个commit而这个commit里面包含了master的所有新的提交；rebase是直接将master 的新的commit链接在当前分支的尾部</p>
 <p><strong>问题</strong></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/305877-8845daa6b5fd004e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt=""></p>
-<p>使用rebase这样的问题，如上图那样master分支新提交的commit添加到了当前分支的首部，那么其他的使用者就会与此产生冲突，所以最好在不会有其他人使用该分支的时候时候这个命令</p>
+<p>git 黄金法则：绝对不要再公共分支上使用git rebase</p>
 <p><strong>两个命令解决冲突的方法</strong></p>
 <p>merge：发现冲突，提交冲突的解决，再合并</p>
 <p>rebase：修改冲突，git add，git rebase –continue</p>
@@ -474,7 +474,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/26/linux/linux软件推荐/" rel="next" title="linux软件推荐">
+              <a href="/2018/02/26/Linux/linux软件推荐/" rel="next" title="linux软件推荐">
                 <i class="fa fa-chevron-left"></i> linux软件推荐
               </a>
             
@@ -484,7 +484,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/27/mysql/mysql相关问题/" rel="prev" title="mysql相关问题">
+              <a href="/2018/02/27/Mysql/mysql相关问题/" rel="prev" title="mysql相关问题">
                 mysql相关问题 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -558,7 +558,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-count">77</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -591,7 +591,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">10</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -672,7 +680,45 @@
                     
                       
                     
-                    <span class="site-state-item-count">34</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -728,7 +774,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

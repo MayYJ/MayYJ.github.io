@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="大型网站架构演化大型网站架构演化的驱动因素：高并发，大流量；高可用；海量数据；用户分布广发，网络情况复杂；安全环境恶劣；需求快速变更，发布频繁；渐进式发展 初始阶段 在这个阶段应用程序、文件系统和数据库都是在一台服务器上，能够解决应用的初始阶段的使用问题 数据和服务分离阶段随着业务的发展，越来越多的人使用应用，数据量越来越大，导致数据空间的不足，这个时候就需要将数据库和文件系统单独分离出来，形成下">
+<meta name="keywords" content="架构演进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大型网站技术架构">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2019/02/27/Reading/大型网站技术架构/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="大型网站架构演化大型网站架构演化的驱动因素：高并发，大流量；高可用；海量数据；用户分布广发，网络情况复杂；安全环境恶劣；需求快速变更，发布频繁；渐进式发展 初始阶段 在这个阶段应用程序、文件系统和数据库都是在一台服务器上，能够解决应用的初始阶段的使用问题 数据和服务分离阶段随着业务的发展，越来越多的人使用应用，数据量越来越大，导致数据空间的不足，这个时候就需要将数据库和文件系统单独分离出来，形成下">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMTku9xFo0JymUznlmarDG_l33TZO2s3QPxORq5updP7iY-XklsA">
+<meta property="og:image" content="https://s2.ax1x.com/2019/02/27/kTlhDO.png">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh4Ee-1135sibBtYycpLtuwEjoEUdgBE2oqXi6hIAUBAIDYoLi">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH5i7YfuPriZ2ZFgs9Drlz2gyxXVYtlhLrGcXa5BlYadx3eue3">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQifBHQSpaR_r28rUMuol7syjXG88P_UzyDw9DdetUbPKkQCzMFmg">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT0tMlc_lAzlx21Hz1glvq7NmuR9YzBJ_cyWDNwYuebKDmYjF0">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTaAZSRUkJ0D7MFGVsdwnxeh7Qiu6MXObhK4xnHjeHnmY3ug7vvg">
+<meta property="og:updated_time" content="2019-02-27T09:43:07.991Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大型网站技术架构">
+<meta name="twitter:description" content="大型网站架构演化大型网站架构演化的驱动因素：高并发，大流量；高可用；海量数据；用户分布广发，网络情况复杂；安全环境恶劣；需求快速变更，发布频繁；渐进式发展 初始阶段 在这个阶段应用程序、文件系统和数据库都是在一台服务器上，能够解决应用的初始阶段的使用问题 数据和服务分离阶段随着业务的发展，越来越多的人使用应用，数据量越来越大，导致数据空间的不足，这个时候就需要将数据库和文件系统单独分离出来，形成下">
+<meta name="twitter:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMTku9xFo0JymUznlmarDG_l33TZO2s3QPxORq5updP7iY-XklsA">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2019/02/27/Reading/大型网站技术架构/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>大型网站技术架构 | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/02/27/Reading/大型网站技术架构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">大型网站技术架构
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-27 14:47:45 / 修改时间：17:43:07" itemprop="dateCreated datePublished" datetime="2019-02-27T14:47:45+08:00">2019-02-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="大型网站架构演化"><a href="#大型网站架构演化" class="headerlink" title="大型网站架构演化"></a>大型网站架构演化</h3><p>大型网站架构演化的驱动因素：高并发，大流量；高可用；海量数据；用户分布广发，网络情况复杂；安全环境恶劣；需求快速变更，发布频繁；渐进式发展</p>
+<h4 id="初始阶段"><a href="#初始阶段" class="headerlink" title="初始阶段"></a>初始阶段</h4><p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMTku9xFo0JymUznlmarDG_l33TZO2s3QPxORq5updP7iY-XklsA" alt=""></p>
+<p>在这个阶段应用程序、文件系统和数据库都是在一台服务器上，能够解决应用的初始阶段的使用问题</p>
+<h4 id="数据和服务分离阶段"><a href="#数据和服务分离阶段" class="headerlink" title="数据和服务分离阶段"></a>数据和服务分离阶段</h4><p>随着业务的发展，越来越多的人使用应用，数据量越来越大，导致数据空间的不足，这个时候就需要将数据库和文件系统单独分离出来，形成下面的结构</p>
+<p><img src="https://s2.ax1x.com/2019/02/27/kTlhDO.png" alt=""></p>
+<h4 id="使用缓存"><a href="#使用缓存" class="headerlink" title="使用缓存"></a>使用缓存</h4><p>由于存在热点数据，业务的访问主要集中在热点数据上；如果使用缓存能够大大降低数据库服务的压力</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh4Ee-1135sibBtYycpLtuwEjoEUdgBE2oqXi6hIAUBAIDYoLi" alt=""></p>
+<h4 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h4><p>随着业务的发展，用户数量的急剧增长，导致并发量上去了，那么应用服务器就成为了瓶颈；所以通过使用集群的方式来解决并发的请求;并用负载均衡调度服务器来分发请求</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH5i7YfuPriZ2ZFgs9Drlz2gyxXVYtlhLrGcXa5BlYadx3eue3" alt=""></p>
+<h4 id="数据库读写分离"><a href="#数据库读写分离" class="headerlink" title="数据库读写分离"></a>数据库读写分离</h4><p>使用主从的方式进行读写分离，读写分离的好处有以下三点：</p>
+<ol>
+<li>通过增加物理服务器，可以提高并发的性能</li>
+<li>写在主服务器上，读在从服务器上；减少了X锁和S锁的竞争，提高了并行度</li>
+<li>提高了系统的数据库的可用性，因为主服务器挂了还有从服务器</li>
+</ol>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQifBHQSpaR_r28rUMuol7syjXG88P_UzyDw9DdetUbPKkQCzMFmg" alt=""></p>
+<h4 id="反向代理和CDN"><a href="#反向代理和CDN" class="headerlink" title="反向代理和CDN"></a>反向代理和CDN</h4><p>反向代理通过在访问的时候先访问反向代理服务器，反向代理服务器具有缓存；如果缓存命中直接返回，降低了应用服务器的压力</p>
+<p>CDN是用户在请求网站服务的时候，直接到离自己最近的网络提供商机房取得数据；这样加速访问网页的速度</p>
+<h4 id="使用分布式文件系统和分布式数据库"><a href="#使用分布式文件系统和分布式数据库" class="headerlink" title="使用分布式文件系统和分布式数据库"></a>使用分布式文件系统和分布式数据库</h4><p>随着业务的发展，数据量越来越大，一台服务器不能支撑这样的数据量；所以使用分布式数据库，将数据分布在不同的物理服务器上，分布式文件系统和分布式数据库是不区分是不是同一张表同一个业务</p>
+<p>网站更常用的手段是根据业务分库，将不同业务的数据库放在不同的物理服务器上</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT0tMlc_lAzlx21Hz1glvq7NmuR9YzBJ_cyWDNwYuebKDmYjF0" alt=""></p>
+<h4 id="使用NOSQL-和-搜索引擎"><a href="#使用NOSQL-和-搜索引擎" class="headerlink" title="使用NOSQL 和 搜索引擎"></a>使用NOSQL 和 搜索引擎</h4><h4 id="业务拆分"><a href="#业务拆分" class="headerlink" title="业务拆分"></a>业务拆分</h4><p>由于业务场景越来越复杂，将整个网站业务分成不同的产品线，形成不同的应用</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTaAZSRUkJ0D7MFGVsdwnxeh7Qiu6MXObhK4xnHjeHnmY3ug7vvg" alt=""></p>
+<h4 id="分布式服务"><a href="#分布式服务" class="headerlink" title="分布式服务"></a>分布式服务</h4><p>随着业务的拆分越来越小，存储系统越来越庞大，应用系统的整体复杂度呈指数级增加，部署越来越困难且数据库连接资源不足</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/架构演进/" rel="tag"># 架构演进</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/21/Java 并发/CopyOnWriteArrayList源码分析/" rel="next" title="CopyOnWriteArrayList源码分析">
+                <i class="fa fa-chevron-left"></i> CopyOnWriteArrayList源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/02/Javaweb/zookeeper-study/" rel="prev" title="zookeeper-study">
+                zookeeper-study <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#大型网站架构演化"><span class="nav-number">1.</span> <span class="nav-text">大型网站架构演化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始阶段"><span class="nav-number">1.1.</span> <span class="nav-text">初始阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据和服务分离阶段"><span class="nav-number">1.2.</span> <span class="nav-text">数据和服务分离阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用缓存"><span class="nav-number">1.3.</span> <span class="nav-text">使用缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集群"><span class="nav-number">1.4.</span> <span class="nav-text">集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库读写分离"><span class="nav-number">1.5.</span> <span class="nav-text">数据库读写分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向代理和CDN"><span class="nav-number">1.6.</span> <span class="nav-text">反向代理和CDN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用分布式文件系统和分布式数据库"><span class="nav-number">1.7.</span> <span class="nav-text">使用分布式文件系统和分布式数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用NOSQL-和-搜索引擎"><span class="nav-number">1.8.</span> <span class="nav-text">使用NOSQL 和 搜索引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务拆分"><span class="nav-number">1.9.</span> <span class="nav-text">业务拆分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式服务"><span class="nav-number">1.10.</span> <span class="nav-text">分布式服务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

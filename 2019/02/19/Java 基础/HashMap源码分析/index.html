@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="常见属性及其含义123456789101112// 默认的初始化容量static final int DEFAULT_INITIAL_CAPACITY = 1 &amp;lt;&amp;lt; 4; // aka 16// 最大容量 static final int MAXIMUM_CAPACITY = 1 &amp;lt;&amp;lt; 30; // 默认的负载因子 static final float DEFAULT_LO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap源码分析">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2019/02/19/Java 基础/HashMap源码分析/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="常见属性及其含义123456789101112// 默认的初始化容量static final int DEFAULT_INITIAL_CAPACITY = 1 &amp;lt;&amp;lt; 4; // aka 16// 最大容量 static final int MAXIMUM_CAPACITY = 1 &amp;lt;&amp;lt; 30; // 默认的负载因子 static final float DEFAULT_LO">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-67e51136429ece4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/642/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-c133d983c8c10681.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/688/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-518ce8a7dc3a5532.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/378/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-7559a35b8518c6a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/564/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-5666ecf1ef7c07cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/706/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-e2ac2c451982183b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-cdede0c2ed25216c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/646/format/webp">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2184951-ea3e9c3d3a407f01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/670/format/webp">
+<meta property="og:updated_time" content="2019-03-14T14:12:44.951Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HashMap源码分析">
+<meta name="twitter:description" content="常见属性及其含义123456789101112// 默认的初始化容量static final int DEFAULT_INITIAL_CAPACITY = 1 &amp;lt;&amp;lt; 4; // aka 16// 最大容量 static final int MAXIMUM_CAPACITY = 1 &amp;lt;&amp;lt; 30; // 默认的负载因子 static final float DEFAULT_LO">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2184951-67e51136429ece4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/642/format/webp">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2019/02/19/Java 基础/HashMap源码分析/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>HashMap源码分析 | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/02/19/Java 基础/HashMap源码分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HashMap源码分析
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-19 10:49:46" itemprop="dateCreated datePublished" datetime="2019-02-19T10:49:46+08:00">2019-02-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-14 22:12:44" itemprop="dateModified" datetime="2019-03-14T22:12:44+08:00">2019-03-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="常见属性及其含义"><a href="#常见属性及其含义" class="headerlink" title="常见属性及其含义"></a>常见属性及其含义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 默认的初始化容量</span><br><span class="line">static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // aka 16</span><br><span class="line">// 最大容量</span><br><span class="line"> static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;</span><br><span class="line"> // 默认的负载因子</span><br><span class="line"> static final float DEFAULT_LOAD_FACTOR = 0.75f;</span><br><span class="line"> // 哈希桶里面的结点数大于该值就会 从链表转换为红黑树</span><br><span class="line"> static final int TREEIFY_THRESHOLD = 8;</span><br><span class="line"> // 哈希桶里面的结点数从较大值变为该值，就会从红黑树转换为链表</span><br><span class="line"> static final int UNTREEIFY_THRESHOLD = 6;</span><br><span class="line"> // 如果总容量小于该值但是哈希桶里面的结点数又大于threshold，就会扩容使结点分散</span><br><span class="line"> static final int MIN_TREEIFY_CAPACITY = 64;</span><br></pre></td></tr></table></figure>
+<h3 id="重要方法及其实现"><a href="#重要方法及其实现" class="headerlink" title="重要方法及其实现"></a>重要方法及其实现</h3><h4 id="putVal"><a href="#putVal" class="headerlink" title="putVal"></a>putVal</h4><p><strong>putVal</strong></p>
+<ol>
+<li>延迟初始化    </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  在resize 方法里面完成初始化</span></span><br><span class="line"><span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">            n = (tab = resize()).length;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>定位：使用除留余数法完成hash桶的定位</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</span><br><span class="line">            tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>对相同对象的判断方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                        ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                        <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<p>首先会判断hash值相同否，再判断equals方法是否相同；这样判断的原因是hashcode一样，不一定equals方法返回true</p>
+<p>这里就涉及到一个原理 复写了equals方法是否需要复写hashcode</p>
+<p>hashCode方法上面的注释有这样一句话，如果两个对象equals，那么它们的hashCode所返回的Integer应该是相等的，所以equals方法被重写意味着判断它们相等的方式产生了变化，也就需要根据新的条件来保证两个对象equals，hashCode方法返回的Integer相等</p>
+<ol start="3">
+<li>红黑树化</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></span><br><span class="line">                            treeifyBin(tab, hash);</span><br></pre></td></tr></table></figure>
+<p>当hash桶size &gt; TREEIFY_THRESHOLD - 1 就会扩容</p>
+<ol start="4">
+<li>扩容</li>
+</ol>
+<p>将数组增大为原来的两倍，在转移过程中就会有二种情况：</p>
+<ol>
+<li>原hash表的hash桶只有一个元素，那么就直接添加到新hash表中</li>
+<li>当不只一个元素的时候，又有下面两种情况：<ol>
+<li>为红黑树，就按照红黑树将一棵树划分成两颗</li>
+<li>为链表就按照新的hash表的容量做除留余数法，切割成两个链表添加进新的</li>
+</ol>
+</li>
+</ol>
+<h4 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (oldCap &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</span><br><span class="line">                threshold = Integer.MAX_VALUE;</span><br><span class="line">                <span class="keyword">return</span> oldTab;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> ((newCap = oldCap &lt;&lt; <span class="number">1</span>) &lt; MAXIMUM_CAPACITY &amp;&amp;</span><br><span class="line">                     oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</span><br><span class="line">                newThr = oldThr &lt;&lt; <span class="number">1</span>; <span class="comment">// double threshold</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这里将capacity和threshold都扩大了两倍</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> &#123;               <span class="comment">// zero initial threshold signifies using defaults</span></span><br><span class="line">            newCap = DEFAULT_INITIAL_CAPACITY;</span><br><span class="line">            newThr = (<span class="keyword">int</span>)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这里是给putVal的延迟初始化用的，当table为NULL，那么就回使用resize进行初始化</p>
+<p>下面就是具体的转移过程</p>
+<h3 id="一些常见问题"><a href="#一些常见问题" class="headerlink" title="一些常见问题"></a>一些常见问题</h3><h4 id="为什么hashMap的capacity要选取2的幂"><a href="#为什么hashMap的capacity要选取2的幂" class="headerlink" title="为什么hashMap的capacity要选取2的幂"></a>为什么hashMap的capacity要选取2的幂</h4><p>因为这样(数组长度-1)正好相当于一个低位掩码，这样也正好对应了数组的长度，可以得到数组的一个下标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">      10100101 11000100 00100101 	</span><br><span class="line">&amp;     00000000 00000000 00001111</span><br><span class="line">--------------------------------</span><br><span class="line">      00000000 00000000 00000101 //高位全部归零，只保留末四位</span><br></pre></td></tr></table></figure>
+<h4 id="hash-方法原理"><a href="#hash-方法原理" class="headerlink" title="hash 方法原理"></a>hash 方法原理</h4><p>(h&gt;&gt;&gt;16)因为Object.hashCode是返回int型的散列值也就是32位，这里右移了16位得到了hash值得高16位，前16位用0填充这样高位的信息被变相的保留了下来，再进行(h^(h&gt;&gt;&gt;16))也就增加了低位的随机性下面使用的地方会使用 (n-1) &amp; hash(key)就会随机得到一个Node数组的一个下标，随机性增强了那么碰撞的可能也就减少了</p>
+<h4 id="为什么HashMap-非线程安全"><a href="#为什么HashMap-非线程安全" class="headerlink" title="为什么HashMap 非线程安全"></a>为什么HashMap 非线程安全</h4><ul>
+<li>这里只说明一个例子：现在有两个线程同时操作一个HashMap，他们现在同时取得了插入哈希表的同一个地址，现在第一个线程插入进去把next指针指向了它，但是第二个线程对此一无所知，依然进行了同样的操作，最后也就覆盖了第一个线程的操作。</li>
+<li>还有个什么死循环看不怎么懂  …..</li>
+</ul>
+<h4 id="在多线程中HashMap的死循环问题"><a href="#在多线程中HashMap的死循环问题" class="headerlink" title="在多线程中HashMap的死循环问题"></a>在多线程中HashMap的死循环问题</h4><p>在java1.8之后 JDK解决了多线程的死循环问题，所以下面贴的代码也是JDK8之前的</p>
+<p>这是移动的逻辑</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transfer</span><span class="params">(Entry[] newTable, <span class="keyword">boolean</span> rehash)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = newTable.length;</span><br><span class="line">    <span class="keyword">for</span> (Entry&lt;K,V&gt; e : table) &#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">null</span> != e) &#123;</span><br><span class="line">            Entry&lt;K,V&gt; next = e.next;</span><br><span class="line">            <span class="keyword">if</span> (rehash) &#123;</span><br><span class="line">                e.hash = <span class="keyword">null</span> == e.key ? <span class="number">0</span> : hash(e.key);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> i = indexFor(e.hash, newCapacity);</span><br><span class="line">            e.next = newTable[i];</span><br><span class="line">            newTable[i] = e;</span><br><span class="line">            e = next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-67e51136429ece4c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/642/format/webp" alt=""></p>
+<p>我们假设负载因子是1,所以当添加下一个元素时就会进行扩容操作</p>
+<p>现在我们假设有A、B两个线程</p>
+<ol>
+<li>A,B两个线程会分别创建自己的newTable</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-c133d983c8c10681.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/688/format/webp" alt=""></p>
+<ol start="2">
+<li><p>假设线程2运行到Entry&lt;K,V&gt; next = e.next 时间片用完了；这个时候e 指向 a 结点，next指向 b 结点；且在再hash的时候三个结点又同时在同一个hash桶</p>
+</li>
+<li><p>在线程1 运行的时候就会按照从头结点加入的方式加入哈希桶中</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-518ce8a7dc3a5532.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/378/format/webp" alt=""></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-7559a35b8518c6a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/564/format/webp" alt=""></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-5666ecf1ef7c07cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/706/format/webp" alt=""></p>
+<ol start="4">
+<li><p>这个时候线程1的时间片用完，线程2继续执行；就会将a结点加入自己新表中的哈希桶中，得到下图中的结果</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-e2ac2c451982183b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/640/format/webp" alt=""></p>
+<ol start="5">
+<li><p>因为在上一个时间片已经赋值next为b；又会将哈希桶首位置变为b，b结点的next依然指向a</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-cdede0c2ed25216c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/646/format/webp" alt=""></p>
+<ol start="6">
+<li><p>这个时候又取 b 结点的next 得到 a 结点，又将哈希桶首位置赋值 a 结点，且 a 结点的next 为 b结点;这样便形成了一个环</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2184951-ea3e9c3d3a407f01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/670/format/webp" alt=""></p>
+<ol start="7">
+<li>这样不管最终那个线程 赋值了table，那么get 这个哈希桶的值的时候就会陷入死循环</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="为什么线程安全的集合键值不可以为NULL而非线程安全的却可以"><a href="#为什么线程安全的集合键值不可以为NULL而非线程安全的却可以" class="headerlink" title="为什么线程安全的集合键值不可以为NULL而非线程安全的却可以"></a>为什么线程安全的集合键值不可以为NULL而非线程安全的却可以</h4><p>在例如HashMap非线程安全的集合 中可以设置键值为NULL 而不会产生到底是值本身是NULL还是哈希表中不存在这个键的歧义的原因是  在HashMap中我们可以使用ContainsKey来判断是否存在这个值 就避免了上述的歧义</p>
+<p>而在线程安全的集合中    在 get 方法和 containsKey 方法之间可能存在其它线程删除键值对</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/18/计算机网络/计算机网络/" rel="next" title="计算机网络">
+                <i class="fa fa-chevron-left"></i> 计算机网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/19/Java 并发/ConcurrentHashMap源码分析/" rel="prev" title="ConcurrentHashMap源码分析">
+                ConcurrentHashMap源码分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见属性及其含义"><span class="nav-number">1.</span> <span class="nav-text">常见属性及其含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重要方法及其实现"><span class="nav-number">2.</span> <span class="nav-text">重要方法及其实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#putVal"><span class="nav-number">2.1.</span> <span class="nav-text">putVal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resize"><span class="nav-number">2.2.</span> <span class="nav-text">resize</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些常见问题"><span class="nav-number">3.</span> <span class="nav-text">一些常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么hashMap的capacity要选取2的幂"><span class="nav-number">3.1.</span> <span class="nav-text">为什么hashMap的capacity要选取2的幂</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hash-方法原理"><span class="nav-number">3.2.</span> <span class="nav-text">hash 方法原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么HashMap-非线程安全"><span class="nav-number">3.3.</span> <span class="nav-text">为什么HashMap 非线程安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在多线程中HashMap的死循环问题"><span class="nav-number">3.4.</span> <span class="nav-text">在多线程中HashMap的死循环问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么线程安全的集合键值不可以为NULL而非线程安全的却可以"><span class="nav-number">3.5.</span> <span class="nav-text">为什么线程安全的集合键值不可以为NULL而非线程安全的却可以</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

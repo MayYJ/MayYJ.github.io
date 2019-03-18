@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="阻塞队列详解BlockingQueue add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回true put() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了会进行阻塞等待，所以不会返">
+<meta name="keywords" content="阻塞队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阻塞队列详解">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2018/10/30/Java 并发/阻塞队列详解/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="阻塞队列详解BlockingQueue add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回true put() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了会进行阻塞等待，所以不会返">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthcm802m0j20fl0i3dhg.jpg">
+<meta property="og:updated_time" content="2019-03-03T04:47:15.711Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阻塞队列详解">
+<meta name="twitter:description" content="阻塞队列详解BlockingQueue add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回true put() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了会进行阻塞等待，所以不会返">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2018/10/30/Java 并发/阻塞队列详解/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>阻塞队列详解 | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/10/30/Java 并发/阻塞队列详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">阻塞队列详解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-30 20:14:55" itemprop="dateCreated datePublished" datetime="2018-10-30T20:14:55+08:00">2018-10-30</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-03 12:47:15" itemprop="dateModified" datetime="2019-03-03T12:47:15+08:00">2019-03-03</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="阻塞队列详解"><a href="#阻塞队列详解" class="headerlink" title="阻塞队列详解"></a>阻塞队列详解</h3><h4 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h4><ul>
+<li>add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true</li>
+<li>offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回true</li>
+<li>put() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了会进行阻塞等待，所以不会返回什么</li>
+<li>offer(e, timeout, unit) 添加元素时，会进行timeout的时间等待，其它就跟offer()方法一样了</li>
+<li>take() 这个跟put方法对应，进行阻塞的取元素</li>
+<li>poll(timeout, unit)  等待timeout的时间取元素，如果超时就返回null </li>
+</ul>
+<h4 id="SynchronizeQueue"><a href="#SynchronizeQueue" class="headerlink" title="SynchronizeQueue"></a>SynchronizeQueue</h4><p>该队列大概的结构如下</p>
+<p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fthbais5v4j20kj0b7glx.jpg" alt=""></p>
+<h5 id="TransferStack"><a href="#TransferStack" class="headerlink" title="TransferStack"></a>TransferStack</h5><p>这是非公平的，想对于公平来说，这个实现的区别是每次添加元素时，公平的实现是如果不能够匹配直接将结点加入到最后，但是非公平的方式是帮助前一个正在传递数据的两个节点完成交易，然后放在栈首；它主要想要达到的是线程局部性，以此来提高性能</p>
+<h6 id="SNode"><a href="#SNode" class="headerlink" title="SNode"></a>SNode</h6><ul>
+<li><p>一些属性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//连接下一个结点</span></span><br><span class="line"><span class="keyword">volatile</span> SNode next;        <span class="comment">// next node in stack</span></span><br><span class="line"><span class="comment">//如果有与当前节点匹配的节点，就把该节点赋值给这个属性</span></span><br><span class="line"><span class="keyword">volatile</span> SNode match;       <span class="comment">// the node matched to this</span></span><br><span class="line"><span class="comment">//该节点控制的线程</span></span><br><span class="line"><span class="keyword">volatile</span> Thread waiter;     <span class="comment">// to control park/unpark</span></span><br><span class="line"><span class="comment">//该节点拥有的数据</span></span><br><span class="line">Object item;                <span class="comment">// data; or null for REQUESTs</span></span><br><span class="line"><span class="comment">//该节点的模式，有三种模式 REQUEST、DATA、FULFILLING</span></span><br><span class="line"><span class="keyword">int</span> mode;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h6 id="一些栈元素的操作"><a href="#一些栈元素的操作" class="headerlink" title="一些栈元素的操作"></a>一些栈元素的操作</h6><ol>
+<li>需要注意的是timed，nanos参数，这两个参数是用来是永久等待还是等待一段时间,其实其中的offer、put方法已经很典型了；offer方法不等待，直接检查容器里面有没有匹配的结点，如果没有直接返回false；而put方法如果没有匹配的结点会把自己加入结点中，然后一直等待匹配结点的出现</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E <span class="title">transfer</span><span class="params">(E e, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>&#123;</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * Basic algorithm is to loop trying one of three actions:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 1. If apparently empty or already containing nodes of same</span></span><br><span class="line"><span class="comment">             *    mode, try to push node on stack and wait for a match,</span></span><br><span class="line"><span class="comment">             *    returning it, or null if cancelled.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 2. If apparently containing node of complementary mode,</span></span><br><span class="line"><span class="comment">             *    try to push a fulfilling node on to stack, match</span></span><br><span class="line"><span class="comment">             *    with corresponding waiting node, pop both from</span></span><br><span class="line"><span class="comment">             *    stack, and return matched item. The matching or</span></span><br><span class="line"><span class="comment">             *    unlinking might not actually be necessary because of</span></span><br><span class="line"><span class="comment">             *    other threads performing action 3:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 3. If top of stack already holds another fulfilling node,</span></span><br><span class="line"><span class="comment">             *    help it out by doing its match and/or pop</span></span><br><span class="line"><span class="comment">             *    operations, and then continue. The code for helping</span></span><br><span class="line"><span class="comment">             *    is essentially the same as for fulfilling, except</span></span><br><span class="line"><span class="comment">             *    that it doesn't return the item.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line"></span><br><span class="line">            SNode s = <span class="keyword">null</span>; <span class="comment">// constructed/reused as needed</span></span><br><span class="line">            <span class="keyword">int</span> mode = (e == <span class="keyword">null</span>) ? REQUEST : DATA;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                SNode h = head;</span><br><span class="line">                <span class="comment">// 如果头结点为空或者模式相等，消费者直接返回null，生产者那么保存到栈中等待匹配</span></span><br><span class="line">                <span class="keyword">if</span> (h == <span class="keyword">null</span> || h.mode == mode) &#123;  <span class="comment">// empty or same-mode</span></span><br><span class="line">                    <span class="keyword">if</span> (timed &amp;&amp; nanos &lt;= <span class="number">0</span>) &#123;      <span class="comment">// can't wait</span></span><br><span class="line">                        <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.isCancelled())</span><br><span class="line">                            casHead(h, h.next);     <span class="comment">// pop cancelled node</span></span><br><span class="line">                        <span class="keyword">else</span></span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (casHead(h, s = snode(s, e, h, mode))) &#123;</span><br><span class="line">                        SNode m = awaitFulfill(s, timed, nanos);</span><br><span class="line">                        <span class="keyword">if</span> (m == s) &#123;               <span class="comment">// wait was cancelled</span></span><br><span class="line">                            clean(s);</span><br><span class="line">                            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="keyword">if</span> ((h = head) != <span class="keyword">null</span> &amp;&amp; h.next == s)</span><br><span class="line">                            casHead(h, s.next);     <span class="comment">// help s's fulfiller</span></span><br><span class="line">                        <span class="keyword">return</span> (E) ((mode == REQUEST) ? m.item : s.item);</span><br><span class="line">                    &#125;</span><br><span class="line">                  <span class="comment">// 匹配成功了 且 头结点没有正在执行则将当前请求作为结点加入栈</span></span><br><span class="line">                  <span class="comment">// 匹配两个结点 释放两个结点的线程锁</span></span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isFulfilling(h.mode)) &#123; <span class="comment">// try to fulfill</span></span><br><span class="line">                    <span class="keyword">if</span> (h.isCancelled())            <span class="comment">// already cancelled</span></span><br><span class="line">                        casHead(h, h.next);         <span class="comment">// pop and retry</span></span><br><span class="line">                    <span class="keyword">else</span> <span class="keyword">if</span> (casHead(h, s=snode(s, e, h, FULFILLING|mode))) &#123;</span><br><span class="line">                        <span class="keyword">for</span> (;;) &#123; <span class="comment">// loop until matched or waiters disappear</span></span><br><span class="line">                            SNode m = s.next;       <span class="comment">// m is s's match</span></span><br><span class="line">                            <span class="keyword">if</span> (m == <span class="keyword">null</span>) &#123;        <span class="comment">// all waiters are gone</span></span><br><span class="line">                                casHead(s, <span class="keyword">null</span>);   <span class="comment">// pop fulfill node</span></span><br><span class="line">                                s = <span class="keyword">null</span>;           <span class="comment">// use new node next time</span></span><br><span class="line">                                <span class="keyword">break</span>;              <span class="comment">// restart main loop</span></span><br><span class="line">                            &#125;</span><br><span class="line">                            SNode mn = m.next;</span><br><span class="line">                            <span class="keyword">if</span> (m.tryMatch(s)) &#123;</span><br><span class="line">                                casHead(s, mn);     <span class="comment">// pop both s and m</span></span><br><span class="line">                                <span class="keyword">return</span> (E) ((mode == REQUEST) ? m.item : s.item);</span><br><span class="line">                            &#125; <span class="keyword">else</span>                  <span class="comment">// lost match</span></span><br><span class="line">                                s.casNext(m, mn);   <span class="comment">// help unlink</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                <span class="comment">// 头结点是正在执行的状态，帮助完成栈中前两个结点的匹配和弹出</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;                            <span class="comment">// help a fulfiller</span></span><br><span class="line">                    SNode m = h.next;               <span class="comment">// m is h's match</span></span><br><span class="line">                    <span class="keyword">if</span> (m == <span class="keyword">null</span>)                  <span class="comment">// waiter is gone</span></span><br><span class="line">                        casHead(h, <span class="keyword">null</span>);           <span class="comment">// pop fulfilling node</span></span><br><span class="line">                    <span class="keyword">else</span> &#123;</span><br><span class="line">                        SNode mn = m.next;</span><br><span class="line">                        <span class="keyword">if</span> (m.tryMatch(h))          <span class="comment">// help match</span></span><br><span class="line">                            casHead(h, mn);         <span class="comment">// pop both h and m</span></span><br><span class="line">                        <span class="keyword">else</span>                        <span class="comment">// lost match</span></span><br><span class="line">                            h.casNext(m, mn);       <span class="comment">// help unlink</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>这个就是实现的算法：</p>
+<ol>
+<li>当栈为空或者栈中的首元素的模式与匹配的结点的模式相同，那么就会把结点推入栈等待匹配，这里的等待需要注意的是会调用awaitFulfill，这个方法不会直接将线程阻塞进行等待，而是先进行自旋，自旋后没能够够成功匹配才进行阻塞等待；</li>
+<li>如果当前栈顶的结点与请求交易的结点互补，那么将这个请求交易的节点的模式变为FULFILLING，然后将其压入栈中，和互补的节点进行匹配，完成交易之后将两个节点一起弹出，并且返回交易的数据。 </li>
+<li><p>如果栈顶已经存在一个模式为FULFILLING的节点，说明栈顶的节点正在进行匹配，那么就帮助这个栈顶节点快速完成交易，然后继续交易。我想要说一下这里的帮助，其实就是把正在进行数据传递的两个节点从栈中移除。</p>
+</li>
+<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">tryMatch</span><span class="params">(SNode s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (match == <span class="keyword">null</span> &amp;&amp;</span><br><span class="line">        UNSAFE.compareAndSwapObject(<span class="keyword">this</span>, matchOffset, <span class="keyword">null</span>, s)) &#123;</span><br><span class="line">        Thread w = waiter;</span><br><span class="line">        <span class="keyword">if</span> (w != <span class="keyword">null</span>) &#123;    <span class="comment">// waiters need at most one unpark</span></span><br><span class="line">            waiter = <span class="keyword">null</span>;</span><br><span class="line">            LockSupport.unpark(w);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> match == s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这个方法是在进入栈中的时候尝试去匹配互补模式的节点，匹配成功就会使栈中节点拥有的线程唤醒</p>
+<h5 id="TransferQueue"><a href="#TransferQueue" class="headerlink" title="TransferQueue"></a>TransferQueue</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">E <span class="title">transfer</span><span class="params">(E e, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>&#123;</span><br><span class="line">            <span class="comment">/* Basic algorithm is to loop trying to take either of</span></span><br><span class="line"><span class="comment">             * two actions:</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 1. If queue apparently empty or holding same-mode nodes,</span></span><br><span class="line"><span class="comment">             *    try to add node to queue of waiters, wait to be</span></span><br><span class="line"><span class="comment">             *    fulfilled (or cancelled) and return matching item.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * 2. If queue apparently contains waiting items, and this</span></span><br><span class="line"><span class="comment">             *    call is of complementary mode, try to fulfill by CAS'ing</span></span><br><span class="line"><span class="comment">             *    item field of waiting node and dequeuing it, and then</span></span><br><span class="line"><span class="comment">             *    returning matching item.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * In each case, along the way, check for and try to help</span></span><br><span class="line"><span class="comment">             * advance head and tail on behalf of other stalled/slow</span></span><br><span class="line"><span class="comment">             * threads.</span></span><br><span class="line"><span class="comment">             *</span></span><br><span class="line"><span class="comment">             * The loop starts off with a null check guarding against</span></span><br><span class="line"><span class="comment">             * seeing uninitialized head or tail values. This never</span></span><br><span class="line"><span class="comment">             * happens in current SynchronousQueue, but could if</span></span><br><span class="line"><span class="comment">             * callers held non-volatile/final ref to the</span></span><br><span class="line"><span class="comment">             * transferer. The check is here anyway because it places</span></span><br><span class="line"><span class="comment">             * null checks at top of loop, which is usually faster</span></span><br><span class="line"><span class="comment">             * than having them implicitly interspersed.</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line"></span><br><span class="line">            QNode s = <span class="keyword">null</span>; <span class="comment">// constructed/reused as needed</span></span><br><span class="line">            <span class="keyword">boolean</span> isData = (e != <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                QNode t = tail;</span><br><span class="line">                QNode h = head;</span><br><span class="line">                <span class="keyword">if</span> (t == <span class="keyword">null</span> || h == <span class="keyword">null</span>)         <span class="comment">// saw uninitialized value</span></span><br><span class="line">                    <span class="keyword">continue</span>;                       <span class="comment">// spin</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (h == t || t.isData == isData) &#123; <span class="comment">// empty or same-mode</span></span><br><span class="line">                    QNode tn = t.next;</span><br><span class="line">                    <span class="keyword">if</span> (t != tail)                  <span class="comment">// inconsistent read</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    <span class="keyword">if</span> (tn != <span class="keyword">null</span>) &#123;               <span class="comment">// lagging tail</span></span><br><span class="line">                        advanceTail(t, tn);</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (timed &amp;&amp; nanos &lt;= <span class="number">0</span>)        <span class="comment">// can't wait</span></span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    <span class="keyword">if</span> (s == <span class="keyword">null</span>)</span><br><span class="line">                        s = <span class="keyword">new</span> QNode(e, isData);</span><br><span class="line">                    <span class="keyword">if</span> (!t.casNext(<span class="keyword">null</span>, s))        <span class="comment">// failed to link in</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">                    advanceTail(t, s);              <span class="comment">// swing tail and wait</span></span><br><span class="line">                    Object x = awaitFulfill(s, e, timed, nanos);</span><br><span class="line">                    <span class="keyword">if</span> (x == s) &#123;                   <span class="comment">// wait was cancelled</span></span><br><span class="line">                        clean(t, s);</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (!s.isOffList()) &#123;           <span class="comment">// not already unlinked</span></span><br><span class="line">                        advanceHead(t, s);          <span class="comment">// unlink if head</span></span><br><span class="line">                        <span class="keyword">if</span> (x != <span class="keyword">null</span>)              <span class="comment">// and forget fields</span></span><br><span class="line">                            s.item = s;</span><br><span class="line">                        s.waiter = <span class="keyword">null</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">return</span> (x != <span class="keyword">null</span>) ? (E)x : e;</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;                            <span class="comment">// complementary-mode</span></span><br><span class="line">                    QNode m = h.next;               <span class="comment">// node to fulfill</span></span><br><span class="line">                    <span class="keyword">if</span> (t != tail || m == <span class="keyword">null</span> || h != head)</span><br><span class="line">                        <span class="keyword">continue</span>;                   <span class="comment">// inconsistent read</span></span><br><span class="line"></span><br><span class="line">                    Object x = m.item;</span><br><span class="line">                    <span class="keyword">if</span> (isData == (x != <span class="keyword">null</span>) ||    <span class="comment">// m already fulfilled</span></span><br><span class="line">                        x == m ||                   <span class="comment">// m cancelled</span></span><br><span class="line">                        !m.casItem(x, e)) &#123;         <span class="comment">// lost CAS</span></span><br><span class="line">                        advanceHead(h, m);          <span class="comment">// dequeue and retry</span></span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    advanceHead(h, m);              <span class="comment">// successfully fulfilled</span></span><br><span class="line">                    LockSupport.unpark(m.waiter);</span><br><span class="line">                    <span class="keyword">return</span> (x != <span class="keyword">null</span>) ? (E)x : e;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>算法设计思路：</p>
+<ol>
+<li>如果队列为空，或者请求交易的节点和队列中的节点具有相同的交易类型，那么就将该请求交易的节点添加到队列尾部等待交易，直到被匹配或者被取消</li>
+<li>如果队列中包含了等待的节点，并且请求的节点和等待的节点是互补的，那么进行匹配并且进行交易</li>
+</ol>
+<h5 id="关于awaitfulfill方法"><a href="#关于awaitfulfill方法" class="headerlink" title="关于awaitfulfill方法"></a>关于awaitfulfill方法</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">SNode <span class="title">awaitFulfill</span><span class="params">(SNode s, <span class="keyword">boolean</span> timed, <span class="keyword">long</span> nanos)</span> </span>&#123;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">long</span> deadline = timed ? System.nanoTime() + nanos : <span class="number">0L</span>;</span><br><span class="line">           Thread w = Thread.currentThread();</span><br><span class="line">           <span class="keyword">int</span> spins = (shouldSpin(s) ?</span><br><span class="line">                        (timed ? maxTimedSpins : maxUntimedSpins) : <span class="number">0</span>);</span><br><span class="line">           <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">               <span class="keyword">if</span> (w.isInterrupted())</span><br><span class="line">                   s.tryCancel();</span><br><span class="line">               SNode m = s.match;</span><br><span class="line">               <span class="keyword">if</span> (m != <span class="keyword">null</span>)</span><br><span class="line">                   <span class="keyword">return</span> m;</span><br><span class="line">               <span class="comment">//实现过期机制</span></span><br><span class="line">               <span class="keyword">if</span> (timed) &#123;</span><br><span class="line">                   nanos = deadline - System.nanoTime();</span><br><span class="line">                   <span class="keyword">if</span> (nanos &lt;= <span class="number">0L</span>) &#123;</span><br><span class="line">                       s.tryCancel();</span><br><span class="line">                       <span class="keyword">continue</span>;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="comment">//实现自旋等待</span></span><br><span class="line">               <span class="keyword">if</span> (spins &gt; <span class="number">0</span>)</span><br><span class="line">                   spins = shouldSpin(s) ? (spins-<span class="number">1</span>) : <span class="number">0</span>;</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (s.waiter == <span class="keyword">null</span>)</span><br><span class="line">                   s.waiter = w; <span class="comment">// establish waiter so can park next iter</span></span><br><span class="line">               <span class="comment">//这里就是线程会不会过期，不会过期直接阻塞；会过期就调用parkNanos然后重新执行循环，就会重新检查nanos，这个时候nanos会&lt;=0就会cancel这个结点</span></span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (!timed)</span><br><span class="line">                   LockSupport.park(<span class="keyword">this</span>);</span><br><span class="line">               <span class="keyword">else</span> <span class="keyword">if</span> (nanos &gt; spinForTimeoutThreshold)</span><br><span class="line">                   LockSupport.parkNanos(<span class="keyword">this</span>, nanos);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>spins = shouldSpin(s) ? (spins-1) : 0; 这里实现了自旋等待；timed和nanos是给结点设置过期时间，time out了就会s.tryCancel();如果在自旋的时间内没有找到匹配的结点，那么进行阻塞等待，然后等到有匹配的线程到来，通过SNode的waiter属性占到当前线程进行唤醒；这里需要知道有了过期时间就不会有线程阻塞。</p>
+<h5 id="关于公平和非公平的区别"><a href="#关于公平和非公平的区别" class="headerlink" title="关于公平和非公平的区别"></a>关于公平和非公平的区别</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">* The (Lifo) stack is used for non-fair mode, and the (Fifo)</span><br><span class="line">     * queue for fair mode. The performance of the two is generally</span><br><span class="line">     * similar. Fifo usually supports higher throughput under</span><br><span class="line">     * contention but Lifo maintains higher thread locality in common</span><br><span class="line">     * applications.</span><br></pre></td></tr></table></figure>
+<p>（Lifo）堆栈用于非公平模式，而（Fifo）队列用于公平模式。 两者的表现大致相似。 Fifo通常支持更高的吞吐量，但Lifo在常见应用程序中维护更高的线程局部性。</p>
+<h5 id="流程图展示整个大概的流程"><a href="#流程图展示整个大概的流程" class="headerlink" title="流程图展示整个大概的流程"></a>流程图展示整个大概的流程</h5><p><img src="https://ws1.sinaimg.cn/large/a67bf22fgy1fthcm802m0j20fl0i3dhg.jpg" alt=""></p>
+<h4 id="ArrayBlockingQueue"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</h4><p>这个容器没有什么好讲的，我们看一下它的变量就差不多知道它的实现方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> Object[] items;</span><br><span class="line"><span class="keyword">int</span> takeIndex;</span><br><span class="line"><span class="keyword">int</span> putIndex;</span><br><span class="line"><span class="keyword">int</span> count;</span><br><span class="line"><span class="keyword">final</span> ReentrantLock lock;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull;</span><br><span class="line"><span class="keyword">transient</span> Itrs itrs = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里需要讲的是，这里也设置了一个过期时间，这里的实现方式是当一个元素添加到容器里面时，如果容器满了，就等待一段时间，如果等待一段时间后，还是不可以添加，就添加失败</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(E e, <span class="keyword">long</span> timeout, TimeUnit unit)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line"></span><br><span class="line">        checkNotNull(e);</span><br><span class="line">        <span class="keyword">long</span> nanos = unit.toNanos(timeout);</span><br><span class="line">        <span class="keyword">final</span> ReentrantLock lock = <span class="keyword">this</span>.lock;</span><br><span class="line">        lock.lockInterruptibly();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == items.length) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nanos &lt;= <span class="number">0</span>)</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                nanos = notFull.awaitNanos(nanos);</span><br><span class="line">            &#125;</span><br><span class="line">            enqueue(e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h4><h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><p>单向链表</p>
+<p>变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> capacity;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line"><span class="keyword">transient</span> Node&lt;E&gt; head;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Node&lt;E&gt; last; 	</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock takeLock = <span class="keyword">new</span> ReentrantLock();	</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty = takeLock.newCondition();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ReentrantLock putLock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Condition notFull = putLock.newCondition();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> E <span class="title">dequeue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// assert takeLock.isHeldByCurrentThread();</span></span><br><span class="line">    <span class="comment">// assert head.item == null;</span></span><br><span class="line">    Node&lt;E&gt; h = head;</span><br><span class="line">    Node&lt;E&gt; first = h.next;</span><br><span class="line">    h.next = h; <span class="comment">// help GC</span></span><br><span class="line">    head = first;</span><br><span class="line">    E x = first.item;</span><br><span class="line">    first.item = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="关于Help-GC"><a href="#关于Help-GC" class="headerlink" title="关于Help GC"></a>关于Help GC</h5><p>这里的原因在《深入理解 JAVA 虚拟机》局部变量表那里讲过，在一个</p>
+<p>这个方法需要注意的是，h.next = h;这里是通过自己的属性指向自己形成一个环， GC就会认为它是无用的</p>
+<h5 id="BlockingQueue-唤醒机制"><a href="#BlockingQueue-唤醒机制" class="headerlink" title="BlockingQueue 唤醒机制"></a>BlockingQueue 唤醒机制</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">signalNotEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> ReentrantLock takeLock = <span class="keyword">this</span>.takeLock;</span><br><span class="line">       takeLock.lock();</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           notEmpty.signal();</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           takeLock.unlock();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">signalNotFull</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> ReentrantLock putLock = <span class="keyword">this</span>.putLock;</span><br><span class="line">       putLock.lock();</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           notFull.signal();</span><br><span class="line">       &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">           putLock.unlock();</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>从上面我们可以看出  在使用ReentrantLock的conditionObject 的时候也要遵循 先获取锁再进行 notify notifyAll await操作</p>
+<h4 id="BlockingQueue怎么保证并发的插入和删除"><a href="#BlockingQueue怎么保证并发的插入和删除" class="headerlink" title="BlockingQueue怎么保证并发的插入和删除"></a>BlockingQueue怎么保证并发的插入和删除</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Links node at end of queue.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> node the node</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Node&lt;E&gt; node)</span> </span>&#123;</span><br><span class="line">     <span class="comment">// assert putLock.isHeldByCurrentThread();</span></span><br><span class="line">     <span class="comment">// assert last.next == null;</span></span><br><span class="line">     last = last.next = node;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Removes a node from head of queue.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> the node</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> E <span class="title">dequeue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">     <span class="comment">// assert takeLock.isHeldByCurrentThread();</span></span><br><span class="line">     <span class="comment">// assert head.item == null;</span></span><br><span class="line">     Node&lt;E&gt; h = head;</span><br><span class="line">     Node&lt;E&gt; first = h.next;</span><br><span class="line">     h.next = h; <span class="comment">// help GC</span></span><br><span class="line">     head = first;</span><br><span class="line">     E x = first.item;</span><br><span class="line">     first.item = <span class="keyword">null</span>;</span><br><span class="line">     <span class="keyword">return</span> x;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>因为LinkedBlockingQueue 插入是从尾结点插入，删除是从头结点删除；</p>
+<p>且 头结点是一个空结点，可以避免对于第一个结点的并发添加和删除的问题，最后总会在链表中剩下这个空节点，在并发添加的删除结点的时候也只会修改分别修改它的item 和 next</p>
+<h4 id="LinkedTransferQueue"><a href="#LinkedTransferQueue" class="headerlink" title="LinkedTransferQueue"></a>LinkedTransferQueue</h4><h6 id="xfer方法讲解"><a href="#xfer方法讲解" class="headerlink" title="xfer方法讲解"></a>xfer方法讲解</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> E <span class="title">xfer</span><span class="params">(E e, <span class="keyword">boolean</span> haveData, <span class="keyword">int</span> how, <span class="keyword">long</span> nanos)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (haveData &amp;&amp; (e == <span class="keyword">null</span>))</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">       Node s = <span class="keyword">null</span>;                        <span class="comment">// the node to append, if needed</span></span><br><span class="line"></span><br><span class="line">       retry:</span><br><span class="line">       <span class="keyword">for</span> (;;) &#123;                            <span class="comment">// restart on append race</span></span><br><span class="line"></span><br><span class="line">           <span class="keyword">for</span> (Node h = head, p = h; p != <span class="keyword">null</span>;) &#123; <span class="comment">// 尝试与第一个结点匹配</span></span><br><span class="line">               <span class="keyword">boolean</span> isData = p.isData;</span><br><span class="line">               Object item = p.item;</span><br><span class="line">               <span class="keyword">if</span> (item != p &amp;&amp; (item != <span class="keyword">null</span>) == isData) &#123; <span class="comment">// 防止多线程下被匹配过了</span></span><br><span class="line">                   <span class="keyword">if</span> (isData == haveData)   <span class="comment">// 两个结点类型相同，匹配失败</span></span><br><span class="line">                       <span class="keyword">break</span>;</span><br><span class="line">                   <span class="keyword">if</span> (p.casItem(item, e)) &#123; <span class="comment">// 匹配成功，cas修改</span></span><br><span class="line">                       <span class="comment">//删除头结点</span></span><br><span class="line">                       <span class="keyword">for</span> (Node q = p; q != h;) &#123;</span><br><span class="line">                           Node n = q.next;  <span class="comment">// update by 2 unless singleton</span></span><br><span class="line">                           <span class="keyword">if</span> (head == h &amp;&amp; casHead(h, n == <span class="keyword">null</span> ? q : n)) &#123;</span><br><span class="line">                               h.forgetNext();<span class="comment">// 形成自引用便于垃圾垃圾回收</span></span><br><span class="line">                               <span class="keyword">break</span>;</span><br><span class="line">                           &#125;                 <span class="comment">// advance and retry</span></span><br><span class="line">                           <span class="keyword">if</span> ((h = head)   == <span class="keyword">null</span> ||</span><br><span class="line">                               (q = h.next) == <span class="keyword">null</span> || !q.isMatched())</span><br><span class="line">                               <span class="keyword">break</span>;        <span class="comment">// unless slack &lt; 2</span></span><br><span class="line">                       &#125;</span><br><span class="line">                       <span class="comment">// 唤醒 头结点中的线程</span></span><br><span class="line">                       LockSupport.unpark(p.waiter);</span><br><span class="line">                       <span class="keyword">return</span> LinkedTransferQueue.&lt;E&gt;cast(item);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line"></span><br><span class="line">               Node n = p.next;</span><br><span class="line">               p = (p != n) ? n : (h = head); <span class="comment">// 是p指向头结点</span></span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">if</span> (how != NOW) &#123;                 <span class="comment">// No matches available</span></span><br><span class="line">               <span class="keyword">if</span> (s == <span class="keyword">null</span>)</span><br><span class="line">                   s = <span class="keyword">new</span> Node(e, haveData);</span><br><span class="line">               Node pred = tryAppend(s, haveData); <span class="comment">//将新添加的元素添加到表尾，如果添加过程中</span></span><br><span class="line">                                                   <span class="comment">//产生了新的类型相反的元素，那么返回null               </span></span><br><span class="line">               <span class="keyword">if</span> (pred == <span class="keyword">null</span>)</span><br><span class="line">                   <span class="keyword">continue</span> retry;           <span class="comment">// 产生了上面的情况，那么就返回匹配过程</span></span><br><span class="line">               <span class="keyword">if</span> (how != ASYNC)</span><br><span class="line">                   <span class="keyword">return</span> awaitMatch(s, pred, e, (how == TIMED), nanos);</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> e; <span class="comment">// not waiting</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="SynchronizeQueue和LinkedTransferQueue的差异"><a href="#SynchronizeQueue和LinkedTransferQueue的差异" class="headerlink" title="SynchronizeQueue和LinkedTransferQueue的差异"></a>SynchronizeQueue和LinkedTransferQueue的差异</h4><p>SynchronizeQueue 和 LinkedTransferQueue 都是无锁实现的高性能阻塞队列； </p>
+<p>SynchronizeQueue 不能保存生产者的生产的产品，如果使用put方法 那么使当前线程阻塞等待直到有消费者线程，如果使用offer方法 那么直接返回null 表示没有消费者线程消费</p>
+<p>LinkedTransferQueue 则既可以实现SynchronizeQueue的直接递交生产者生产的物品，如果没有消费者线程又可以保存下来等待消费者消费，生产者线程不会被阻塞</p>
+<h4 id="SynchronizeQueue-与其它队列差异"><a href="#SynchronizeQueue-与其它队列差异" class="headerlink" title="SynchronizeQueue 与其它队列差异"></a>SynchronizeQueue 与其它队列差异</h4><p>我们知道 LinkedBlockingQueue  和 ArrayBlockingQueue 差异就是一个有界一个无界</p>
+<p>SynchronizeQueue  相对于它们两者差异就是 能否保存生产者生产的产品</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>LinkedBlockingQueue 较高的易读性，可用性，但是添加删除都直接锁住整个队列，性能不高</p>
+<p>SynchronizeQueue 无锁，性能高，但是不能在容器去存储元素，必须添加元素和删除元素配对出现</p>
+<p>LinkedTransferQueue 无锁，在保留生产者消费者配对功能的情况下能够将元素存储在容器里面，是LinkedBlockingQueue、SynchronizeQueue的结合</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/阻塞队列/" rel="tag"># 阻塞队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/30/Java 并发/ThreadPoolExecutor源码解析/" rel="next" title="ThreadPoolExecutor源码解析">
+                <i class="fa fa-chevron-left"></i> ThreadPoolExecutor源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/04/Java 基础/关于类加载器/" rel="prev" title="关于类加载器">
+                关于类加载器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞队列详解"><span class="nav-number">1.</span> <span class="nav-text">阻塞队列详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BlockingQueue"><span class="nav-number">1.1.</span> <span class="nav-text">BlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SynchronizeQueue"><span class="nav-number">1.2.</span> <span class="nav-text">SynchronizeQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TransferStack"><span class="nav-number">1.2.1.</span> <span class="nav-text">TransferStack</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SNode"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">SNode</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#一些栈元素的操作"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">一些栈元素的操作</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TransferQueue"><span class="nav-number">1.2.2.</span> <span class="nav-text">TransferQueue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于awaitfulfill方法"><span class="nav-number">1.2.3.</span> <span class="nav-text">关于awaitfulfill方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于公平和非公平的区别"><span class="nav-number">1.2.4.</span> <span class="nav-text">关于公平和非公平的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#流程图展示整个大概的流程"><span class="nav-number">1.2.5.</span> <span class="nav-text">流程图展示整个大概的流程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayBlockingQueue"><span class="nav-number">1.3.</span> <span class="nav-text">ArrayBlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedBlockingQueue"><span class="nav-number">1.4.</span> <span class="nav-text">LinkedBlockingQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据结构"><span class="nav-number">1.4.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于Help-GC"><span class="nav-number">1.4.2.</span> <span class="nav-text">关于Help GC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BlockingQueue-唤醒机制"><span class="nav-number">1.4.3.</span> <span class="nav-text">BlockingQueue 唤醒机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BlockingQueue怎么保证并发的插入和删除"><span class="nav-number">1.5.</span> <span class="nav-text">BlockingQueue怎么保证并发的插入和删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedTransferQueue"><span class="nav-number">1.6.</span> <span class="nav-text">LinkedTransferQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#xfer方法讲解"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">xfer方法讲解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SynchronizeQueue和LinkedTransferQueue的差异"><span class="nav-number">1.7.</span> <span class="nav-text">SynchronizeQueue和LinkedTransferQueue的差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SynchronizeQueue-与其它队列差异"><span class="nav-number">1.8.</span> <span class="nav-text">SynchronizeQueue 与其它队列差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">1.9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

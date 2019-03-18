@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/26/give_me_offer/2018-11-28/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/14/Python/基础/Python中的作用域/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -329,8 +329,8 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/26/give_me_offer/2018-11-28/" itemprop="url">
-                  2018-11-24
+                <a class="post-title-link" href="/2019/03/14/Python/基础/Python中的作用域/" itemprop="url">
+                  Python中的作用域
                 </a>
               
             
@@ -356,7 +356,456 @@
                 
               
 
-              <time title="创建时间：2018-11-26 20:40:44" itemprop="dateCreated datePublished" datetime="2018-11-26T20:40:44+08:00">2018-11-26</time>
+              <time title="创建时间：2019-03-14 14:09:54 / 修改时间：15:04:09" itemprop="dateCreated datePublished" datetime="2019-03-14T14:09:54+08:00">2019-03-14</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          首先说明python中不像JAVA 或者 C一样存在块级作用域，比如说下面的例子是可以运行的：
+123name = 'may'if 1==1:    print(name)
+所以像if、for、while 语句都没有自己的作用域变量，而是使用自己身处作用域的变量
+下面介绍python中的几种作用域：
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/14/Python/基础/Python中的作用域/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/13/Mysql/redo-log和undo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/13/Mysql/redo-log和undo/" itemprop="url">
+                  redo.log和undo.log
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-13 16:33:37 / 修改时间：21:53:58" itemprop="dateCreated datePublished" datetime="2019-03-13T16:33:37+08:00">2019-03-13</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          undo.log概述undo.log 实现了有两个功能：
+
+数据回滚
+MVCC 的实现
+
+需要注意的是undo.log是逻辑日志，所以对于数据的回滚它不是通过物理的恢复到执行语句或事务之前的样子，而是逻辑的把前面的修改都取消了，即使用了相反的SQL语句
+下面我将重点讲Innodb MVCC的实现，在
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/13/Mysql/redo-log和undo/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/11/Java 基础/关于引用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/11/Java 基础/关于引用/" itemprop="url">
+                  关于引用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-11 21:54:42" itemprop="dateCreated datePublished" datetime="2019-03-11T21:54:42+08:00">2019-03-11</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+          
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/03/11/Java 基础/关于引用/" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/10/IO/关于IO/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/10/IO/关于IO/" itemprop="url">
+                  关于IO
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-10 15:06:37" itemprop="dateCreated datePublished" datetime="2019-03-10T15:06:37+08:00">2019-03-10</time>
             
 
             
@@ -373,7 +822,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-28 23:53:08" itemprop="dateModified" datetime="2018-11-28T23:53:08+08:00">2018-11-28</time>
+                <time title="修改时间：2019-03-12 01:01:25" itemprop="dateModified" datetime="2019-03-12T01:01:25+08:00">2019-03-12</time>
               
             
           </span>
@@ -408,26 +857,13 @@
       
         
           
-          
-m阶B树的定义：
-
-
-每个节点至多有m个子节点
-如果根节点不是叶子节点，则其最少有两颗子树
-所有叶子节点都位于同一层次
-
-
-树中的结点和图中的顶点就是指数据结构中的数据元素
-
-如果两个单链表相交，那他们的尾结点一定相同
-快慢指针是判断一个单向链表有没有一个环的方法
-
-有环的单向链表和无环的单向链表
+          FileChannel 的write和read方法都是线程安全的
+BufferInputStream 为什么比较高效以前一直有个误解，在BufferInputStream源码中存在一个byte数组，所以认为它高效的原因是不用每次都系统调用从外存获取数据；但是这里没有注意到磁盘缓存，磁盘缓存是为了缓和
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/26/give_me_offer/2018-11-28/" rel="contents">
+              <a class="btn" href="/2019/03/10/IO/关于IO/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -484,7 +920,7 @@ m阶B树的定义：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/24/give_me_offer/2018-11-24/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/09/Java 并发/StampLock解析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -503,8 +939,8 @@ m阶B树的定义：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/24/give_me_offer/2018-11-24/" itemprop="url">
-                  2018-11-24
+                <a class="post-title-link" href="/2019/03/09/Java 并发/StampLock解析/" itemprop="url">
+                  StampLock解析
                 </a>
               
             
@@ -530,7 +966,7 @@ m阶B树的定义：
                 
               
 
-              <time title="创建时间：2018-11-24 12:50:36 / 修改时间：17:46:15" itemprop="dateCreated datePublished" datetime="2018-11-24T12:50:36+08:00">2018-11-24</time>
+              <time title="创建时间：2019-03-09 18:49:31 / 修改时间：21:27:30" itemprop="dateCreated datePublished" datetime="2019-03-09T18:49:31+08:00">2019-03-09</time>
             
 
             
@@ -570,17 +1006,15 @@ m阶B树的定义：
       
         
           
-          
-求最小生成树的普里姆算法中边上的权可正可负
-
-循环队列一般有两种形式，一种是对首前一位或者队尾后一位不存储元素，仅用来方便判断队列是空还是满另一种是队首队尾指向的位置存储元素，充分利用空间
-对于第一种情况：元素个数为：(rear -front+maxsize)%maxsize
-对于第二种情况：元素
+          基本使用https://www.jianshu.com/p/481071ddafd3
+源码分析https://www.jianshu.com/p/bfd5d2321cc0
+大概总结下它与ReentrantReadWriteLock的不同
+StampedLock 更加高效，而他高价高效的原因是因为它在
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/24/give_me_offer/2018-11-24/" rel="contents">
+              <a class="btn" href="/2019/03/09/Java 并发/StampLock解析/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -637,7 +1071,7 @@ m阶B树的定义：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/21/give_me_offer/2018-11-21/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/08/Java 并发/ReetranReadWriteLock源码解析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -656,8 +1090,8 @@ m阶B树的定义：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/21/give_me_offer/2018-11-21/" itemprop="url">
-                  2018-11-21
+                <a class="post-title-link" href="/2019/03/08/Java 并发/ReetranReadWriteLock源码解析/" itemprop="url">
+                  ReentranReadWriteLock源码解析
                 </a>
               
             
@@ -683,184 +1117,7 @@ m阶B树的定义：
                 
               
 
-              <time title="创建时间：2018-11-21 18:00:29 / 修改时间：19:35:31" itemprop="dateCreated datePublished" datetime="2018-11-21T18:00:29+08:00">2018-11-21</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/offer/" itemprop="url" rel="index"><span itemprop="name">offer</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-在有N个结点的二叉链表中，必其余定有2N个链域，除根结点外其余N-1个结点都有一个父节点，所以一共有N-1个非空链域，(2N - (N-1))即 N+1个空链域
-
-线性表中，顺序表物理相邻逻辑相邻，链表逻辑相邻物理不相邻
-
-常见的批处理作业调度算法
-
-先来先服务
-
-短作业优先
-
-最高响应比优先调度
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/11/21/give_me_offer/2018-11-21/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/20/数据结构/关于二叉树的所有操作的总结/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/20/数据结构/关于二叉树的所有操作的总结/" itemprop="url">
-                  关于二叉树的所有操作的总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-11-20 09:58:35" itemprop="dateCreated datePublished" datetime="2018-11-20T09:58:35+08:00">2018-11-20</time>
+              <time title="创建时间：2019-03-08 10:55:13" itemprop="dateCreated datePublished" datetime="2019-03-08T10:55:13+08:00">2019-03-08</time>
             
 
             
@@ -877,29 +1134,11 @@ m阶B树的定义：
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-28 21:58:08" itemprop="dateModified" datetime="2018-11-28T21:58:08+08:00">2018-11-28</time>
+                <time title="修改时间：2019-03-09 17:17:16" itemprop="dateModified" datetime="2019-03-09T17:17:16+08:00">2019-03-09</time>
               
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -930,12 +1169,19 @@ m阶B树的定义：
       
         
           
-          二叉树的建立递归非递归左右子树的交换递归1234567public void static exchangeLeftRight(TreeNode root)&#123;    if(root == null) return;    if(root.left == null &amp;&amp; ro
+          因为ReentrantReadWriteLock是基于AQS实现的同步，所以在介绍这个类之前，首先要对AQS比较熟悉，所以涉及到它的知识点我不会加以解释
+大体框架
+
+Sync
+ReentrantReadWriteLock 专门实现的AQS的同步器
+
+NonfairSync 、 FairSync
+公平
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/20/数据结构/关于二叉树的所有操作的总结/" rel="contents">
+              <a class="btn" href="/2019/03/08/Java 并发/ReetranReadWriteLock源码解析/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -992,7 +1238,7 @@ m阶B树的定义：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/20/give_me_offer/2018-11-19/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/03/Javaweb/一步一步理解dubbo/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -1011,8 +1257,8 @@ m阶B树的定义：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/20/give_me_offer/2018-11-19/" itemprop="url">
-                  2018-11-20
+                <a class="post-title-link" href="/2019/03/03/Javaweb/一步一步理解dubbo/" itemprop="url">
+                  一步一步理解dubbo
                 </a>
               
             
@@ -1038,7 +1284,7 @@ m阶B树的定义：
                 
               
 
-              <time title="创建时间：2018-11-20 09:53:53 / 修改时间：10:00:12" itemprop="dateCreated datePublished" datetime="2018-11-20T09:53:53+08:00">2018-11-20</time>
+              <time title="创建时间：2019-03-03 22:13:13 / 修改时间：22:42:34" itemprop="dateCreated datePublished" datetime="2019-03-03T22:13:13+08:00">2019-03-03</time>
             
 
             
@@ -1048,24 +1294,6 @@ m阶B树的定义：
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/offer/" itemprop="url" rel="index"><span itemprop="name">offer</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1096,19 +1324,12 @@ m阶B树的定义：
       
         
           
-          
-Cpi:表示每条计算机指令执行所需要的时间
-
-并行传输：是在传输中有多个数据位同时在设备之间进行的传输。
-串行传输：是指使用一条数据线，将数据一位一位地依次传输，每一位数据占据一个固定的时间长度。
-同步传输：是指传输过程有统一的时钟控制
-突发传输：在一个总线周期中，可以传输多个存储地址连续的数据
-
+          JAVA SPISPI 全称为 (Service Provider Interface)，是JDK内置的一种服务发现机制；SPI是一种动态替换发现的机制， 比如有个接口，想运行时动态的给它添加实现，你只需要添加一个实现。JAVA 中主要用java.util.ServiceLoader 类实现服务发现
           ...
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/20/give_me_offer/2018-11-19/" rel="contents">
+              <a class="btn" href="/2019/03/03/Javaweb/一步一步理解dubbo/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1165,7 +1386,7 @@ Cpi:表示每条计算机指令执行所需要的时间
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/20/give_me_offer/2018-11-20/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/03/Java 并发/Java并发编程实战总结/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -1184,8 +1405,8 @@ Cpi:表示每条计算机指令执行所需要的时间
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/20/give_me_offer/2018-11-20/" itemprop="url">
-                  2018-11-20
+                <a class="post-title-link" href="/2019/03/03/Java 并发/Java并发编程实战总结/" itemprop="url">
+                  Java并发编程实战总结
                 </a>
               
             
@@ -1211,13 +1432,9 @@ Cpi:表示每条计算机指令执行所需要的时间
                 
               
 
-              <time title="创建时间：2018-11-20 09:53:53 / 修改时间：19:45:56" itemprop="dateCreated datePublished" datetime="2018-11-20T09:53:53+08:00">2018-11-20</time>
+              <time title="创建时间：2019-03-03 09:25:08" itemprop="dateCreated datePublished" datetime="2019-03-03T09:25:08+08:00">2019-03-03</time>
             
 
-            
-              
-
-              
             
           </span>
 
@@ -1252,19 +1469,11 @@ Cpi:表示每条计算机指令执行所需要的时间
         
           
           
-稀疏矩阵存储方式：三元组，十字链表
-
-特殊矩阵：下三角矩阵，上三角矩阵，对称矩阵
-
-SMTP是发送邮件的协议，POP用于支持使用客户端远程管理在服务器上的电子邮件，IMAP用来从本地邮件客户端访问远程服务器上的邮件。
-
-
-
           
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/20/give_me_offer/2018-11-20/" rel="contents">
+              <a class="btn" href="/2019/03/03/Java 并发/Java并发编程实战总结/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1321,7 +1530,7 @@ SMTP是发送邮件的协议，POP用于支持使用客户端远程管理在服�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/18/give_me_offer/2018-11-18/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/02/Java 基础/Guava介绍和使用/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -1340,8 +1549,8 @@ SMTP是发送邮件的协议，POP用于支持使用客户端远程管理在服�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/18/give_me_offer/2018-11-18/" itemprop="url">
-                  2018/11/18
+                <a class="post-title-link" href="/2019/03/02/Java 基础/Guava介绍和使用/" itemprop="url">
+                  Guava介绍和使用
                 </a>
               
             
@@ -1367,46 +1576,12 @@ SMTP是发送邮件的协议，POP用于支持使用客户端远程管理在服�
                 
               
 
-              <time title="创建时间：2018-11-18 11:28:46" itemprop="dateCreated datePublished" datetime="2018-11-18T11:28:46+08:00">2018-11-18</time>
+              <time title="创建时间：2019-03-02 15:31:28" itemprop="dateCreated datePublished" datetime="2019-03-02T15:31:28+08:00">2019-03-02</time>
             
 
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-19 00:34:05" itemprop="dateModified" datetime="2018-11-19T00:34:05+08:00">2018-11-19</time>
-              
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/offer-啊-offer/" itemprop="url" rel="index"><span itemprop="name">offer 啊 offer</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1438,14 +1613,11 @@ SMTP是发送邮件的协议，POP用于支持使用客户端远程管理在服�
         
           
           
-servlet 本身是线程不安全的，因为servlet一般来说是无状态的，所以保证了它的线程安全
-
-DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I(isolation)隔离性、D(Durability)持久性；持久性实现回复管理子系统，一致性实现并发控
-          ...
+          
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/18/give_me_offer/2018-11-18/" rel="contents">
+              <a class="btn" href="/2019/03/02/Java 基础/Guava介绍和使用/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1502,7 +1674,7 @@ DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/11/04/java/关于类加载器/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/02/Javaweb/dubbo-study/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="May">
@@ -1521,8 +1693,8 @@ DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/04/java/关于类加载器/" itemprop="url">
-                  关于类加载器
+                <a class="post-title-link" href="/2019/03/02/Javaweb/dubbo-study/" itemprop="url">
+                  dubbo-study
                 </a>
               
             
@@ -1548,34 +1720,12 @@ DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I
                 
               
 
-              <time title="创建时间：2018-11-04 14:45:15 / 修改时间：22:38:52" itemprop="dateCreated datePublished" datetime="2018-11-04T14:45:15+08:00">2018-11-04</time>
+              <time title="创建时间：2019-03-02 13:04:32" itemprop="dateCreated datePublished" datetime="2019-03-02T13:04:32+08:00">2019-03-02</time>
             
 
-            
-              
-
-              
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1606,352 +1756,12 @@ DBMS 中事务有四个特性：A(Atomic)原子性、C(consistency)一致性、I
       
         
           
-          因为最近了解了一些关于热加载的东西，而这个技术就是基于类加载器，所以就想来总结一下类加载器的知识点
-概述类加载器，在《深入理解java虚拟机》中，关于为什么使用它有过解释，目的是想把字节码文件的来源解耦；我们一般的字节码文件的来源都是classpath，但是我们如果想直接从网络中获取呢，所以这个时候
-          ...
+          
+          
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2018/11/04/java/关于类加载器/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/阻塞队列详解/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/30/java/源码解析/阻塞队列详解/" itemprop="url">
-                  阻塞队列详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-30 20:14:55 / 修改时间：20:15:35" itemprop="dateCreated datePublished" datetime="2018-10-30T20:14:55+08:00">2018-10-30</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          阻塞队列详解BlockingQueue
-add() 这个方法是向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，会直接抛出异常，添加成功就会返回true
-offer() 这个方法时向阻塞队列中添加一个元素，添加元素时如果队列满了不会等待，但是不会抛异常，而是返回false，添加成功返回tru
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/10/30/java/源码解析/阻塞队列详解/" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2018/10/30/java/源码解析/ThreadPoolExecutor源码解析/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="May">
-      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="May's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/30/java/源码解析/ThreadPoolExecutor源码解析/" itemprop="url">
-                  ThreadPoolExecutor源码解析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-10-30 20:13:36 / 修改时间：20:14:15" itemprop="dateCreated datePublished" datetime="2018-10-30T20:13:36+08:00">2018-10-30</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ThreadPoolExecutor源码详解一些属性
-clt
-
-1private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
-这个属性前三位存储的是线程池的状态，后面的29位存储的是线程池的工作线程数
-线程池的状态：
-          ...
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/10/30/java/源码解析/ThreadPoolExecutor源码解析/" rel="contents">
+              <a class="btn" href="/2019/03/02/Javaweb/dubbo-study/" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1997,7 +1807,7 @@ clt
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2042,7 +1852,7 @@ clt
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">48</span>
+                    <span class="site-state-item-count">77</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2075,7 +1885,15 @@ clt
                     
                       
                     
-                    <span class="site-state-item-count">10</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2156,7 +1974,45 @@ clt
                     
                       
                     
-                    <span class="site-state-item-count">34</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2196,7 +2052,7 @@ clt
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2018</span>
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-heart"></i>
   </span>

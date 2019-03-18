@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="FileChannel 的write和read方法都是线程安全的 BufferInputStream 为什么比较高效以前一直有个误解，在BufferInputStream源码中存在一个byte数组，所以认为它高效的原因是不用每次都系统调用从外存获取数据；但是这里没有注意到磁盘缓存，磁盘缓存是为了缓和内存的速度和磁盘的速度根据局部性原理将读取数据的相邻数据都会一并读到磁盘缓存中；磁盘缓存存在于内核空">
+<meta name="keywords" content="IO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于IO">
+<meta property="og:url" content="https://github.com/MayYJ/hexo/2019/03/10/IO/关于IO/index.html">
+<meta property="og:site_name" content="May&#39;s Blog">
+<meta property="og:description" content="FileChannel 的write和read方法都是线程安全的 BufferInputStream 为什么比较高效以前一直有个误解，在BufferInputStream源码中存在一个byte数组，所以认为它高效的原因是不用每次都系统调用从外存获取数据；但是这里没有注意到磁盘缓存，磁盘缓存是为了缓和内存的速度和磁盘的速度根据局部性原理将读取数据的相邻数据都会一并读到磁盘缓存中；磁盘缓存存在于内核空">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/11/A9oQ6H.png">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/5807849-9072d7c30c619a62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/555/format/webp">
+<meta property="og:updated_time" content="2019-03-11T17:01:25.372Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于IO">
+<meta name="twitter:description" content="FileChannel 的write和read方法都是线程安全的 BufferInputStream 为什么比较高效以前一直有个误解，在BufferInputStream源码中存在一个byte数组，所以认为它高效的原因是不用每次都系统调用从外存获取数据；但是这里没有注意到磁盘缓存，磁盘缓存是为了缓和内存的速度和磁盘的速度根据局部性原理将读取数据的相邻数据都会一并读到磁盘缓存中；磁盘缓存存在于内核空">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/11/A9oQ6H.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://github.com/MayYJ/hexo/2019/03/10/IO/关于IO/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>关于IO | May's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">May's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">既然选择了远方，便只顾风雨兼程。</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/MayYJ/hexo/2019/03/10/IO/关于IO/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="May">
+      <meta itemprop="description" content="既然选择了远方，便只顾风雨兼程。">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="May's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于IO
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-10 15:06:37" itemprop="dateCreated datePublished" datetime="2019-03-10T15:06:37+08:00">2019-03-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-12 01:01:25" itemprop="dateModified" datetime="2019-03-12T01:01:25+08:00">2019-03-12</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>FileChannel 的write和read方法都是线程安全的</p>
+<h4 id="BufferInputStream-为什么比较高效"><a href="#BufferInputStream-为什么比较高效" class="headerlink" title="BufferInputStream 为什么比较高效"></a>BufferInputStream 为什么比较高效</h4><p>以前一直有个误解，在BufferInputStream源码中存在一个byte数组，所以认为它高效的原因是不用每次都系统调用从外存获取数据；但是这里没有注意到磁盘缓存，磁盘缓存是为了缓和内存的速度和磁盘的速度根据局部性原理将读取数据的相邻数据都会一并读到磁盘缓存中；磁盘缓存存在于内核空间，所以每次去取数据都会存在用户空间和内核空间的切换；也就是说BufferInputStream 比较高效的原因是减少了用户空间和内核空间的切换从而节省了CPU资源</p>
+<h4 id="JAVA-中IO的方式"><a href="#JAVA-中IO的方式" class="headerlink" title="JAVA 中IO的方式"></a>JAVA 中IO的方式</h4><p>普通IO， FileChannel、MMAP(内存映射)</p>
+<h4 id="为什么FileChannel-比普通IO要快"><a href="#为什么FileChannel-比普通IO要快" class="headerlink" title="为什么FileChannel 比普通IO要快"></a>为什么FileChannel 比普通IO要快</h4><p>因为FileChannel采用了ByteBuffer这样的内存缓冲区，让我们可以精准的控制写盘的大小，其实就跟前面的BufferInputStream 一样，可以减少系统调用的次数，但是FileChannel可以根据系统自身情况调整ByteBuffer大小</p>
+<h4 id="虚拟地址空间、逻辑地址、线性地址、物理地址"><a href="#虚拟地址空间、逻辑地址、线性地址、物理地址" class="headerlink" title="虚拟地址空间、逻辑地址、线性地址、物理地址"></a>虚拟地址空间、逻辑地址、线性地址、物理地址</h4><p>逻辑地址 如果以分页存储管理方式就是页号加页内偏移量</p>
+<p>线性地址就是虚拟地址，这个地址存在的原因是内存交换技术，比如说32位的操作系统，每个进程可以拥有总的内存量为2^32 也就是4个G的内存，只不过是通过磁盘在逻辑上扩展物理内存进而达到好像该进程好像就拥有这么内存一样</p>
+<p>逻辑地址通过地址转换机构得到的就是虚拟地址</p>
+<p>物理地址就是真正物理意义上的物理内存上的内存单元地址</p>
+<p>在没有使用虚拟存储器的机器上，虚拟地址被直接送到内存总线上，使具有相同地址的物理存储器被读写；而在使用了虚拟存储器的情况下，虚拟地址不是被直接送到内存地址总线上，而是送到存储器管理单元MMU，把虚拟地址映射为物理地址。</p>
+<h4 id="直接IO"><a href="#直接IO" class="headerlink" title="直接IO"></a>直接IO</h4><p>直接IO 存在原因PageCache也就是操作系统会将 I/O 的数据缓存在文件系统的页缓存（ page cache ）中，也就是说，数据会先被拷贝到操作系统内核的缓冲区中，然后才会从操作系统内核的缓冲区拷贝到应用程序的地址空间。DMA 方式可以将数据直接从磁盘读到页缓存中，或者将数据从页缓存直接写回到磁盘上，而不能直接在应用程序地址空间和磁盘之间进行数据传输，这样的话，数据在传输过程中需要在应用程序地址空间和页缓存之间进行多次数据拷贝操作，这些数据拷贝操作所带来的 CPU 以及内存开销是非常大的。</p>
+<p>详细的可以见 <a href="https://www.ibm.com/developerworks/cn/linux/l-cn-directio/index.html" target="_blank" rel="noopener">这篇IBM文章</a></p>
+<p>但是需要注意的是JDK8是没有支持直接IO的类的</p>
+<h4 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer directBuffer = ByteBuffer.allocateDirect(<span class="number">1024</span>);</span><br></pre></td></tr></table></figure>
+<p>通过上面这条语句分配的就是直接内存，一系列问题就出来了，什么是直接内存，它和JVM运行时数据区域有什么不同，它的好处是什么，下面就一一解答</p>
+<p>直接内存就是一段 JVM运行时数据区域以外的内存，它不受JVM的管控，需要注意的是它依然属于用户内存</p>
+<p>为什么要使用直接内存呢？ 这就牵扯到JAVA IO 读取数据的机制    </p>
+<p><img src="https://s2.ax1x.com/2019/03/11/A9oQ6H.png" alt=""></p>
+<p>DMA 读取数据时先将数据读取到内核缓冲区当中，PageCache也就是在这个时候发生的；然后再将数据复制到堆外的一段内存当中，最后才将数据从堆外的直接内存复制到JVM 的堆内存当中，这里又会产生一个问题为什么不直接从内核缓冲区复制到JVM堆内存中，非要有一个中间堆外内存的复制过程？</p>
+<p>这是因为虽然内核态下可以操作所有的内存，但是 它是通过物理地址的方式直接操作内存；所以这里就会产生一个问题，就是 JVM 对于大内存的分配都是直接在老年代内分配，JVM运行过程中很有可能会发生GC，而老年代大多数垃圾收集器又是用的标记整理算法，也就是会产生数据的移动，就会导致数据内存地址的变化，但是这个变化对于内核的复制是不可知的；所以从内核复制数据到的内存是不能够变化的，也就是这里的直接内存</p>
+<p>下面是FileChannel.read方法调用的IOUtil.read方法，其中就可以看到这样的一个过程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">(FileDescriptor fd, ByteBuffer dst, <span class="keyword">long</span> position,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="keyword">boolean</span> directIO, <span class="keyword">int</span> alignment, NativeDispatcher nd)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> IOException</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (dst.isReadOnly())</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Read-only buffer"</span>);</span><br><span class="line">        <span class="comment">// 如果是直接内存那么直接将数据读进直接内存中</span></span><br><span class="line">        <span class="keyword">if</span> (dst <span class="keyword">instanceof</span> DirectBuffer)</span><br><span class="line">            <span class="keyword">return</span> readIntoNativeBuffer(fd, dst, position,</span><br><span class="line">                    directIO, alignment, nd);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Substitute a native buffer</span></span><br><span class="line">        ByteBuffer bb;</span><br><span class="line">        <span class="keyword">int</span> rem = dst.remaining();</span><br><span class="line">        <span class="keyword">if</span> (directIO) &#123;</span><br><span class="line">            Util.checkRemainingBufferSizeAligned(rem, alignment);</span><br><span class="line">            bb = Util.getTemporaryAlignedDirectBuffer(rem,</span><br><span class="line">                                                      alignment);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 获取临时的直接内存</span></span><br><span class="line">            bb = Util.getTemporaryDirectBuffer(rem);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 将数据读进了临时直接内存中</span></span><br><span class="line">            <span class="keyword">int</span> n = readIntoNativeBuffer(fd, bb, position,</span><br><span class="line">                    directIO, alignment,nd);</span><br><span class="line">            bb.flip();</span><br><span class="line">            <span class="comment">// 再将直接内存的数据复制到堆内存中</span></span><br><span class="line">            <span class="keyword">if</span> (n &gt; <span class="number">0</span>)</span><br><span class="line">                dst.put(bb);</span><br><span class="line">            <span class="keyword">return</span> n;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            Util.offerFirstTemporaryDirectBuffer(bb);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>至于为什么从直接内存到堆内存可以实现，可以参考来自知乎上的回答：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DirectByteBuffer 自身是一个Java对象，在Java堆中；而这个对象中有个long类型字段address，记录着一块调用 malloc() 申请到的native memory。</span><br><span class="line"></span><br><span class="line">HotSpot VM里的GC除了CMS之外都是要移动对象的，是所谓“compacting GC”。</span><br><span class="line"></span><br><span class="line">如果要把一个Java里的 byte[] 对象的引用传给native代码，让native代码直接访问数组的内容的话，就必须要保证native代码在访问的时候这个 byte[] 对象不能被移动，也就是要被“pin”（钉）住。</span><br><span class="line"></span><br><span class="line">可惜HotSpot VM出于一些取舍而决定不实现单个对象层面的object pinning，要pin的话就得暂时禁用GC——也就等于把整个Java堆都给pin住。HotSpot VM对JNI的Critical系API就是这样实现的。这用起来就不那么顺手。</span><br><span class="line"></span><br><span class="line">所以 Oracle/Sun JDK / OpenJDK 的这个地方就用了点绕弯的做法。它假设把 HeapByteBuffer 背后的 byte[] 里的内容拷贝一次是一个时间开销可以接受的操作，同时假设真正的I/O可能是一个很慢的操作。</span><br><span class="line"></span><br><span class="line">于是它就先把 HeapByteBuffer 背后的 byte[] 的内容拷贝到一个 DirectByteBuffer 背后的native memory去，这个拷贝会涉及 sun.misc.Unsafe.copyMemory() 的调用，背后是类似 memcpy() 的实现。这个操作本质上是会在整个拷贝过程中暂时不允许发生GC的，虽然实现方式跟JNI的Critical系API不太一样。（具体来说是 Unsafe.copyMemory() 是HotSpot VM的一个intrinsic方法，中间没有safepoint所以GC无法发生）。</span><br><span class="line"></span><br><span class="line">然后数据被拷贝到native memory之后就好办了，就去做真正的I/O，把 DirectByteBuffer 背后的native memory地址传给真正做I/O的函数。这边就不需要再去访问Java对象去读写要做I/O的数据了。</span><br></pre></td></tr></table></figure>
+<p>没有安全点，不会停下来GC</p>
+<h4 id="直接内存的创建和回收机制"><a href="#直接内存的创建和回收机制" class="headerlink" title="直接内存的创建和回收机制"></a>直接内存的创建和回收机制</h4><ol>
+<li><p>创建</p>
+<p>关于直接内存的创建主要就涉及到它的构造器和reserveMemory方法</p>
+<p>大致流程：</p>
+<ol>
+<li><p>调用reserveMemory 检查是否足够的直接内存分配</p>
+<p>reserveMemory 大致流程是这样的：</p>
+<ol>
+<li>有足够内存直接返回，</li>
+<li>尝试释放可能已经被回收的DirectBuffer 对象所关联的直接内存</li>
+<li>如果 2 没有成功则 调用System.gc() 进行FullGC</li>
+<li>循环等待9秒 等待FullGc完成</li>
+<li>如果4没有成功那么抛出 直接内存溢出的Error</li>
+</ol>
+</li>
+<li><p>通过unsafe.allocateMemory申请直接内存，返回内存的首地址</p>
+</li>
+<li><p>构建Cleaner对象用于跟踪DirectByteBuffer对象的垃圾回收，以实现当DirectByteBuffer被垃圾回收时，堆外内存也会被释放</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">DirectByteBuffer(<span class="keyword">int</span> cap) &#123;                   <span class="comment">// package-private</span></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">super</span>(-<span class="number">1</span>, <span class="number">0</span>, cap, cap);</span><br><span class="line">    <span class="keyword">boolean</span> pa = VM.isDirectMemoryPageAligned();</span><br><span class="line">    <span class="keyword">int</span> ps = Bits.pageSize();</span><br><span class="line">    <span class="keyword">long</span> size = Math.max(<span class="number">1L</span>, (<span class="keyword">long</span>)cap + (pa ? ps : <span class="number">0</span>));</span><br><span class="line">    Bits.reserveMemory(size, cap);</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">long</span> base = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        base = unsafe.allocateMemory(size);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (OutOfMemoryError x) &#123;</span><br><span class="line">        Bits.unreserveMemory(size, cap);</span><br><span class="line">        <span class="keyword">throw</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">    unsafe.setMemory(base, size, (<span class="keyword">byte</span>) <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (pa &amp;&amp; (base % ps != <span class="number">0</span>)) &#123;</span><br><span class="line">        <span class="comment">// Round up to page boundary</span></span><br><span class="line">        address = base + ps - (base &amp; (ps - <span class="number">1</span>));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        address = base;</span><br><span class="line">    &#125;</span><br><span class="line">    cleaner = Cleaner.create(<span class="keyword">this</span>, <span class="keyword">new</span> Deallocator(base, size, cap));</span><br><span class="line">    att = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reserveMemory</span><span class="params">(<span class="keyword">long</span> size, <span class="keyword">int</span> cap)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!memoryLimitSet &amp;&amp; VM.initLevel() &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">        maxMemory = VM.maxDirectMemory();</span><br><span class="line">        memoryLimitSet = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// optimist!</span></span><br><span class="line">    <span class="keyword">if</span> (tryReserveMemory(size, cap)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> JavaLangRefAccess jlra = SharedSecrets.getJavaLangRefAccess();</span><br><span class="line">    <span class="keyword">boolean</span> interrupted = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Retry allocation until success or there are no more</span></span><br><span class="line">        <span class="comment">// references (including Cleaners that might free direct</span></span><br><span class="line">        <span class="comment">// buffer memory) to process and allocation still fails.</span></span><br><span class="line">        <span class="keyword">boolean</span> refprocActive;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                refprocActive = jlra.waitForReferenceProcessing();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// Defer interrupts and keep trying.</span></span><br><span class="line">                interrupted = <span class="keyword">true</span>;</span><br><span class="line">                refprocActive = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (tryReserveMemory(size, cap)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">while</span> (refprocActive);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// trigger VM's Reference processing</span></span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// A retry loop with exponential back-off delays.</span></span><br><span class="line">        <span class="comment">// Sometimes it would suffice to give up once reference</span></span><br><span class="line">        <span class="comment">// processing is complete.  But if there are many threads</span></span><br><span class="line">        <span class="comment">// competing for memory, this gives more opportunities for</span></span><br><span class="line">        <span class="comment">// any given thread to make progress.  In particular, this</span></span><br><span class="line">        <span class="comment">// seems to be enough for a stress test like</span></span><br><span class="line">        <span class="comment">// DirectBufferAllocTest to (usually) succeed, while</span></span><br><span class="line">        <span class="comment">// without it that test likely fails.  Since failure here</span></span><br><span class="line">        <span class="comment">// ends in OOME, there's no need to hurry.</span></span><br><span class="line">        <span class="keyword">long</span> sleepTime = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> sleeps = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (tryReserveMemory(size, cap)) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (sleeps &gt;= MAX_SLEEPS) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (!jlra.waitForReferenceProcessing()) &#123;</span><br><span class="line">                    Thread.sleep(sleepTime);</span><br><span class="line">                    sleepTime &lt;&lt;= <span class="number">1</span>;</span><br><span class="line">                    sleeps++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                interrupted = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// no luck</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> OutOfMemoryError(<span class="string">"Direct buffer memory"</span>);</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (interrupted) &#123;</span><br><span class="line">            <span class="comment">// don't swallow interrupts</span></span><br><span class="line">            Thread.currentThread().interrupt();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>回收</p>
+<ul>
+<li><p>自动回收</p>
+<p>自动回收其实就是在分配内存的时候，如果发现直接内存不够的时候就会调用System.gc进行全局回收对象；但是问题就来了，对象的回收是怎么跟直接内存的回收挂钩的</p>
+<p>DirectByteBuffer对象在创建的时候关联了一个PhantomReference也就是下面这行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cleaner = Cleaner.create(<span class="keyword">this</span>, <span class="keyword">new</span> Deallocator(base, size, cap));</span><br></pre></td></tr></table></figure>
+<p>PhantomReference的作用是用来跟踪对象何时被回收的，它不能影响gc决策，但是gc过程中如果发现某个对象除了只有PhantomReference引用它之外，并没有其他的地方引用它了，那将会把这个引用放到java.lang.ref.Reference.pending队列里，在gc完毕的时候通知ReferenceHandler这个守护线程去执行一些后置处理，下面我会根据Reference的源码进一步说明</p>
+<p>Cleaner 继承于PhantomReference 并将其虚引用(其实就是 其子类Reference中的 referent的指向)指向了this即创建的DirectByteBuffer，就可以达到追踪DirectByteBuffer对象被回收的时机的效果</p>
+<p>如下面的代码所示，其实Cleaner 只是一个维护了Cleaner 双向链表的类，起到了保存回收其关联对象的回调方法即thunk属性的作用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cleaner</span></span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">PhantomReference</span>&lt;<span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ReferenceQueue&lt;Object&gt; dummyQueue = <span class="keyword">new</span> ReferenceQueue&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Cleaner first = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Cleaner</span><br><span class="line">        next = <span class="keyword">null</span>,</span><br><span class="line">        prev = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> Cleaner <span class="title">add</span><span class="params">(Cleaner cl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (first != <span class="keyword">null</span>) &#123;</span><br><span class="line">            cl.next = first;</span><br><span class="line">            first.prev = cl;</span><br><span class="line">        &#125;</span><br><span class="line">        first = cl;</span><br><span class="line">        <span class="keyword">return</span> cl;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Cleaner cl)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// If already removed, do nothing</span></span><br><span class="line">        <span class="keyword">if</span> (cl.next == cl)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update list</span></span><br><span class="line">        <span class="keyword">if</span> (first == cl) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cl.next != <span class="keyword">null</span>)</span><br><span class="line">                first = cl.next;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                first = cl.prev;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (cl.next != <span class="keyword">null</span>)</span><br><span class="line">            cl.next.prev = cl.prev;</span><br><span class="line">        <span class="keyword">if</span> (cl.prev != <span class="keyword">null</span>)</span><br><span class="line">            cl.prev.next = cl.next;</span><br><span class="line">            </span><br><span class="line">        cl.next = cl;</span><br><span class="line">        cl.prev = cl;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Runnable thunk;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Cleaner</span><span class="params">(Object referent, Runnable thunk)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(referent, dummyQueue);</span><br><span class="line">        <span class="keyword">this</span>.thunk = thunk;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Cleaner <span class="title">create</span><span class="params">(Object ob, Runnable thunk)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (thunk == <span class="keyword">null</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> add(<span class="keyword">new</span> Cleaner(ob, thunk));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Runs this cleaner, if it has not been run before.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clean</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!remove(<span class="keyword">this</span>))</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            thunk.run();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">final</span> Throwable x) &#123;</span><br><span class="line">            AccessController.doPrivileged(<span class="keyword">new</span> PrivilegedAction&lt;&gt;() &#123;</span><br><span class="line">                    <span class="function"><span class="keyword">public</span> Void <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                        <span class="keyword">if</span> (System.err != <span class="keyword">null</span>)</span><br><span class="line">                            <span class="keyword">new</span> Error(<span class="string">"Cleaner terminated abnormally"</span>, x)</span><br><span class="line">                                .printStackTrace();</span><br><span class="line">                        System.exit(<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                    &#125;&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceHandler</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ensureClassInitialized</span><span class="params">(Class&lt;?&gt; clazz)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class.forName(clazz.getName(), <span class="keyword">true</span>, clazz.getClassLoader());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> (Error) <span class="keyword">new</span> NoClassDefFoundError(e.getMessage()).initCause(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">            <span class="comment">// pre-load and initialize Cleaner class so that we don't</span></span><br><span class="line">            <span class="comment">// get into trouble later in the run loop if there's</span></span><br><span class="line">            <span class="comment">// memory shortage while loading/initializing it lazily.</span></span><br><span class="line">            ensureClassInitialized(Cleaner.class);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ReferenceHandler(ThreadGroup g, String name) &#123;</span><br><span class="line">            <span class="keyword">super</span>(g, <span class="keyword">null</span>, name, <span class="number">0</span>, <span class="keyword">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                processPendingReferences();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>下面就是比较重要的类了 Reference</p>
+<ol>
+<li>其中有个静态代码块，这个类在rt.jar包下，所有是由BootStrapClassLoader加载的，也就是一开始就会执行这个静态代码块的内容，其中启动了一个ReferenceHandler的线程</li>
+<li>其中详细的代码就不仔细讲了，如果有兴趣可以自己下去深究；它主要干的事情就是上面所说的gc过程中如果发现某个对象除了只有PhantomReference引用它之外，并没有其他的地方引用它了，那将会把这个引用放到java.lang.ref.Reference.pending队列里，在gc完毕的时候通知ReferenceHandler这个守护线程去执行一些后置处理，这里的后置处理就是Cleaner 的clean方法，clean方法又会调用当前对象保存的Runnable的run方法，即DirectByteBuffer 创建Cleaner 时传过去的Runnable，也就达到了追踪DirectByteBuffer销毁并做一定处理的效果，在DirectByteBuffer中所做的处理及传给Cleaner的Runnable 就是销毁自己创建的直接内存的操作</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Reference</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    <span class="keyword">private</span> T referent;         <span class="comment">/* Treated specially by GC */</span></span><br><span class="line"></span><br><span class="line">    ReferenceQueue&lt;? <span class="keyword">super</span> T&gt; queue;</span><br><span class="line"></span><br><span class="line">    Reference next;</span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">private</span> Reference&lt;T&gt; discovered;  <span class="comment">/* used by VM */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Lock</span> </span>&#123; &#125;;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Lock lock = <span class="keyword">new</span> Lock();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Reference pending = <span class="keyword">null</span>;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        ThreadGroup tg = Thread.currentThread().getThreadGroup();</span><br><span class="line">        <span class="keyword">for</span> (ThreadGroup tgn = tg;</span><br><span class="line">             tgn != <span class="keyword">null</span>;</span><br><span class="line">             tg = tgn, tgn = tg.getParent());</span><br><span class="line">        Thread handler = <span class="keyword">new</span> ReferenceHandler(tg, <span class="string">"Reference Handler"</span>);</span><br><span class="line">        <span class="comment">/* If there were a special system-only priority greater than</span></span><br><span class="line"><span class="comment">         * MAX_PRIORITY, it would be used here</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        handler.setPriority(Thread.MAX_PRIORITY);</span><br><span class="line">        handler.setDaemon(<span class="keyword">true</span>);</span><br><span class="line">        handler.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.referent;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.referent = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEnqueued</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">this</span>.queue != ReferenceQueue.NULL) &amp;&amp; (<span class="keyword">this</span>.next != <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">enqueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.queue.enqueue(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* -- Constructors -- */</span></span><br><span class="line"></span><br><span class="line">    Reference(T referent) &#123;</span><br><span class="line">        <span class="keyword">this</span>(referent, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Reference(T referent, ReferenceQueue&lt;? <span class="keyword">super</span> T&gt; queue) &#123;</span><br><span class="line">        <span class="keyword">this</span>.referent = referent;</span><br><span class="line">        <span class="keyword">this</span>.queue = (queue == <span class="keyword">null</span>) ? ReferenceQueue.NULL : queue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">processPendingReferences</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        waitForReferencePendingList();</span><br><span class="line">        Reference&lt;Object&gt; pendingList;</span><br><span class="line">        <span class="keyword">synchronized</span> (processPendingLock) &#123;</span><br><span class="line">            pendingList = getAndClearReferencePendingList();</span><br><span class="line">            processPendingActive = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (pendingList != <span class="keyword">null</span>) &#123;</span><br><span class="line">            Reference&lt;Object&gt; ref = pendingList;</span><br><span class="line">            pendingList = ref.discovered;</span><br><span class="line">            ref.discovered = <span class="keyword">null</span>;</span><br><span class="line">            <span class="comment">//后置处理</span></span><br><span class="line">            <span class="keyword">if</span> (ref <span class="keyword">instanceof</span> Cleaner) &#123;</span><br><span class="line">                ((Cleaner)ref).clean();</span><br><span class="line">                <span class="keyword">synchronized</span> (processPendingLock) &#123;</span><br><span class="line">                    processPendingLock.notifyAll();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                ReferenceQueue&lt;? <span class="keyword">super</span> Object&gt; q = ref.queue;</span><br><span class="line">                <span class="keyword">if</span> (q != ReferenceQueue.NULL) q.enqueue(ref);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">synchronized</span> (processPendingLock) &#123;</span><br><span class="line">            processPendingActive = <span class="keyword">false</span>;</span><br><span class="line">            processPendingLock.notifyAll();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="直接内存的应用场景"><a href="#直接内存的应用场景" class="headerlink" title="直接内存的应用场景"></a>直接内存的应用场景</h4><p>DirectBuffer 直接分配在JVM之外的物理内存，而不是 JVM 中的逻辑内存，需要往 Socket 或其他接口写的时候，不需要将数据从 JVM 复制到物理内存，直接输出即可。</p>
+<p>缺点是当你需要对这些数据进行额外处理的时候，如编码，过滤等，数据还是会复制到 JVM，所以请确保你不需要对数据进行这些额外操作，只是从一个文件复制数据到另一个文件，一个Socket到另一个的时候才使用。</p>
+<h4 id="内存映射文件"><a href="#内存映射文件" class="headerlink" title="内存映射文件"></a>内存映射文件</h4><p>内存映射文件和之前说的 标准IO操作最大的不同之处就在于它虽然最终也是要从磁盘读取数据，但是它并不需要将数据读取到OS内核缓冲区，而是直接将进程的用户私有地址空间中的一 部分区域与文件对象建立起映射关系，就好像直接从内存中读、写文件一样，速度当然快了。为了说清楚这个，我们以 Linux操作系统为例子，看下图：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/5807849-9072d7c30c619a62.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/555/format/webp" alt=""></p>
+<p>此图为 Linux 2.X 中的进程虚拟存储器，即进程的虚拟地址空间，如果你的机子是 32 位，那么就有 2^32 = 4G的虚拟地址空间，我们可以看到图中有一块区域： “Memory mapped region for shared libraries” ，这段区域就是在内存映射文件的时候将某一段的虚拟地址和文件对象的某一部分建立起映射关系，此时并没有拷贝数据到内存中去，而是当进程代码第一次引用这 段代码内的虚拟地址时，触发了缺页异常，这时候OS根据映射关系直接将文件的相关部分数据拷贝到进程的用户私有空间中去，当有操作第N页数据的时候重复这样的OS页面调度程序操作。注意啦，<strong>原来内存映射文件的效率比标准IO高的重要原因就是因为少了把数据拷贝到OS内核缓冲区这一步</strong>。</p>
+<h4 id="为什么顺序读比随机读好"><a href="#为什么顺序读比随机读好" class="headerlink" title="为什么顺序读比随机读好"></a>为什么顺序读比随机读好</h4><p>还是因为PageCache的原因，当顺序读的时候PageCache的命中率提高，更少的去磁盘读数据</p>
+<h4 id="FileChannel-transferTo"><a href="#FileChannel-transferTo" class="headerlink" title="FileChannel.transferTo"></a>FileChannel.transferTo</h4><p>Java NIO中提供的FileChannel拥有transferTo和transferFrom两个方法，可直接把FileChannel中的数据拷贝到另外一个Channel，或者直接把另外一个Channel中的数据拷贝到FileChannel。该接口常被用于高效的网络/文件的数据传输和大文件拷贝。在操作系统支持的情况下，通过该方法传输数据并不需要将源数据从内核态拷贝到用户态，再从用户态拷贝到目标通道的内核态，同时也避免了两次用户态和内核态间的上下文切换，也即使用了“零拷贝”，所以其性能一般高于Java IO中提供的方法。</p>
+<p>下面是简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile fromFile = new RandomAccessFile(&quot;fromFile.txt&quot;, &quot;rw&quot;);</span><br><span class="line">FileChannel fromChannel = fromFile.getChannel();</span><br><span class="line">RandomAccessFile toFile = new RandomAccessFile(&quot;toFile.txt&quot;, &quot;rw&quot;);</span><br><span class="line">FileChannel toChannel = toFile.getChannel();</span><br><span class="line">long position = 0;</span><br><span class="line">long count = fromChannel.size();</span><br><span class="line">toChannel.transferFrom(position, count, fromChannel);</span><br></pre></td></tr></table></figure>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a href="https://blog.csdn.net/coslay/article/details/44210993" target="_blank" rel="noopener">https://blog.csdn.net/coslay/article/details/44210993</a></p>
+<p><a href="https://www.cnkirito.moe/file-io-best-practise/" target="_blank" rel="noopener">https://www.cnkirito.moe/file-io-best-practise/</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IO/" rel="tag"># IO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/09/Java 并发/StampLock解析/" rel="next" title="StampLock解析">
+                <i class="fa fa-chevron-left"></i> StampLock解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/11/Java 基础/关于引用/" rel="prev" title="关于引用">
+                关于引用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="May">
+            
+              <p class="site-author-name" itemprop="name">May</p>
+              <p class="site-description motion-element" itemprop="description">既然选择了远方，便只顾风雨兼程。</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">77</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">53</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#BufferInputStream-为什么比较高效"><span class="nav-number">1.</span> <span class="nav-text">BufferInputStream 为什么比较高效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JAVA-中IO的方式"><span class="nav-number">2.</span> <span class="nav-text">JAVA 中IO的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么FileChannel-比普通IO要快"><span class="nav-number">3.</span> <span class="nav-text">为什么FileChannel 比普通IO要快</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟地址空间、逻辑地址、线性地址、物理地址"><span class="nav-number">4.</span> <span class="nav-text">虚拟地址空间、逻辑地址、线性地址、物理地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接IO"><span class="nav-number">5.</span> <span class="nav-text">直接IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存"><span class="nav-number">6.</span> <span class="nav-text">直接内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存的创建和回收机制"><span class="nav-number">7.</span> <span class="nav-text">直接内存的创建和回收机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接内存的应用场景"><span class="nav-number">8.</span> <span class="nav-text">直接内存的应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存映射文件"><span class="nav-number">9.</span> <span class="nav-text">内存映射文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么顺序读比随机读好"><span class="nav-number">10.</span> <span class="nav-text">为什么顺序读比随机读好</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FileChannel-transferTo"><span class="nav-number">11.</span> <span class="nav-text">FileChannel.transferTo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        	<div class="copyright"> &copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">May</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
